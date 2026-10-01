@@ -27,7 +27,7 @@ const srv = http.createServer((q, r) => {
   fs.createReadStream(f).pipe(r);
 });
 await new Promise(r => srv.listen(0, "127.0.0.1", r));
-const URL0 = `http://127.0.0.1:${srv.address().port}/`;
+const URL0 = process.env.URL || `http://127.0.0.1:${srv.address().port}/`;
 
 let falhas = 0;
 const ok = (c, m) => { console.log((c ? "  ok  " : "  FALHOU  ") + m); if (!c) falhas++; };
