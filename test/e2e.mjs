@@ -48,7 +48,8 @@ await page.fill("#nome", "Envasadora EV-20 — teste");
 await page.click("button[data-type=completa]");
 ok(await page.locator("#chips .chip").count() === 12, "modelo completo cria 12 blocos");
 
-console.log("2. narração geral (gravada)");
+console.log("2. pedido escrito + áudio opcional");
+await page.fill("#narr textarea[data-narr]", "Preciso de 2 vídeos e do manual de operação até dia 15.");
 await page.click("#narr [data-rec]");
 await page.waitForSelector("#recbar:not(.hide)");
 await page.waitForTimeout(3200);
@@ -59,8 +60,14 @@ await semBusy(page);
 ok(await page.locator("#narr .mi.au").count() === 1, "narração aparece na lista");
 
 console.log("3. pedido + identificação com foto e vídeo");
-await page.check('input[data-k=entregas][value="Manual de operação"]');
-await page.check('input[data-k=entregas][value="Vídeo de operação"]');
+const qd = (opt, d) => page.click(`#form button[data-qd="${d}"][data-opt="${opt}"]`);
+await qd("Vídeo", 1); await qd("Vídeo", 1); await qd("Vídeo", 1); await qd("Vídeo", -1);
+await qd("Manual", 1);
+ok(await page.locator('#form input[data-qi][data-opt="Vídeo"]').count() === 2, "quantidade de vídeos = 2 campos de assunto");
+await page.locator('#form input[data-qi][data-opt="Vídeo"]').nth(0).fill("Operação do dia a dia");
+await page.locator('#form input[data-qi][data-opt="Vídeo"]').nth(1).fill("Limpeza do bico");
+await page.locator('#form input[data-qi][data-opt="Manual"]').nth(0).fill("Operação");
+await shot(page, "03a-pedido-quantidades", false);
 await page.fill("#form [data-k=cliente]", "Laticínio Serra Verde");
 await page.click('button[data-go="1"]');
 await page.fill("#form [data-k=funcao]", "Envasa e lacra potes de 500 g, até 20 por minuto.");
@@ -125,6 +132,16 @@ const [dl] = await Promise.all([page.waitForEvent("download"), page.click("#dl")
 const ZIP = path.join(OUT, dl.suggestedFilename());
 await dl.saveAs(ZIP);
 ok(fs.statSync(ZIP).size > 13_000_000, "zip baixado: " + path.basename(ZIP) + " " + fs.statSync(ZIP).size + " bytes");
+{
+  const code = fs.readFileSync(path.join(SITE, "index.html"), "utf8").split("/*ZIP-BEGIN*/")[1].split("/*ZIP-END*/")[0];
+  const { readZip } = new Function(code + ";return{readZip}")();
+  const ents = await readZip(new Blob([fs.readFileSync(ZIP)]));
+  const ped = JSON.parse(await ents.find(e => e.name.endsWith("pedido.json")).blob.text());
+  const res = await ents.find(e => e.name.endsWith("RESUMO.md")).blob.text();
+  ok(ped.pedido_escrito.startsWith("Preciso de 2 vídeos"), "pedido escrito vai no pedido.json");
+  ok(JSON.stringify(ped.entregas) === JSON.stringify([{ tipo: "Vídeo", quantidade: 2, itens: [{ numero: 1, sobre: "Operação do dia a dia" }, { numero: 2, sobre: "Limpeza do bico" }] }, { tipo: "Manual", quantidade: 1, itens: [{ numero: 1, sobre: "Operação" }] }]), "entregas com quantidade: " + JSON.stringify(ped.entregas));
+  ok(res.includes("**Vídeo × 2**") && res.includes("O que o cliente pediu"), "RESUMO.md traz pedido escrito e entregas");
+}
 fs.writeFileSync(path.join(OUT, "hashes.json"), JSON.stringify(Object.fromEntries(Object.entries(FX).map(([k, f]) => [k, sha(f)]))));
 
 console.log("9. reabrir o .zip em outro aparelho (contexto limpo, desktop)");
@@ -141,6 +158,28 @@ ok(cnt2.replace(/\s+/g, " ") === cnt.replace(/\s+/g, " "), "contagem igual depoi
 await p2.click('[data-view="tudo"]');
 await p2.waitForTimeout(1000);
 await shot(p2, "09-desktop-reaberto", false);
+
+console.log("10. projeto salvo no formato antigo (antes das quantidades) é migrado");
+const ctx3 = await browser.newContext(devices["Pixel 7"]);
+const p3 = await ctx3.newPage();
+p3.on("pageerror", e => erros.push("[p3] " + e.message));
+await p3.goto(URL0);
+await p3.waitForSelector("button[data-type=completa]");
+await p3.evaluate(() => new Promise((res, rej) => {
+  const r = indexedDB.open("celiware-estudio", 1);
+  r.onsuccess = () => {
+    const t = r.result.transaction("proj", "readwrite");
+    t.objectStore("proj").put({ app: "celiware-estudio", v: 1, id: "mlegado", nome: "Legada", criado: "2026-10-01T12:00:00Z", salvo: "2026-10-01T12:00:00Z", view: "guiada", cur: 0, narr: [], meta: {},
+      secs: [{ id: "s1", tipo: "pedido", titulo: "O pedido", vals: { entregas: ["Vídeo de operação", "Manual de manutenção"], cliente: "X" }, rows: [], mid: [] }] });
+    t.oncomplete = () => { localStorage.setItem("ce-cur", "mlegado"); res(); };
+    t.onerror = () => rej(t.error);
+  };
+}));
+await p3.reload();
+await p3.waitForSelector("#form [data-qf]");
+ok((await p3.inputValue('#form input[data-qi][data-opt="Vídeo"]')) === "Operação", "legado: vídeo de operação → Vídeo × 1 (Operação)");
+ok((await p3.inputValue('#form input[data-qi][data-opt="Manual"]')) === "Manutenção", "legado: manual de manutenção → Manual × 1 (Manutenção)");
+ok((await p3.inputValue("#form [data-k=cliente]")) === "X", "legado: outros campos intactos");
 
 ok(erros.length === 0, "sem erro no console" + (erros.length ? ": " + erros.join(" | ") : ""));
 await browser.close();

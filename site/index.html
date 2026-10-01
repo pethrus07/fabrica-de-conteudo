@@ -108,8 +108,24 @@ section.card{background:var(--card);border:1px solid var(--line);border-radius:v
 .mbar{display:flex;gap:var(--s2);flex-wrap:wrap}
 .mbtn{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line2);color:var(--ink);border-radius:999px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;position:relative}
 .mbtn:hover{border-color:var(--navy)}
-.mbtn.rec{border-color:var(--orange);color:var(--orange2)}
-.mbtn.rec:hover{background:var(--orange-fog)}
+.mbtn.rec{color:var(--mut)}
+.qty{display:flex;flex-direction:column;gap:var(--s2)}
+.qi{border:1px solid var(--line);border-radius:var(--r2);background:#fff;padding:8px 8px 8px 14px}
+.qi.on{border-color:var(--navy);background:var(--navy-fog);padding-bottom:12px}
+.qh{display:flex;align-items:center;gap:var(--s3)}
+.qh .qn{flex:1;font-weight:600;color:var(--ink);font-size:14.5px}
+.qh .qn small{display:block;font-weight:400;color:var(--mut);font-size:12.5px}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:999px;background:#fff;flex:none}
+.step button{width:42px;height:42px;border:none;background:none;font-size:20px;line-height:1;cursor:pointer;color:var(--navy);border-radius:999px}
+.step button:disabled{opacity:.3;cursor:default}
+.step b{min-width:26px;text-align:center;font-variant-numeric:tabular-nums;color:var(--ink);font-size:16px}
+.qitens{display:flex;flex-direction:column;gap:var(--s2);margin-top:var(--s3);padding-right:6px}
+.qitens label{display:flex;align-items:center;gap:var(--s2)}
+.qitens label span{flex:none;min-width:22px;font-weight:700;color:var(--navy2);font-size:13px}
+.qitens input{padding:10px 12px;font-size:14.5px}
+.narr textarea{margin-top:var(--s4);min-height:140px}
+.ou{font-size:13px;color:var(--mut);margin-top:var(--s4)}
+.ou+.media{margin-top:var(--s2);padding-top:0;border-top:none}
 .mbtn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
 .mbtn svg{width:17px;height:17px;flex:none}
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s3);margin-top:var(--s3)}
@@ -238,7 +254,7 @@ section.card{background:var(--card);border:1px solid var(--line);border-radius:v
     <button class="hbtn" id="bmaq" type="button">Máquinas</button>
   </div>
   <h1>Estúdio de Máquinas</h1>
-  <p class="sub">Junte aqui tudo o que você tem da máquina: texto, fotos, vídeos e áudios. No final, gere o pacote e mande para o Pedro. Os arquivos vão no pacote do jeito que foram feitos, sem perder qualidade.</p>
+  <p class="sub">Escreva o que você sabe da máquina e anexe fotos, vídeos e documentos. Se for mais rápido, grave um áudio. No final, gere o pacote e mande para o Pedro: os arquivos vão do jeito que foram feitos, sem perder qualidade.</p>
   <div class="namebox">
     <label for="nome">Nome da máquina</label>
     <input id="nome" placeholder="Ex.: Envasadora EV-20" autocomplete="off">
@@ -267,10 +283,17 @@ section.card{background:var(--card);border:1px solid var(--line);border-radius:v
 <script>
 "use strict";
 /* ================= blocos ================= */
-const ENTREGAS=["Vídeo de operação","Manual de operação","Manual de manutenção","Guia rápido (1–2 páginas)","Treinamento","Outro"];
+const ENTREGAS=[
+  {nome:"Vídeo",desc:"curto, para assistir no celular",ph:"Sobre o quê? Ex.: operação do dia a dia"},
+  {nome:"Manual",desc:"documento completo, em PDF",ph:"Qual? Ex.: operação, manutenção"},
+  {nome:"Guia rápido",desc:"1 ou 2 páginas para imprimir",ph:"Sobre o quê? Ex.: partida e parada"},
+  {nome:"Cartaz de parede",desc:"A3, fica do lado da máquina",ph:"Sobre o quê? Ex.: segurança da faca"},
+  {nome:"Treinamento",desc:"roteiro da visita / aula",ph:"Para quem? Ex.: 3 operadores do turno da noite"},
+  {nome:"Outro",desc:"",ph:"O que é?"}];
+const QMAX=20;
 const LIB={
   pedido:{nome:"O pedido",desc:"O que você quer que a gente produza e para quem.",campos:[
-    {k:"entregas",t:"multi",l:"O que produzir",op:ENTREGAS},
+    {k:"entregas",t:"qty",l:"O que produzir, e quantos",op:ENTREGAS},
     {k:"publico",t:"multi",l:"Para quem",op:["Operador","Manutenção","Cliente / gestor","Comercial"]},
     {k:"cliente",t:"text",l:"Cliente que vai receber",ph:"Ex.: Laticínio Serra Verde"},
     {k:"prazo",t:"text",l:"Para quando",ph:"Ex.: entrega da máquina em 15/10"},
@@ -339,7 +362,7 @@ const LIB={
 const ORDEM_LIB=["pedido","identificacao","ficha","componentes","seguranca","instalacao","operacao","ajustes","manutencao","problemas","documentos","regras","livre"];
 const TYPES={
   completa:{nome:"Máquina completa",desc:"Todos os blocos, para manual e vídeo.",blocos:["pedido","identificacao","ficha","componentes","seguranca","instalacao","operacao","ajustes","manutencao","problemas","documentos","regras"]},
-  video:{nome:"Só vídeo de operação",desc:"O essencial para um vídeo curto do operador.",blocos:["pedido","identificacao","seguranca","operacao","problemas","regras"],entregas:["Vídeo de operação"]},
+  video:{nome:"Só vídeo de operação",desc:"O essencial para um vídeo curto do operador.",blocos:["pedido","identificacao","seguranca","operacao","problemas","regras"],entregas:{"Vídeo":{n:1,itens:["Operação"]}}},
   branco:{nome:"Em branco",desc:"Só o pedido. Você adiciona o resto.",blocos:["pedido"]}
 };
 
@@ -369,22 +392,32 @@ const dbAll=st=>tx(st,"readonly",s=>s.getAll());
 /* ================= estado ================= */
 let P=null;           // projeto atual
 let saveT=null,saveFail=false;
-function novoProjeto(){return{app:"celiware-estudio",v:1,id:uid("m"),nome:"",criado:new Date().toISOString(),salvo:null,view:"guiada",cur:0,secs:[],narr:[],meta:{}}}
+function novoProjeto(){return{app:"celiware-estudio",v:1,id:uid("m"),nome:"",criado:new Date().toISOString(),salvo:null,view:"guiada",cur:0,secs:[],narr:[],narrTxt:"",meta:{}}}
+/* projetos salvos antes das quantidades: lista de marcações vira quantidade 1 */
+const LEGADO={"Vídeo de operação":["Vídeo","Operação"],"Manual de operação":["Manual","Operação"],"Manual de manutenção":["Manual","Manutenção"],"Guia rápido (1–2 páginas)":["Guia rápido",""],"Treinamento":["Treinamento",""],"Outro":["Outro",""]};
+function migrar(p){
+  if(!p)return p;if(typeof p.narrTxt!=="string")p.narrTxt="";
+  (p.secs||[]).forEach(s=>{const v=s.vals&&s.vals.entregas;if(s.tipo!=="pedido"||!Array.isArray(v))return;const o={};v.forEach(x=>{const[n,it]=LEGADO[x]||["Outro",x];o[n]=o[n]||{n:0,itens:[]};o[n].itens[o[n].n]=it;o[n].n++});s.vals.entregas=o});
+  return p}
+const qtyAtivos=v=>v&&typeof v==="object"&&!Array.isArray(v)?ENTREGAS.map(e=>e.nome).filter(n=>v[n]&&v[n].n>0).map(n=>({tipo:n,quantidade:v[n].n,itens:Array.from({length:v[n].n},(_,i)=>String((v[n].itens||[])[i]||"").trim())})):[];
 function newSec(tipo,titulo){const L=LIB[tipo];const s={id:uid("s"),tipo,titulo:titulo||L.nome,vals:{},rows:[],mid:[]};if(L.rep){(L.rep.inicio||[{}]).forEach(v=>s.rows.push({id:uid("r"),vals:{...v},mid:[]}))}return s}
-function loadPreset(id){const T=TYPES[id];P.secs=T.blocos.map(b=>newSec(b));if(T.entregas)P.secs[0].vals.entregas=[...T.entregas];P.cur=0;P.view=P.view||"guiada";save();render()}
+function loadPreset(id){const T=TYPES[id];P.secs=T.blocos.map(b=>newSec(b));if(T.entregas)P.secs[0].vals.entregas=JSON.parse(JSON.stringify(T.entregas));P.cur=0;P.view=P.view||"guiada";save();render()}
 function save(){P.salvo=new Date().toISOString();clearTimeout(saveT);saveT=setTimeout(async()=>{try{await dbPut("proj",JSON.parse(JSON.stringify(P)));saveFail=false;try{localStorage.setItem("ce-cur",P.id)}catch(e){}}catch(e){if(!saveFail)toast("Não consegui salvar neste aparelho: "+e.message,1);saveFail=true}},350)}
 async function flush(){if(saveT){clearTimeout(saveT);saveT=null;await dbPut("proj",JSON.parse(JSON.stringify(P)))}}
 const secById=id=>P.secs.find(s=>s.id===id);
 function holder(sid,rid){if(sid==="narr")return P;const s=secById(sid);if(!s)return null;return rid?s.rows.find(r=>r.id===rid):s}
 function midsOf(sid,rid){if(sid==="narr")return P.narr;const h=holder(sid,rid);return h?h.mid:null}
 function rowFilled(L,r){const ks=L.rep.chave?[L.rep.chave]:L.rep.campos.map(c=>c.k);return ks.some(k=>String(r.vals[k]||"").trim())||r.mid.length>0}
-function hasContent(s){const L=LIB[s.tipo];if(s.mid.length)return true;const fs=[...(L.campos||[]),...(L.depois||[])];if(fs.some(c=>{const v=s.vals[c.k];return Array.isArray(v)?v.length:String(v||"").trim()}))return true;return L.rep?s.rows.some(r=>rowFilled(L,r)):false}
+function hasContent(s){const L=LIB[s.tipo];if(s.mid.length)return true;const fs=[...(L.campos||[]),...(L.depois||[])];if(fs.some(c=>{const v=s.vals[c.k];return c.t==="qty"?qtyAtivos(v).length:Array.isArray(v)?v.length:String(v||"").trim()}))return true;return L.rep?s.rows.some(r=>rowFilled(L,r)):false}
 function allMids(){const o=[...P.narr];P.secs.forEach(s=>{o.push(...s.mid);s.rows.forEach(r=>o.push(...r.mid))});return o}
 function stats(){const m=allMids().map(id=>P.meta[id]).filter(Boolean);const c={foto:0,video:0,audio:0,arquivo:0};let b=0;m.forEach(x=>{c[x.kind]++;b+=x.size});return{...c,bytes:b,n:m.length}}
 
 /* ================= render ================= */
 function fieldHTML(c,vals,attrs){
   const v=vals[c.k];const id="f"+Math.random().toString(36).slice(2,9);
+  if(c.t==="qty"){const o=v&&typeof v==="object"&&!Array.isArray(v)?v:{};const sid=(attrs.match(/data-sid="([^"]+)"/)||[])[1];
+    return`<div class="field" data-qf="${sid}:${c.k}"><span class="flabel">${esc(c.l)}</span><div class="qty">${c.op.map(e=>{const q=o[e.nome]||{n:0,itens:[]};const a=`data-sid="${sid}" data-k="${c.k}" data-opt="${esc(e.nome)}"`;
+      return`<div class="qi ${q.n?"on":""}"><div class="qh"><span class="qn">${esc(e.nome)}${e.desc?`<small>${esc(e.desc)}</small>`:""}</span><span class="step"><button type="button" data-qd="-1" ${a} ${q.n?"":"disabled"} aria-label="Menos ${esc(e.nome)}">−</button><b>${q.n}</b><button type="button" data-qd="1" ${a} ${q.n<QMAX?"":"disabled"} aria-label="Mais ${esc(e.nome)}">+</button></span></div>${q.n?`<div class="qitens">${Array.from({length:q.n},(_,i)=>`<label><span>${i+1}.</span><input ${a} data-qi="${i}" placeholder="${esc(e.ph)}" value="${esc((q.itens||[])[i]||"")}" aria-label="${esc(e.nome)} ${i+1}"></label>`).join("")}</div>`:""}</div>`}).join("")}</div></div>`}
   if(c.t==="multi"){const arr=Array.isArray(v)?v:[];return`<div class="field"><span class="flabel">${esc(c.l)}</span><div class="multi">${c.op.map(o=>`<label><input type="checkbox" ${attrs} data-k="${c.k}" data-multi value="${esc(o)}" ${arr.includes(o)?"checked":""}>${esc(o)}</label>`).join("")}</div></div>`}
   const inp=c.t==="area"?`<textarea id="${id}" ${attrs} data-k="${c.k}" placeholder="${esc(c.ph||"")}">${esc(v||"")}</textarea>`:`<input id="${id}" ${attrs} data-k="${c.k}" placeholder="${esc(c.ph||"")}" value="${esc(v||"")}">`;
   return`<div class="field"><label for="${id}">${esc(c.l)}</label>${inp}</div>`
@@ -397,7 +430,7 @@ function mediaHTML(kind,sid,rid,mids){
   const ic=kind==="tudo"?ICON.clip:kind==="audio"?ICON.clip:ICON.cam;
   return`<div class="media"><div class="mbar">
     <label class="mbtn">${ic}${lbl}<input type="file" multiple ${accept?`accept="${accept}"`:""} data-add ${tgt}></label>
-    <button class="mbtn rec" type="button" data-rec ${tgt}>${ICON.mic}${rid?"Gravar":"Gravar explicação"}</button>
+    <button class="mbtn rec" type="button" data-rec ${tgt}>${ICON.mic}Gravar áudio</button>
   </div><div class="mgrid">${mids.map(miHTML).join("")}</div></div>`
 }
 function miHTML(id){
@@ -420,7 +453,7 @@ function cardHTML(s,i){
   return h+`</section>`
 }
 function renderNarr(){
-  $("#narr").innerHTML=`<h2>Conte o que você precisa</h2><p>Fale à vontade: que máquina é, o que você quer que a gente produza, o que não pode faltar. O áudio vai no pacote do jeito que foi gravado.</p>${mediaHTML("audio","narr","",P.narr)}`;
+  $("#narr").innerHTML=`<h2>O que você precisa</h2><p>Escreva à vontade: que máquina é, o que você quer que a gente produza, o que não pode faltar.</p><textarea data-narr aria-label="O que você precisa" placeholder="Ex.: Envasadora nova do Laticínio Serra Verde. Preciso de 2 vídeos curtos para o operador e do manual de operação até dia 15. O mais importante é a limpeza do bico.">${esc(P.narrTxt||"")}</textarea><p class="ou">Se for mais rápido, grave um áudio. Vai no pacote do jeito que foi gravado.</p>${mediaHTML("audio","narr","",P.narr)}`;
 }
 function render(){
   $("#nome").value=P.nome;renderNarr();
@@ -523,6 +556,8 @@ async function recoverRec(){
 $("#nome").addEventListener("input",e=>{P.nome=e.target.value;save()});
 document.addEventListener("input",e=>{
   const t=e.target;
+  if(t.hasAttribute("data-narr")){P.narrTxt=t.value;save();return}
+  if(t.dataset.qi!==undefined){const s=secById(t.dataset.sid);const o=s&&s.vals[t.dataset.k];const q=o&&o[t.dataset.opt];if(q){q.itens=q.itens||[];q.itens[+t.dataset.qi]=t.value;save()}return}
   if(t.dataset.title){const s=secById(t.dataset.title);if(s){s.titulo=t.value;save();renderProgress()}return}
   if(t.dataset.cap){const m=P.meta[t.dataset.cap];if(m){m.legenda=t.value;save()}return}
   if(t.dataset.k&&t.dataset.sid&&!t.hasAttribute("data-multi")){const h=holder(t.dataset.sid,t.dataset.rid);if(h){h.vals[t.dataset.k]=t.value;save();renderProgress()}}
@@ -536,6 +571,10 @@ document.addEventListener("change",e=>{
 document.addEventListener("click",async e=>{
   const b=e.target.closest("button,[data-type]");if(!b)return;const d=b.dataset;
   if(d.type){loadPreset(d.type);return}
+  if(d.qd){const s=secById(d.sid);let o=s.vals[d.k];if(!o||typeof o!=="object"||Array.isArray(o))o=s.vals[d.k]={};const q=o[d.opt]=o[d.opt]||{n:0,itens:[]};q.n=Math.max(0,Math.min(QMAX,q.n+(+d.qd)));save();
+    const el=document.querySelector(`[data-qf="${d.sid}:${d.k}"]`);const c=LIB[s.tipo].campos.find(x=>x.k===d.k);
+    if(el&&c){el.outerHTML=fieldHTML(c,s.vals,`data-sid="${d.sid}"`);if(+d.qd>0){const ins=document.querySelectorAll(`[data-qf="${d.sid}:${d.k}"] input[data-opt="${CSS.escape(d.opt)}"]`);const last=ins[ins.length-1];last&&last.focus({preventScroll:true})}}
+    renderProgress();return}
   if(d.view){P.view=d.view;save();render();return}
   if(d.go){P.cur+=+d.go;save();render();scrollTo({top:$("#main").offsetTop-8,behavior:"smooth"});return}
   if(d.chip!==undefined){const i=+d.chip;if(P.view==="guiada"){P.cur=i;save();render()}else{const el=$("#c-"+P.secs[i].id);el&&el.scrollIntoView({behavior:"smooth",block:"start"})}return}
@@ -603,7 +642,7 @@ async function openMaq(){
   if(!a)return;
   if(a==="new"){await flush().catch(()=>{});P=novoProjeto();save();render();scrollTo({top:0});setTimeout(()=>$("#nome").focus(),50);return}
   const[op,id]=a.split(":");
-  if(op==="open"){const p=await dbGet("proj",id);if(p){URLS.forEach(u=>URL.revokeObjectURL(u));URLS.clear();P=p;try{localStorage.setItem("ce-cur",p.id)}catch(e){}render();scrollTo({top:0})}}
+  if(op==="open"){const p=await dbGet("proj",id);if(p){URLS.forEach(u=>URL.revokeObjectURL(u));URLS.clear();P=migrar(p);try{localStorage.setItem("ce-cur",p.id)}catch(e){}render();scrollTo({top:0})}}
   if(op==="del"){const p=await dbGet("proj",id);if(!p)return;if(!await confirma("Excluir \""+(p.nome||"Sem nome")+"\"?","Apaga o texto e os "+Object.keys(p.meta||{}).length+" arquivo(s) deste aparelho. Se você já gerou o pacote, ele continua no .zip.","Excluir"))return openMaq();await removeMany(Object.keys(p.meta||{}));await dbDel("proj",id);if(id===P.id){P=novoProjeto();save();render()}openMaq()}
 }
 
@@ -683,7 +722,7 @@ async function readZip(file){
 let GERANDO=false;
 function extOf(m){const e=(m.name.match(/\.([a-z0-9]{1,5})$/i)||[])[1];if(e)return e.toLowerCase();const t=m.type||"";return/jpeg/.test(t)?"jpg":/png/.test(t)?"png":/quicktime/.test(t)?"mov":/mp4/.test(t)?(m.kind==="audio"?"m4a":"mp4"):/webm/.test(t)?"webm":/ogg/.test(t)?"ogg":"bin"}
 function nomeArq(m,i){const base=m.gravado||m.recuperado?"":"_"+slug(m.name.replace(/\.[^.]+$/,"")).slice(0,40);const pre={foto:"foto",video:"video",audio:"audio",arquivo:"arquivo"}[m.kind];return`${pre}-${String(i).padStart(2,"0")}${base}.${extOf(m)}`}
-function txt(v){return Array.isArray(v)?v.join(", "):String(v||"").trim()}
+function txt(v){if(v&&typeof v==="object"&&!Array.isArray(v))return qtyAtivos(v).map(e=>`${e.tipo} × ${e.quantidade}`+(e.itens.some(Boolean)?` (${e.itens.map((x,i)=>`${i+1}. ${x||"sem descrição"}`).join("; ")})`:"")).join(" · ");return Array.isArray(v)?v.join(", "):String(v||"").trim()}
 function montarPacote(){
   const raiz=`${slug(P.nome)}_${new Date().toISOString().slice(0,10)}/`;
   const files=[];const paths={};
@@ -698,13 +737,16 @@ function montarPacote(){
     o.midia=addSet(s.mid,dir);return o});
   const vazios=P.secs.filter(s=>!hasContent(s)).map(s=>s.titulo);
   const st=stats();
-  const pedido={app:"celiware-estudio",versao:1,maquina:P.nome,gerado_em:new Date().toISOString(),resumo:{blocos:usados.length,blocos_vazios:vazios,fotos:st.foto,videos:st.video,audios:st.audio,arquivos:st.arquivo,bytes:st.bytes},narracao:narr,blocos,_estado:P,_arquivos:paths};
+  const pe=P.secs.filter(s=>s.tipo==="pedido").flatMap(s=>qtyAtivos(s.vals.entregas));
+  const pedido={app:"celiware-estudio",versao:1,maquina:P.nome,gerado_em:new Date().toISOString(),pedido_escrito:String(P.narrTxt||"").trim(),entregas:pe.map(e=>({tipo:e.tipo,quantidade:e.quantidade,itens:e.itens.map((x,i)=>({numero:i+1,sobre:x}))})),resumo:{blocos:usados.length,blocos_vazios:vazios,fotos:st.foto,videos:st.video,audios:st.audio,arquivos:st.arquivo,bytes:st.bytes},narracao:narr,blocos,_estado:P,_arquivos:paths};
   return{raiz,files,pedido,vazios};
 }
 function resumoMD(pk){
   const p=pk.pedido;const L=[];
   L.push(`# ${p.maquina}`,"",`Gerado em ${new Date(p.gerado_em).toLocaleString("pt-BR")} pelo Estúdio de Máquinas · Celiware.`,"");
   L.push(`**${p.resumo.blocos}** blocos · **${p.resumo.fotos}** fotos · **${p.resumo.videos}** vídeos · **${p.resumo.audios}** áudios · **${p.resumo.arquivos}** arquivos · ${fmtB(p.resumo.bytes)}`,"");
+  if(p.pedido_escrito)L.push("## O que o cliente pediu","",p.pedido_escrito,"");
+  if(p.entregas.length){L.push("## Entregas","");p.entregas.forEach(e=>{L.push(`- **${e.tipo} × ${e.quantidade}**`);e.itens.forEach(x=>L.push(`  ${x.numero}. ${x.sobre||"(sem descrição)"}`))});L.push("")}
   if(p.narracao.length){L.push("## Narração geral","");p.narracao.forEach(m=>L.push(`- \`${m.arquivo}\`${m.duracao_s?` (${fmtT(m.duracao_s)})`:""}`));L.push("")}
   const mlist=ms=>ms.forEach(m=>L.push(`- ${m.tipo}: \`${m.arquivo}\`${m.legenda?` — ${m.legenda}`:""}${m.duracao_s?` (${fmtT(m.duracao_s)})`:""}`));
   p.blocos.forEach(b=>{
@@ -741,7 +783,7 @@ async function gerar(){
   await flush().catch(()=>{});
   if(PENDING.size){toast("Espere terminar de guardar os arquivos.",1);return}
   const pk=montarPacote();
-  if(!pk.pedido.blocos.length&&!pk.pedido.narracao.length){toast("Ainda não há nada preenchido.",1);return}
+  if(!pk.pedido.blocos.length&&!pk.pedido.narracao.length&&!pk.pedido.pedido_escrito){toast("Ainda não há nada preenchido.",1);return}
   if(pk.vazios.length&&!await confirma("Gerar o pacote?",`${pk.vazios.length} bloco(s) em branco ficam de fora: ${esc(pk.vazios.join(", "))}.`,"Gerar mesmo assim"))return;
   GERANDO=true;
   modal(`<h3>Montando o pacote</h3><p class="bp">Conferindo cada arquivo. Não feche esta tela.</p><div class="prog"><i id="pgb"></i></div><div class="progtx" id="pgt"></div>`);
@@ -787,7 +829,7 @@ async function importZip(file){
     np.narr=np.narr.filter(id=>ped._arquivos[id]&&!falt.includes(id));np.secs.forEach(s=>{tira(s);s.rows.forEach(tira)});
     Object.keys(np.meta).forEach(id=>{if(!ped._arquivos[id]||falt.includes(id))delete np.meta[id]});
     URLS.forEach(u=>URL.revokeObjectURL(u));URLS.clear();
-    P=np;await dbPut("proj",JSON.parse(JSON.stringify(P)));try{localStorage.setItem("ce-cur",P.id)}catch(e){}
+    P=migrar(np);await dbPut("proj",JSON.parse(JSON.stringify(P)));try{localStorage.setItem("ce-cur",P.id)}catch(e){}
     closeModal(null);render();scrollTo({top:0});toast(`"${P.nome}" aberta com ${k} arquivo(s).`);
   }catch(e){closeModal(null);toast("Falhou ao abrir: "+e.message,1)}
 }
@@ -798,7 +840,7 @@ async function importZip(file){
   let id=null;try{id=localStorage.getItem("ce-cur")}catch(e){}
   if(id)P=await dbGet("proj",id).catch(()=>null);
   if(!P){const all=await dbAll("proj");P=all.sort((a,b)=>(b.salvo||"").localeCompare(a.salvo||""))[0]||novoProjeto()}
-  render();recoverRec();
+  migrar(P);render();recoverRec();
 })();
 </script>
 </body>
