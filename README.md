@@ -19,6 +19,12 @@ Formulário onde o cliente junta o que tem de uma máquina (texto, fotos, vídeo
   NN-<bloco>/        um por bloco, na ordem; itens em subpasta
 ```
 
+## Próximas melhorias
+
+- **Colar imagem com Ctrl+V** (pedido do cliente na reunião de 05/10/2026): a captura do Windows entra
+  no bloco como arquivo original, sem recompressão, e vai para o `.zip` como as outras mídias.
+  Prometido a ele como melhoria, sem data.
+
 ## Teste
 
 ```
