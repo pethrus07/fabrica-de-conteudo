@@ -1,0 +1,9 @@
+node_modules/
+__pycache__/
+**/trabalho/
+*.mp4
+*.zip
+*.wav
+*.webm
+fontes/
+.env*

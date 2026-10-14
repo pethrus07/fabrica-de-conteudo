@@ -1,0 +1,12 @@
+extends: existence
+message: "Evite '%s': deixa a instrução vaga para quem nunca usou o Padrão TEX."
+level: warning
+ignorecase: true
+tokens:
+  - basicamente
+  - simplesmente
+  - obviamente
+  - etc\.
+  - e afins
+  - deverá ser
+  - deve-se

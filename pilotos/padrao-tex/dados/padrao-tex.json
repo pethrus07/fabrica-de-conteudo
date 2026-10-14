@@ -1,0 +1,1767 @@
+{
+  "_leia": "FONTE ÚNICA DA VERDADE do material do Padrão TEX. Manual, referência rápida e vídeos são gerados daqui; nenhum texto técnico é digitado à mão nas peças. Cada item aponta de onde veio: 'audio' = arquivo/instante no pacote do cliente; 'tela' = captura de tela; 'texto' = campo escrito no formulário; 'geral' = conhecimento técnico padrão (definição de termo), não afirmado pelo cliente. A auditoria barra item sem origem.",
+  "produto": {
+    "nome": "Padrão TEX",
+    "titulo": "Padrão TEX",
+    "subtitulo": "Comunicação entre CLP Siemens e equipamentos Tex G4 de teste de estanqueidade, por Modbus TCP ou Profinet",
+    "fabricante": "Tex Equipamentos Eletrônicos",
+    "plataforma": "TIA Portal (Siemens)",
+    "cpu_exemplo": "CPU 1211C DC/DC/DC",
+    "protocolos": [
+      "Modbus TCP",
+      "Profinet"
+    ],
+    "bloco_principal": "G4_ModbusTCP",
+    "versao_documento": "3.0",
+    "data": "2026-10-02",
+    "origem": {
+      "audio": "00-narracao/audio-01.webm",
+      "t": "00:01",
+      "tela": "02-introducao/foto-01_introducao.png"
+    },
+    "data_br": "02/10/2026",
+    "fabricante_origem": {
+      "site": "https://tex.com.br/empresa/",
+      "coleta": "marca/tex/site/empresa.txt"
+    }
+  },
+  "publico": {
+    "quem": "Programadores de integradores de máquina que vão ligar um equipamento Tex G4 a um CLP Siemens.",
+    "sabe": "Usa o TIA Portal, mas nunca trabalhou com o Padrão TEX.",
+    "consegue_no_fim": "Levar o Padrão TEX para o seu projeto, ligar um equipamento Tex G4 ao CLP por Modbus TCP ou Profinet, comandar o teste pelo CLP ou pela IHM e ler o resultado.",
+    "origem": {
+      "texto": "pedido.cliente + pedido.obs"
+    }
+  },
+  "estrutura": [
+    {
+      "item": "Main [OB1]",
+      "papel": "Programa principal. No Padrão TEX ele só chama a FB_Tex.",
+      "origem": {
+        "audio": "05-bloco-main/audio-01.webm",
+        "t": "00:00",
+        "tela": "05-bloco-main/foto-01_main.png"
+      }
+    },
+    {
+      "item": "TexG4",
+      "papel": "Pasta com tudo o que comanda e lê os equipamentos Tex.",
+      "origem": {
+        "audio": "03-elementos-do-padrao-tex/audio-01.webm",
+        "t": "00:01"
+      }
+    },
+    {
+      "item": "1 - Controle Equipamentos",
+      "papel": "FB_Tex [FB10] chama o bloco de cada equipamento; Tex [DB1] guarda os dados de todos eles. Uma FB_Tex pode ter um ou mais equipamentos.",
+      "origem": {
+        "audio": "03-elementos-do-padrao-tex/audio-01.webm",
+        "t": "00:15"
+      }
+    },
+    {
+      "item": "2 - Banco de dados peças",
+      "papel": "DB_Parts [DB20]: guarda os dados das peças que você traz do equipamento (upload) ou envia para ele (download).",
+      "origem": {
+        "audio": "03-elementos-do-padrao-tex/audio-01.webm",
+        "t": "00:39"
+      }
+    },
+    {
+      "item": "9 - Library",
+      "papel": "Os blocos FB e FC que fazem a comunicação. É uma biblioteca pronta: não altere.",
+      "origem": {
+        "audio": "03-elementos-do-padrao-tex/audio-01.webm",
+        "t": "01:00"
+      }
+    }
+  ],
+  "biblioteca": [
+    {
+      "nome": "MB_BASIC_TO_TEX_IN",
+      "tipo": "FC",
+      "numero": 1050
+    },
+    {
+      "nome": "MB_PARAM_TO_TEX_IN",
+      "tipo": "FC",
+      "numero": 1051
+    },
+    {
+      "nome": "TEX_OUT_TO_MB_BASIC",
+      "tipo": "FC",
+      "numero": 1052
+    },
+    {
+      "nome": "TEX_OUT_TO_MB_PARAM",
+      "tipo": "FC",
+      "numero": 1053
+    },
+    {
+      "nome": "G4_ModbusTCP",
+      "tipo": "FB",
+      "numero": 1030
+    },
+    {
+      "nome": "G4_ModbusTCP_Basic",
+      "tipo": "FB",
+      "numero": 1031
+    },
+    {
+      "nome": "G4_Profinet",
+      "tipo": "FB",
+      "numero": 1033
+    },
+    {
+      "nome": "G4_Profinet_Basic",
+      "tipo": "FB",
+      "numero": 1034
+    }
+  ],
+  "biblioteca_origem": {
+    "tela": "04-bibliotecas/foto-01_captura-de-tela-2026-10-02-162316.png"
+  },
+  "editavel": {
+    "texto": "Você só mexe em 1 - Controle Equipamentos e em 2 - Banco de dados peças.",
+    "origem": {
+      "audio": "03-elementos-do-padrao-tex/audio-01.webm",
+      "t": "01:23"
+    }
+  },
+  "entradas": [
+    {
+      "nome": "Modelo",
+      "grupo": "comunicacao",
+      "tipo": "texto",
+      "exemplo": "'DZ'",
+      "descricao": "As duas letras do modelo do G4 que está sendo usado.",
+      "origem": {
+        "audio": "09-entrada-de-dados-de-comunicacao/audio-01.webm",
+        "t": "00:02",
+        "tela": "09-entrada-de-dados-de-comunicacao/foto-01_preenchendo-os-primeiros-dados.png"
+      }
+    },
+    {
+      "nome": "Name",
+      "grupo": "comunicacao",
+      "tipo": "texto",
+      "exemplo": "'Tex A'",
+      "descricao": "Um nome para identificar o equipamento. É o nome que aparece na IHM.",
+      "origem": {
+        "audio": "09-entrada-de-dados-de-comunicacao/audio-01.webm",
+        "t": "00:12"
+      }
+    },
+    {
+      "nome": "IP",
+      "grupo": "comunicacao",
+      "tipo": "texto",
+      "exemplo": "'192.168.0.205'",
+      "descricao": "O endereço IP do equipamento Tex.",
+      "origem": {
+        "audio": "09-entrada-de-dados-de-comunicacao/audio-01.webm",
+        "t": "00:26"
+      }
+    },
+    {
+      "nome": "Port",
+      "grupo": "comunicacao",
+      "tipo": "número",
+      "exemplo": "502",
+      "descricao": "A porta de comunicação. A porta padrão do Modbus é 502.",
+      "origem": {
+        "audio": "09-entrada-de-dados-de-comunicacao/audio-01.webm",
+        "t": "00:30"
+      }
+    },
+    {
+      "nome": "Connect",
+      "grupo": "comunicacao",
+      "tipo": "sim/não",
+      "exemplo": "true",
+      "descricao": "Liga a conexão com o equipamento. Use true, ou uma variável do seu programa.",
+      "origem": {
+        "audio": "09-entrada-de-dados-de-comunicacao/audio-01.webm",
+        "t": "00:44"
+      }
+    },
+    {
+      "nome": "Automatic",
+      "grupo": "comando",
+      "tipo": "sim/não",
+      "exemplo": "\"Debug\".Tex1.Automatic",
+      "descricao": "A variável que indica que a máquina está em automático. Em automático, o CLP comanda o Tex. Em manual, quem comanda é a IHM.",
+      "origem": {
+        "audio": "10-entradas-de-comando/audio-01.webm",
+        "t": "00:11"
+      }
+    },
+    {
+      "nome": "Start",
+      "grupo": "comando",
+      "tipo": "sim/não",
+      "exemplo": "\"Debug\".Tex1.Start",
+      "descricao": "Inicia o teste de estanqueidade.",
+      "origem": {
+        "audio": "10-entradas-de-comando/audio-01.webm",
+        "t": "00:57"
+      }
+    },
+    {
+      "nome": "Stop",
+      "grupo": "comando",
+      "tipo": "sim/não",
+      "exemplo": "\"Debug\".Tex1.Stop",
+      "descricao": "Para o teste em andamento.",
+      "origem": {
+        "audio": "10-entradas-de-comando/audio-01.webm",
+        "t": "01:12"
+      }
+    },
+    {
+      "nome": "BlockExhaust",
+      "grupo": "comando",
+      "tipo": "sim/não",
+      "exemplo": "\"Debug\".Tex1.BlockExhaust",
+      "descricao": "Ativa ou não a exaustão (escape) depois do teste, quando a situação pedir.",
+      "origem": {
+        "audio": "10-entradas-de-comando/audio-01.webm",
+        "t": "01:19"
+      }
+    },
+    {
+      "nome": "BCD",
+      "grupo": "comando",
+      "tipo": "número",
+      "exemplo": "\"Debug\".Tex1.NewBCD",
+      "descricao": "O número da peça configurada no Tex. Para testar a peça 3, coloque 3.",
+      "origem": {
+        "audio": "10-entradas-de-comando/audio-01.webm",
+        "t": "01:32"
+      }
+    },
+    {
+      "nome": "Reset",
+      "grupo": "comando",
+      "tipo": "sim/não",
+      "exemplo": "\"Debug\".Tex1.Reset",
+      "descricao": "Reinicia (reset) o equipamento Tex, quando necessário.",
+      "origem": {
+        "audio": "10-entradas-de-comando/audio-01.webm",
+        "t": "01:58"
+      }
+    },
+    {
+      "nome": "UploadAllFromTex",
+      "grupo": "pecas",
+      "tipo": "sim/não",
+      "exemplo": "\"Debug\".Tex1.UploadAll",
+      "descricao": "Traz do Tex para o banco de dados todos os dados da peça escolhida em BCD: todas as câmaras ativas e todos os testes.",
+      "origem": {
+        "audio": "11-entradas-para-aecssar-os-dados-das-pecas/audio-01.webm",
+        "t": "00:02"
+      }
+    },
+    {
+      "nome": "DownloadAllToTex",
+      "grupo": "pecas",
+      "tipo": "sim/não",
+      "exemplo": "\"Debug\".Tex1.DownloadAll",
+      "descricao": "O inverso: envia todos os dados da peça do banco de dados para o Tex, na peça escolhida em BCD.",
+      "origem": {
+        "audio": "11-entradas-para-aecssar-os-dados-das-pecas/audio-01.webm",
+        "t": "00:28"
+      }
+    },
+    {
+      "nome": "UploadOne",
+      "grupo": "pecas",
+      "tipo": "sim/não",
+      "exemplo": "\"Debug\".Tex1.UploadOne",
+      "descricao": "Traz do Tex só um teste: o escolhido em Chamber e Test.",
+      "origem": {
+        "audio": "11-entradas-para-aecssar-os-dados-das-pecas/audio-01.webm",
+        "t": "00:59"
+      }
+    },
+    {
+      "nome": "DownloadOne",
+      "grupo": "pecas",
+      "tipo": "sim/não",
+      "exemplo": "\"Debug\".Tex1.DownloadOne",
+      "descricao": "O inverso: envia para o Tex só o teste escolhido em Chamber e Test.",
+      "origem": {
+        "audio": "11-entradas-para-aecssar-os-dados-das-pecas/audio-01.webm",
+        "t": "01:39"
+      }
+    },
+    {
+      "nome": "Chamber",
+      "grupo": "pecas",
+      "tipo": "número",
+      "exemplo": "\"Debug\".Tex1.Chamber",
+      "descricao": "A câmara do teste que você quer trazer ou enviar.",
+      "origem": {
+        "audio": "11-entradas-para-aecssar-os-dados-das-pecas/audio-01.webm",
+        "t": "01:17"
+      }
+    },
+    {
+      "nome": "Test",
+      "grupo": "pecas",
+      "tipo": "número",
+      "exemplo": "\"Debug\".Tex1.Test",
+      "descricao": "O número do teste dentro da câmara escolhida.",
+      "origem": {
+        "audio": "11-entradas-para-aecssar-os-dados-das-pecas/audio-01.webm",
+        "t": "01:23"
+      }
+    },
+    {
+      "nome": "Part",
+      "grupo": "ligacao",
+      "tipo": "estrutura",
+      "exemplo": "\"DB_Parts\".Peça[1]",
+      "descricao": "A posição do banco de dados de peças onde os dados ficam. Use uma posição fixa ou troque dinamicamente: peça 1 na posição 1, peça 2 na posição 2.",
+      "origem": {
+        "audio": "09-entrada-de-dados-de-comunicacao/audio-02.webm",
+        "t": "00:01"
+      }
+    },
+    {
+      "nome": "HMI_Link",
+      "grupo": "ligacao",
+      "tipo": "estrutura",
+      "exemplo": "#HMI_Link",
+      "descricao": "Ligue a estrutura HMI_Link do próprio bloco. Assim a IHM conversa com este e com os outros blocos Tex sem chamadas novas para cada um.",
+      "origem": {
+        "audio": "09-entrada-de-dados-de-comunicacao/audio-02.webm",
+        "t": "00:44"
+      }
+    }
+  ],
+  "saidas": [
+    {
+      "nome": "Connected",
+      "grupo": "estado",
+      "tipo": "sim/não",
+      "descricao": "O equipamento Tex está conectado.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "00:01"
+      }
+    },
+    {
+      "nome": "ReadyToTest",
+      "grupo": "estado",
+      "tipo": "sim/não",
+      "descricao": "O equipamento está pronto para iniciar um teste.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "00:08"
+      }
+    },
+    {
+      "nome": "Busy",
+      "grupo": "estado",
+      "tipo": "sim/não",
+      "descricao": "O equipamento está ocupado: testando, com alguém mexendo na tela dele, ou comandado pelo próprio equipamento. Não aceita um teste novo agora.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "00:14"
+      }
+    },
+    {
+      "nome": "ActualBCD",
+      "grupo": "estado",
+      "tipo": "número",
+      "descricao": "O número da peça chamada agora no equipamento.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "00:32"
+      }
+    },
+    {
+      "nome": "ResultOK",
+      "grupo": "resultado",
+      "tipo": "sim/não",
+      "descricao": "O último teste deu resultado OK.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "00:40"
+      }
+    },
+    {
+      "nome": "ResultNOK",
+      "grupo": "resultado",
+      "tipo": "sim/não",
+      "descricao": "O último teste não deu resultado OK.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "00:50"
+      }
+    },
+    {
+      "nome": "Rework",
+      "grupo": "resultado",
+      "tipo": "sim/não",
+      "descricao": "Fica true quando a peça está marcada como retrabalho.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "00:56",
+        "tela": "20-bloco-profinet/foto-01_captura-de-tela-2026-10-02-152306.png"
+      },
+      "pendente": "rotulo-retrabalho",
+      "nome_antigo": "Retrabalho"
+    },
+    {
+      "nome": "Escape",
+      "grupo": "resultado",
+      "tipo": "sim/não",
+      "descricao": "Indica se a peça está ativada para o escape depois do teste.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "01:03"
+      }
+    },
+    {
+      "nome": "ChamberNum",
+      "grupo": "medicao",
+      "tipo": "número",
+      "descricao": "A câmara que está testando agora.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "01:09"
+      }
+    },
+    {
+      "nome": "TestNum",
+      "grupo": "medicao",
+      "tipo": "número",
+      "descricao": "O teste que está sendo feito agora.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "01:23"
+      }
+    },
+    {
+      "nome": "State",
+      "grupo": "medicao",
+      "tipo": "número",
+      "descricao": "A etapa em que o Tex está: esvaziando, enchendo, equalizando ou medindo.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "01:33"
+      },
+      "pendente": "codigos-state-status"
+    },
+    {
+      "nome": "Status",
+      "grupo": "medicao",
+      "tipo": "número",
+      "descricao": "O status do equipamento, conforme o manual do equipamento Tex.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "01:52"
+      },
+      "pendente": "codigos-state-status"
+    },
+    {
+      "nome": "TimeElapsed",
+      "grupo": "medicao",
+      "tipo": "número",
+      "descricao": "O tempo que passou desde o início do teste.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "02:04"
+      }
+    },
+    {
+      "nome": "Pressure",
+      "grupo": "medicao",
+      "tipo": "decimal",
+      "descricao": "A pressão atual no equipamento.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "02:13"
+      }
+    },
+    {
+      "nome": "Leak",
+      "grupo": "medicao",
+      "tipo": "decimal",
+      "descricao": "O vazamento calculado pelo Tex neste momento.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "02:22"
+      }
+    },
+    {
+      "nome": "DiffPressure",
+      "grupo": "medicao",
+      "tipo": "decimal",
+      "descricao": "A diferença de pressão, nos equipamentos que fazem esse cálculo.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "02:32"
+      }
+    },
+    {
+      "nome": "ReturnPressure",
+      "grupo": "medicao",
+      "tipo": "decimal",
+      "descricao": "O retorno da pressão, só nos equipamentos que têm esse dado.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "02:38"
+      }
+    },
+    {
+      "nome": "AutoCheck",
+      "grupo": "diagnostico",
+      "tipo": "número",
+      "descricao": "O resultado da autoverificação do equipamento.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "02:46"
+      }
+    },
+    {
+      "nome": "Diagnostic",
+      "grupo": "diagnostico",
+      "tipo": "número",
+      "descricao": "O diagnóstico de cada item testado no equipamento, conforme o manual do equipamento Tex.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "03:03"
+      }
+    },
+    {
+      "nome": "Error",
+      "grupo": "diagnostico",
+      "tipo": "número",
+      "descricao": "Erro do próprio bloco de comunicação.",
+      "origem": {
+        "audio": "12-saidas/audio-01.webm",
+        "t": "03:17"
+      }
+    }
+  ],
+  "grupos": {
+    "comunicacao": "Comunicação",
+    "comando": "Comando",
+    "pecas": "Dados das peças",
+    "ligacao": "Ligações",
+    "estado": "Estado do equipamento",
+    "resultado": "Resultado do teste",
+    "medicao": "Medição em andamento",
+    "diagnostico": "Diagnóstico"
+  },
+  "procedimentos": [
+    {
+      "id": "chamar",
+      "titulo": "Chamar o Padrão TEX no seu programa",
+      "condicao": "Você já importou o Padrão TEX para o projeto do seu CLP.",
+      "passos": [
+        "Abra o bloco Main [OB1] do seu programa.",
+        "Arraste a FB_Tex [FB10] para uma network do Main.",
+        "Use a DB Tex [DB1] como bloco de dados da chamada."
+      ],
+      "resultado": "A FB_Tex roda a cada ciclo e chama todos os blocos dos equipamentos.",
+      "origem": {
+        "audio": "05-bloco-main/audio-01.webm",
+        "t": "00:00",
+        "tela": "05-bloco-main/foto-01_main.png"
+      }
+    },
+    {
+      "id": "montar",
+      "titulo": "Colocar um equipamento na FB_Tex",
+      "condicao": "A FB_Tex está aberta. No padrão ela já vem com um equipamento de teste montado.",
+      "passos": [
+        "Na pasta 9 - Library, escolha o bloco do equipamento. Para Modbus TCP com todos os recursos, use o G4_ModbusTCP [FB1030].",
+        "Arraste o bloco para a primeira network vazia da FB_Tex.",
+        "Preencha as entradas do bloco, na ordem deste manual."
+      ],
+      "resultado": "O bloco aparece na network, pronto para ser preenchido.",
+      "origem": {
+        "audio": "08-montando-a-fb-tex-com-os-equipamentos/audio-01.webm",
+        "t": "00:01",
+        "tela": "08-montando-a-fb-tex-com-os-equipamentos/foto-02_adicionandomodbustcp.png"
+      }
+    },
+    {
+      "id": "testar",
+      "titulo": "Iniciar um teste de estanqueidade pelo CLP",
+      "condicao": "O bloco está conectado: a saída Connected está true.",
+      "passos": [
+        "Coloque a entrada Automatic em true. O bloco só aceita comando do CLP em automático.",
+        "Coloque em BCD o número da peça que vai ser testada.",
+        "Confira se a saída ReadyToTest está true.",
+        "Ative a entrada Start."
+      ],
+      "resultado": "O Tex inicia o teste da peça escolhida e a saída Busy fica true enquanto ele trabalha. No fim, ResultOK ou ResultNOK indica o resultado.",
+      "origem": {
+        "texto": "13-comando-de-como-iniciar-os-testes (campo Conteúdo)",
+        "audio": "10-entradas-de-comando/audio-01.webm",
+        "t": "01:39",
+        "tela": "13-comando-de-como-iniciar-os-testes/foto-01_captura-de-tela-2026-10-02-072653.png"
+      },
+      "pendente": "start-pulso",
+      "fluxo": [
+        {
+          "sinal": "Connected = true",
+          "texto": "O bloco está conectado ao Tex."
+        },
+        {
+          "sinal": "Automatic = true",
+          "texto": "O CLP passa a comandar."
+        },
+        {
+          "sinal": "BCD = n.º da peça",
+          "texto": "Escolhe a peça a testar."
+        },
+        {
+          "sinal": "ReadyToTest = true",
+          "texto": "O Tex está pronto."
+        },
+        {
+          "sinal": "Start",
+          "texto": "Inicia o teste."
+        },
+        {
+          "sinal": "Busy = true",
+          "texto": "O Tex está testando."
+        }
+      ],
+      "fluxo_fim": {
+        "sinal": "ResultOK ou ResultNOK",
+        "texto": "Indica o resultado do teste."
+      }
+    },
+    {
+      "id": "editar-peca",
+      "titulo": "Alterar um parâmetro de teste de uma peça",
+      "condicao": "A entrada Part aponta para uma posição do DB_Parts.",
+      "passos": [
+        "Coloque em BCD o número da peça.",
+        "Envie um pulso em UploadAllFromTex. Os dados da peça vêm para a posição do DB_Parts ligada em Part.",
+        "Altere o parâmetro no DB_Parts.",
+        "Envie um pulso em DownloadAllToTex para mandar os dados de volta ao Tex."
+      ],
+      "resultado": "O Tex passa a testar a peça com o parâmetro novo.",
+      "variacao": "Para mexer em um teste só, escolha a câmara em Chamber e o teste em Test, e use UploadOne e DownloadOne.",
+      "origem": {
+        "audio": "14-para-fazer-upload-dos-valores-pelo-clp/audio-01.webm",
+        "t": "00:01"
+      }
+    },
+    {
+      "id": "profinet",
+      "titulo": "Montar a comunicação por Profinet",
+      "condicao": "O GSD do Tex está instalado no TIA Portal.",
+      "passos": [
+        "Em Devices & networks, coloque o TEX-G4 na rede PN/IE_1, a mesma do CLP.",
+        "No TEX-G4, configure o IP do gateway e o módulo de entradas e saídas.",
+        "Nas PLC tags, crie IN_TexB e OUT_TexB do tipo UDT_TexRegisters, a partir do endereço 308.",
+        "Na FB_Tex, arraste o G4_Profinet para uma network vazia.",
+        "Ligue IN_TexB em PN_IN e OUT_TexB em PN_OUT. As outras entradas são iguais às do Modbus TCP."
+      ],
+      "resultado": "O bloco conversa com o Tex pela rede Profinet, sem IP, Port e Connect.",
+      "origem": {
+        "texto": "17-rede-para-comunicar-profinet (campo Conteúdo)",
+        "audio": "18-configurando-o-gsd/audio-01.webm",
+        "t": "00:00"
+      }
+    },
+    {
+      "id": "copiar",
+      "titulo": "Levar o Padrão TEX para o seu projeto",
+      "condicao": "Os dois projetos estão abertos no TIA Portal: o Padrão TEX e o projeto da sua máquina.",
+      "passos": [
+        "Copie a pasta TexG4 de Program blocks para o mesmo lugar no seu projeto.",
+        "Copie a pasta TexG4 de PLC tags para o mesmo lugar no seu projeto.",
+        "Copie a pasta TexG4 de PLC data types para o mesmo lugar no seu projeto.",
+        "Copie a pasta TexG4 de Screens (na IHM) para o mesmo lugar no seu projeto.",
+        "Copie a pasta TexG4 de HMI tags (na IHM) para o mesmo lugar no seu projeto."
+      ],
+      "resultado": "Os blocos, as tags, os tipos de dado e as telas do Padrão TEX estão no seu projeto. Falta chamar a FB_Tex no Main.",
+      "origem": {
+        "texto": "30-copiar-do-padrao-tex-para-o-projeto-oficial (campo Conteúdo)",
+        "audio": "30-copiar-do-padrao-tex-para-o-projeto-oficial/audio-01.webm",
+        "t": "00:00"
+      }
+    },
+    {
+      "id": "ihm",
+      "titulo": "Comandar um teste pela IHM",
+      "condicao": "O bloco do G4 no CLP está em modo manual (Automatic em false).",
+      "passos": [
+        "Na tela OPERAÇÃO, escolha o equipamento na lista do canto (por exemplo, TEX 1).",
+        "Use as setas para escolher o BCD da peça.",
+        "Toque em START para iniciar o teste. STOP para o teste.",
+        "Acompanhe a pressão atual e o vazamento na própria tela."
+      ],
+      "resultado": "O teste roda com os parâmetros da peça escolhida, comandado pela IHM.",
+      "origem": {
+        "texto": "25-ihm-tela-do-equipamento (campo Conteúdo)",
+        "audio": "25-ihm-tela-do-equipamento/audio-01.webm",
+        "t": "00:00",
+        "tela": "25-ihm-tela-do-equipamento/foto-01_captura-de-tela-2026-10-02-153634.png"
+      }
+    }
+  ],
+  "avisos": [
+    {
+      "nivel": "AVISO",
+      "texto": "Não altere os blocos da pasta 9 - Library. Mantenha-os como vieram no Padrão TEX mais atual que você baixou.",
+      "origem": {
+        "audio": "04-bibliotecas/audio-01.webm",
+        "t": "00:00"
+      },
+      "consequencia_origem": "geral"
+    },
+    {
+      "nivel": "AVISO",
+      "texto": "Em manual, quem acessa o equipamento é a IHM. O CLP só comanda o Tex com a entrada Automatic em true.",
+      "origem": {
+        "audio": "10-entradas-de-comando/audio-01.webm",
+        "t": "00:29"
+      }
+    },
+    {
+      "nivel": "AVISO",
+      "texto": "Só envie Start com ReadyToTest em true. Com Busy em true o equipamento está ocupado e não pode iniciar um teste.",
+      "origem": {
+        "texto": "13-comando-de-como-iniciar-os-testes (campo Conteúdo)",
+        "audio": "12-saidas/audio-01.webm",
+        "t": "00:14"
+      }
+    },
+    {
+      "nivel": "AVISO",
+      "texto": "Para comandar o Tex pela IHM, o bloco do G4 no CLP precisa estar em modo manual. Em automático, a IHM só mostra as leituras.",
+      "origem": {
+        "texto": "25-ihm-tela-do-equipamento (campo Conteúdo)",
+        "audio": "10-entradas-de-comando/audio-01.webm",
+        "t": "00:45"
+      }
+    }
+  ],
+  "glossario": [
+    {
+      "termo": "CLP",
+      "definicao": "Controlador lógico programável. O computador industrial que roda o programa da máquina.",
+      "origem": {
+        "geral": true
+      }
+    },
+    {
+      "termo": "IHM",
+      "definicao": "Interface homem-máquina. A tela em que o operador acompanha e comanda a máquina.",
+      "origem": {
+        "geral": true
+      }
+    },
+    {
+      "termo": "TIA Portal",
+      "definicao": "O software da Siemens em que se programa o CLP.",
+      "origem": {
+        "geral": true
+      }
+    },
+    {
+      "termo": "OB, FB, FC, DB",
+      "definicao": "Tipos de bloco no TIA Portal. OB: bloco de organização (o Main é o OB1). FB: bloco de função com memória própria. FC: função sem memória. DB: bloco de dados.",
+      "origem": {
+        "geral": true
+      }
+    },
+    {
+      "termo": "Network",
+      "definicao": "Cada trecho de lógica em um bloco do TIA Portal.",
+      "origem": {
+        "geral": true
+      }
+    },
+    {
+      "termo": "Modbus TCP",
+      "definicao": "Protocolo de comunicação por rede Ethernet. A porta padrão é 502.",
+      "origem": {
+        "geral": true
+      }
+    },
+    {
+      "termo": "Profinet",
+      "definicao": "Protocolo industrial de rede Ethernet da Siemens.",
+      "origem": {
+        "geral": true
+      }
+    },
+    {
+      "termo": "Teste de estanqueidade",
+      "definicao": "Teste que verifica se uma peça vaza, medindo a pressão e o vazamento.",
+      "origem": {
+        "geral": true
+      }
+    },
+    {
+      "termo": "BCD",
+      "definicao": "No Padrão TEX, o número da peça configurada no equipamento Tex.",
+      "origem": {
+        "audio": "10-entradas-de-comando/audio-01.webm",
+        "t": "01:32"
+      }
+    },
+    {
+      "termo": "Câmara",
+      "definicao": "Cada compartimento de teste do equipamento. Uma peça pode ter testes em várias câmaras.",
+      "origem": {
+        "audio": "11-entradas-para-aecssar-os-dados-das-pecas/audio-01.webm",
+        "t": "01:17"
+      }
+    },
+    {
+      "termo": "Upload e download",
+      "definicao": "Upload traz dados do equipamento Tex para o CLP. Download envia do CLP para o equipamento.",
+      "origem": {
+        "audio": "11-entradas-para-aecssar-os-dados-das-pecas/audio-01.webm",
+        "t": "00:02"
+      }
+    },
+    {
+      "termo": "true / false",
+      "definicao": "Verdadeiro e falso: os dois valores de uma variável sim/não.",
+      "origem": {
+        "geral": true
+      }
+    },
+    {
+      "termo": "GSD",
+      "definicao": "Arquivo que descreve um equipamento Profinet para o TIA Portal.",
+      "origem": {
+        "geral": true
+      }
+    },
+    {
+      "termo": "Gateway",
+      "definicao": "No TEX-G4, a parte que recebe a comunicação Profinet do CLP e conversa por Modbus com o equipamento.",
+      "origem": {
+        "audio": "18-configurando-o-gsd/audio-01.webm",
+        "t": "00:28"
+      }
+    },
+    {
+      "termo": "UDT",
+      "definicao": "Tipo de dado criado pelo usuário no TIA Portal, como UDT_TexPart e UDT_TexRegisters.",
+      "origem": {
+        "geral": true
+      }
+    },
+    {
+      "termo": "Pulso",
+      "definicao": "Ligar um sinal e desligar logo em seguida. É assim que se pede upload ou download ao Tex.",
+      "origem": {
+        "audio": "14-para-fazer-upload-dos-valores-pelo-clp/audio-01.webm",
+        "t": "00:15"
+      }
+    },
+    {
+      "termo": "DB Debug",
+      "definicao": "Bloco de dados do Padrão TEX que simula as entradas dos blocos para testes.",
+      "origem": {
+        "audio": "06-db-debug-para-testes/audio-01.webm",
+        "t": "00:01"
+      }
+    },
+    {
+      "termo": "UDT",
+      "definicao": "Tipo de dado criado pelo usuário no TIA Portal (PLC data type). O HMI_Link é do tipo UDT_TexHMILink.",
+      "origem": {
+        "geral": true,
+        "tela": "07-db-tex/foto-01_captura-de-tela-2026-10-02-163853.png"
+      }
+    },
+    {
+      "termo": "Teste de vazamento a seco",
+      "definicao": "Teste de estanqueidade feito com ar, sem mergulhar a peça em água.",
+      "origem": {
+        "site": "https://tex.com.br/",
+        "coleta": "marca/tex/site/home.txt"
+      }
+    }
+  ],
+  "pendencias": [
+    {
+      "id": "codigos-state-status",
+      "pergunta": "Quais são os códigos de State e de Status? O áudio diz que estão no manual do equipamento Tex. Você tem esse manual para anexar?",
+      "afeta": [
+        "saida State",
+        "saida Status",
+        "saida Diagnostic"
+      ]
+    },
+    {
+      "id": "start-pulso",
+      "pergunta": "Upload e download são por pulso (áudio 11). E o Start: também é pulso, ou precisa ficar true até o Busy subir?",
+      "afeta": [
+        "procedimento testar"
+      ]
+    },
+    {
+      "id": "start-em-manual",
+      "pergunta": "Confirma que, em manual, um Start vindo do CLP é ignorado?",
+      "afeta": [
+        "aviso manual/automático"
+      ]
+    },
+    {
+      "id": "modelos-g4",
+      "pergunta": "O site da Tex lista G4-SE, G4-DF, G4-HD, G4-VZ, G4-VE, G4-CB, G4-EC, G4-SH e G4-GV. O Padrão TEX atende todos? E quais duas letras vão na entrada Modelo de cada um?",
+      "afeta": [
+        "entrada Modelo"
+      ]
+    },
+    {
+      "id": "unidades",
+      "pergunta": "A IHM mostra pressão em Pa, vazamento em mL/min e tempo em ms. As saídas Pressure, Leak e TimeElapsed vêm sempre nessas unidades ou na unidade configurada na peça?",
+      "afeta": [
+        "saidas de medição"
+      ]
+    },
+    {
+      "id": "rework",
+      "pergunta": "Confirma que o nome atual da saída é Rework? As telas mais novas mostram Rework e as mais antigas Retrabalho. Passei a usar Rework.",
+      "afeta": [
+        "saida Rework"
+      ]
+    },
+    {
+      "id": "codigos-unidade",
+      "pergunta": "PartPressureUnit, PartLeakUnit e TimeUnit são códigos (o upload trouxe PartPressureUnit = 4). Qual unidade cada código representa?",
+      "afeta": [
+        "DB_Parts",
+        "saidas de medição"
+      ]
+    },
+    {
+      "id": "endereco-308",
+      "pergunta": "O GSD começa no endereço 300 e as tags no 308. Os 8 primeiros bytes têm outra função?",
+      "afeta": [
+        "Profinet tags"
+      ]
+    },
+    {
+      "id": "tia-versao",
+      "pergunta": "Em qual versão do TIA Portal o Padrão TEX foi feito? O integrador precisa da mesma ou mais nova para abrir.",
+      "afeta": [
+        "requisitos"
+      ]
+    },
+    {
+      "id": "fb-antigo",
+      "pergunta": "Telas antigas mostravam G4_Profinet como FB1020 e a biblioteca atual mostra FB1033. Quem tem o padrão antigo precisa atualizar?",
+      "afeta": [
+        "biblioteca"
+      ]
+    }
+  ],
+  "requisitos": {
+    "itens": [
+      "TIA Portal, da Siemens, com o projeto do seu CLP aberto.",
+      "Um CLP Siemens. O exemplo deste guia usa uma CPU 1211C DC/DC/DC.",
+      "Um equipamento Tex G4 ligado em rede, com endereço IP conhecido.",
+      "Para Profinet: o GSD do Tex instalado no TIA Portal.",
+      "O projeto do Padrão TEX, para copiar as pastas TexG4 para o seu projeto.",
+      "Para usar a IHM do padrão: uma IHM Siemens (o exemplo usa KTP700 Basic PN)."
+    ],
+    "origem": {
+      "tela": "02-introducao/foto-01_introducao.png",
+      "geral": true
+    },
+    "pendente": "importar"
+  },
+  "blocos_g4": [
+    {
+      "nome": "G4_ModbusTCP",
+      "numero": "FB1030",
+      "protocolo": "Modbus TCP",
+      "pecas": true,
+      "descricao": "O completo: comandos, leituras e upload e download dos dados das peças.",
+      "origem": {
+        "audio": "16-blocos-de-comunicacao-g4/audio-01.webm",
+        "t": "00:04"
+      }
+    },
+    {
+      "nome": "G4_ModbusTCP_Basic",
+      "numero": "FB1031",
+      "protocolo": "Modbus TCP",
+      "pecas": false,
+      "descricao": "Igual ao G4_ModbusTCP, sem as 6 entradas de upload e download das peças. Faz os comandos básicos e tem todas as saídas, mas não lê nem altera os dados das peças.",
+      "origem": {
+        "audio": "21-bloco-modbustcp-basic/audio-01.webm",
+        "t": "00:02"
+      },
+      "tela": "21-bloco-modbustcp-basic/foto-01_captura-de-tela-2026-10-02-160836.png",
+      "retiradas": [
+        "UploadAllFromTex",
+        "DownloadAllToTex",
+        "UploadOne",
+        "DownloadOne",
+        "Chamber",
+        "Test"
+      ]
+    },
+    {
+      "nome": "G4_Profinet",
+      "numero": "FB1033",
+      "protocolo": "Profinet",
+      "pecas": true,
+      "descricao": "Completo como o G4_ModbusTCP, mas falando Profinet.",
+      "origem": {
+        "audio": "16-blocos-de-comunicacao-g4/audio-01.webm",
+        "t": "00:37"
+      }
+    },
+    {
+      "nome": "G4_Profinet_Basic",
+      "numero": "FB1034",
+      "protocolo": "Profinet",
+      "pecas": false,
+      "descricao": "Igual ao G4_Profinet, sem as 6 entradas de upload e download das peças.",
+      "origem": {
+        "audio": "22-bloco-profinet-basic/audio-01.webm",
+        "t": "00:01"
+      },
+      "tela": "22-bloco-profinet-basic/foto-01_captura-de-tela-2026-10-02-161431.png",
+      "retiradas": [
+        "UploadAllFromTex",
+        "DownloadAllToTex",
+        "UploadOne",
+        "DownloadOne",
+        "Chamber",
+        "Test"
+      ]
+    }
+  ],
+  "blocos_g4_origem": {
+    "tela": "16-blocos-de-comunicacao-g4/foto-01_captura-de-tela-2026-10-02-131213.png"
+  },
+  "profinet": {
+    "resumo": "Para comunicar por Profinet, inclua o GSD do Tex no TIA Portal e coloque o equipamento na mesma rede do CLP. No padrão, a IHM também está nessa rede.",
+    "resumo_origem": {
+      "texto": "17-rede-para-comunicar-profinet (campo Conteúdo)"
+    },
+    "rede": {
+      "subrede": "PN/IE_1",
+      "dispositivos": [
+        {
+          "nome": "PLC_Tex",
+          "tipo": "CPU 1211C"
+        },
+        {
+          "nome": "TEX-G4",
+          "tipo": "TEX-G4 PROFINET GATEWAY"
+        },
+        {
+          "nome": "HMI",
+          "tipo": "KTP700 Basic PN"
+        }
+      ],
+      "origem": {
+        "tela": "17-rede-para-comunicar-profinet/foto-01_captura-de-tela-2026-10-02-142228.png"
+      }
+    },
+    "gsd": {
+      "modulo": "RSW:3 Input:256Bytes Output:256Bytes",
+      "i_endereco": "300...555",
+      "q_endereco": "300...555",
+      "bytes": 256,
+      "ip_gateway": "192.168.0.208",
+      "mascara": "255.255.255.0",
+      "ip_equipamento": "192.168.0.205",
+      "explica": "O gateway Profinet do TEX-G4 fica no IP 192.168.0.208 e conversa por Modbus com o equipamento Tex, no IP 192.168.0.205.",
+      "origem": {
+        "audio": "18-configurando-o-gsd/audio-01.webm",
+        "t": "00:00",
+        "tela": "18-configurando-o-gsd/foto-01_captura-de-tela-2026-10-02-142745.png"
+      }
+    },
+    "tags": {
+      "tabela": "IO_TexG4",
+      "itens": [
+        {
+          "nome": "IN_TexB",
+          "tipo": "UDT_TexRegisters",
+          "endereco": "%I308.0"
+        },
+        {
+          "nome": "OUT_TexB",
+          "tipo": "UDT_TexRegisters",
+          "endereco": "%Q308.0"
+        }
+      ],
+      "explica": "As entradas e saídas do GSD começam no endereço 300; os dados do Tex são lidos a partir do 308.",
+      "origem": {
+        "audio": "19-plc-tags/audio-01.webm",
+        "t": "00:10",
+        "tela": "19-plc-tags/foto-01_captura-de-tela-2026-10-02-143446.png"
+      }
+    },
+    "bloco": {
+      "nome": "G4_Profinet",
+      "instancia": "#Equipamento2",
+      "nome_exemplo": "'Tex B'",
+      "retiradas": [
+        "IP",
+        "Port",
+        "Connect"
+      ],
+      "novas": [
+        {
+          "nome": "PN_IN",
+          "grupo": "ligacao",
+          "tipo": "estrutura",
+          "exemplo": "P#I308.0 \"IN_TexB\"",
+          "descricao": "A entrada do mapa Profinet do G4: a tag IN_TexB."
+        },
+        {
+          "nome": "PN_OUT",
+          "grupo": "ligacao",
+          "tipo": "estrutura",
+          "exemplo": "P#Q308.0 \"OUT_TexB\"",
+          "descricao": "A saída do mapa Profinet do G4: a tag OUT_TexB."
+        }
+      ],
+      "explica": "No bloco Profinet saem as entradas IP, Port e Connect, que só servem ao Modbus, e entram as duas do mapa Profinet do G4.",
+      "origem": {
+        "audio": "20-bloco-profinet/audio-01.webm",
+        "t": "00:00",
+        "tela": "20-bloco-profinet/foto-02_captura-de-tela-2026-10-02-152438.png"
+      }
+    }
+  },
+  "db_parts": {
+    "peca": "Peça[1]",
+    "tipo": "UDT_TexPart",
+    "campos_peca": [
+      {
+        "nome": "BCD",
+        "tipo": "Int"
+      },
+      {
+        "nome": "NumChamber",
+        "tipo": "Int"
+      },
+      {
+        "nome": "Chamber",
+        "tipo": "Array[0..3] of Struct"
+      }
+    ],
+    "campos_camara": [
+      {
+        "nome": "TestVolume",
+        "tipo": "Real"
+      },
+      {
+        "nome": "RefVolume",
+        "tipo": "Real"
+      },
+      {
+        "nome": "MaterialType",
+        "tipo": "Int"
+      },
+      {
+        "nome": "NumTest",
+        "tipo": "Int"
+      },
+      {
+        "nome": "Test",
+        "tipo": "Array[0..3]"
+      }
+    ],
+    "campos_teste": [
+      {
+        "nome": "TestType",
+        "tipo": "Int"
+      },
+      {
+        "nome": "Digital1Autom",
+        "tipo": "Int"
+      },
+      {
+        "nome": "Digital2Autom",
+        "tipo": "Int"
+      },
+      {
+        "nome": "Digital3Autom",
+        "tipo": "Int"
+      },
+      {
+        "nome": "PartPressureUnit",
+        "tipo": "Int"
+      },
+      {
+        "nome": "PressureMax",
+        "tipo": "Real"
+      },
+      {
+        "nome": "TestPressure",
+        "tipo": "Real"
+      },
+      {
+        "nome": "PressureMin",
+        "tipo": "Real"
+      },
+      {
+        "nome": "PartLeakUnit",
+        "tipo": "Int"
+      },
+      {
+        "nome": "OffsetLeak",
+        "tipo": "Real"
+      },
+      {
+        "nome": "LeakMax",
+        "tipo": "Real"
+      },
+      {
+        "nome": "ReworkLeakMax",
+        "tipo": "Real"
+      },
+      {
+        "nome": "ReworkLeakMin",
+        "tipo": "Real"
+      },
+      {
+        "nome": "LeakMin",
+        "tipo": "Real"
+      },
+      {
+        "nome": "TimeUnit",
+        "tipo": "Int"
+      },
+      {
+        "nome": "FillTime",
+        "tipo": "Real"
+      },
+      {
+        "nome": "EquaTime",
+        "tipo": "Real"
+      },
+      {
+        "nome": "StabTime",
+        "tipo": "Real"
+      },
+      {
+        "nome": "MeasTime",
+        "tipo": "Real"
+      },
+      {
+        "nome": "ExhaTime",
+        "tipo": "Real"
+      },
+      {
+        "nome": "ExpertParam",
+        "tipo": "Int"
+      }
+    ],
+    "limites": "Cada peça tem até 4 câmaras (Chamber[0] a Chamber[3]) e cada câmara até 4 testes (Test[0] a Test[3]).",
+    "exemplo_upload": [
+      {
+        "campo": "BCD",
+        "antes": "0",
+        "depois": "1"
+      },
+      {
+        "campo": "NumChamber",
+        "antes": "0",
+        "depois": "3"
+      },
+      {
+        "campo": "NumTest",
+        "antes": "0",
+        "depois": "3"
+      },
+      {
+        "campo": "TestType",
+        "antes": "0",
+        "depois": "1"
+      },
+      {
+        "campo": "PartPressureUnit",
+        "antes": "0",
+        "depois": "4"
+      },
+      {
+        "campo": "PressureMax",
+        "antes": "0.0",
+        "depois": "1.5"
+      }
+    ],
+    "origem": {
+      "audio": "15-banco-de-dados-das-pecas/audio-01.webm",
+      "t": "00:00",
+      "tela": "15-banco-de-dados-das-pecas/foto-01_captura-de-tela-2026-10-02-133210.png + foto-02_captura-de-tela-2026-10-02-133320.png"
+    }
+  },
+  "pedido_v3": {
+    "texto": "Manual completo, bem estruturado, visualmente atraente, com imagens e textos bem colocados explicando o passo a passo. Vídeo profissional, claro, objetivo e rico, para os clientes do fornecedor do equipamento. Pode dividir um conteúdo em duas sessões.",
+    "origem": {
+      "audio": "01-o-pedido/audio-01.webm",
+      "t": "00:01"
+    }
+  },
+  "biblioteca_regra": {
+    "texto": "Mantenha os blocos da pasta 9 - Library como vieram no Padrão TEX mais atual que você baixou.",
+    "origem": {
+      "audio": "04-bibliotecas/audio-01.webm",
+      "t": "00:00"
+    }
+  },
+  "debug": {
+    "bloco": "Debug [DB2]",
+    "estrutura": "Tex1",
+    "campos": [
+      {
+        "nome": "Automatic",
+        "tipo": "Bool"
+      },
+      {
+        "nome": "Start",
+        "tipo": "Bool"
+      },
+      {
+        "nome": "Stop",
+        "tipo": "Bool"
+      },
+      {
+        "nome": "BlockExhaust",
+        "tipo": "Bool"
+      },
+      {
+        "nome": "NewBCD",
+        "tipo": "Int"
+      },
+      {
+        "nome": "UploadAll",
+        "tipo": "Bool"
+      },
+      {
+        "nome": "DownloadAll",
+        "tipo": "Bool"
+      },
+      {
+        "nome": "DownloadOne",
+        "tipo": "Bool"
+      },
+      {
+        "nome": "UploadOne",
+        "tipo": "Bool"
+      },
+      {
+        "nome": "Chamber",
+        "tipo": "Int"
+      },
+      {
+        "nome": "Test",
+        "tipo": "Int"
+      },
+      {
+        "nome": "numTestes",
+        "tipo": "Int"
+      },
+      {
+        "nome": "Camara",
+        "tipo": "Int"
+      },
+      {
+        "nome": "Teste",
+        "tipo": "Int"
+      },
+      {
+        "nome": "PecaDB",
+        "tipo": "Int"
+      },
+      {
+        "nome": "Reset",
+        "tipo": "Bool"
+      }
+    ],
+    "explica": "O Debug [DB2] tem uma estrutura que simula as entradas do bloco, para testes. No seu projeto, troque essas variáveis pela lógica de acionamento da sua máquina, com cada comando no momento certo.",
+    "origem": {
+      "audio": "06-db-debug-para-testes/audio-01.webm",
+      "t": "00:01",
+      "tela": "06-db-debug-para-testes/foto-01_captura-de-tela-2026-10-02-161808.png"
+    }
+  },
+  "copiar": {
+    "pastas": [
+      {
+        "onde": "Program blocks",
+        "tela": "30-copiar-do-padrao-tex-para-o-projeto-oficial/foto-01_captura-de-tela-2026-10-02-160001.png"
+      },
+      {
+        "onde": "PLC tags",
+        "tela": "30-copiar-do-padrao-tex-para-o-projeto-oficial/foto-02_captura-de-tela-2026-10-02-160111.png"
+      },
+      {
+        "onde": "PLC data types",
+        "tela": "30-copiar-do-padrao-tex-para-o-projeto-oficial/foto-03_captura-de-tela-2026-10-02-160220.png"
+      },
+      {
+        "onde": "Screens (na IHM)",
+        "tela": "30-copiar-do-padrao-tex-para-o-projeto-oficial/foto-04_captura-de-tela-2026-10-02-160304.png"
+      },
+      {
+        "onde": "HMI tags (na IHM)",
+        "tela": "30-copiar-do-padrao-tex-para-o-projeto-oficial/foto-05_captura-de-tela-2026-10-02-160515.png"
+      }
+    ],
+    "origem": {
+      "texto": "30-copiar-do-padrao-tex-para-o-projeto-oficial (campo Conteúdo)",
+      "audio": "30-copiar-do-padrao-tex-para-o-projeto-oficial/audio-01.webm",
+      "t": "00:00"
+    }
+  },
+  "ihm": {
+    "resumo": "A IHM tem uma pasta TexG4 com as quatro telas principais. Uma tela só controla e monitora vários equipamentos: o HMI_Link dos blocos faz a indexação.",
+    "resumo_origem": {
+      "audio": "24-ihm-padrao-tex/audio-01.webm",
+      "t": "00:01"
+    },
+    "modelo": "KTP700 Basic PN",
+    "telas_projeto": [
+      "G4_Diagnostico",
+      "G4_IOS",
+      "G4_Operação",
+      "G4_ParametrizacaoRemota"
+    ],
+    "telas_origem": {
+      "tela": "24-ihm-padrao-tex/foto-01_captura-de-tela-2026-10-02-162721.png"
+    },
+    "manual": "Para comandar e ler o G4 pela IHM, o bloco do G4 no CLP precisa estar em modo manual (Automatic em false).",
+    "manual_origem": {
+      "texto": "25-ihm-tela-do-equipamento (campo Conteúdo)"
+    },
+    "telas": [
+      {
+        "id": "operacao",
+        "titulo": "Operação",
+        "descricao": "Escolha um dos Tex listados na FB_Tex e comande: Start, Stop e bloqueio do escape. A tela mostra a pressão atual, o vazamento, o BCD, a câmara e o teste em andamento. As setas trocam o BCD.",
+        "origem": {
+          "audio": "25-ihm-tela-do-equipamento/audio-01.webm",
+          "t": "00:00",
+          "tela": "25-ihm-tela-do-equipamento/foto-01_captura-de-tela-2026-10-02-153634.png"
+        }
+      },
+      {
+        "id": "menu",
+        "titulo": "Menu",
+        "descricao": "O botão MENU abre três botões: IOS, DIAGNÓSTICOS e PARAMETRIZAÇÃO REMOTA.",
+        "origem": {
+          "audio": "26-ihm-menu/audio-01.webm",
+          "t": "00:00",
+          "tela": "26-ihm-menu/foto-01_captura-de-tela-2026-10-02-154557.png"
+        }
+      },
+      {
+        "id": "ios",
+        "titulo": "Entradas e saídas",
+        "descricao": "Mostra o estado de cada entrada e saída do equipamento naquele momento, com a função de cada uma.",
+        "entradas": [
+          "BCD 0",
+          "BCD 1",
+          "PARADA",
+          "INÍCIO",
+          "BCD 2 / SENSOR DE REFUGO",
+          "BCD 3 / PEÇA ANTERIOR",
+          "BCD 4 / PRÓXIMA PEÇA",
+          "BLOQUEIA ESCAPE"
+        ],
+        "saidas": [
+          "DIGITAL 1",
+          "APROVA",
+          "REPROVA TESTE",
+          "DIGITAL 2 / REPROVA REF.",
+          "DIGITAL 3 / FALHA",
+          "RETRABALHO",
+          "ESCAPE EXTERNO",
+          "BUSY"
+        ],
+        "origem": {
+          "audio": "27-ihm-tela-ios/audio-01.webm",
+          "t": "00:01",
+          "tela": "27-ihm-tela-ios/foto-01_captura-de-tela-2026-10-02-154647.png"
+        }
+      },
+      {
+        "id": "diagnostico",
+        "titulo": "Diagnósticos",
+        "descricao": "Mostra cada sinal do autoteste (válvulas, sensor diferencial ou de fluxo, sensor de pressão de teste) e quais saídas estão com problema.",
+        "origem": {
+          "audio": "28-ihm/audio-01.webm",
+          "t": "00:00",
+          "tela": "28-ihm/foto-01_captura-de-tela-2026-10-02-154844.png"
+        }
+      },
+      {
+        "id": "parametrizacao",
+        "titulo": "Parametrização",
+        "descricao": "Acessa os dados guardados no equipamento. Escolha o BCD, a câmara e o teste. UPLOAD CONFIG ATUAL traz os dados daquela peça; DOWNLOAD CONFIG ATUAL envia o que você alterou. Dá para ajustar pressões, vazões, tempos, tipo de teste, unidades, volumes, material e retrabalho.",
+        "origem": {
+          "audio": "29-ihm-parametrizacao-remota/audio-01.webm",
+          "t": "00:00",
+          "tela": "29-ihm-parametrizacao-remota/foto-01_captura-de-tela-2026-10-02-155107.png"
+        }
+      }
+    ]
+  },
+  "regra_marca": {
+    "texto": "O material usa só a identidade da Tex: a marca, as informações e as imagens do site tex.com.br.",
+    "origem": {
+      "texto": "WhatsApp do cliente, 02/10/2026 16:06 e 16:43"
+    }
+  },
+  "introducao": {
+    "texto": "Neste material você aprende a configurar, no TIA Portal, os blocos que comunicam o CLP com o equipamento Tex G4.",
+    "origem": {
+      "audio": "02-introducao/audio-01.webm",
+      "t": "00:01"
+    }
+  },
+  "equipamento": {
+    "empresa": {
+      "nome": "Tex Equipamentos Eletrônicos",
+      "texto": "A Tex fabrica equipamentos eletrônicos de medição e de teste de vazamento. Foi fundada em 1997, em São Paulo, e hoje fica em Itupeva (SP).",
+      "marcos": [
+        {
+          "ano": "1997",
+          "texto": "Fundação, em São Paulo, com os primeiros equipamentos eletrônicos de teste de estanqueidade."
+        },
+        {
+          "ano": "2008",
+          "texto": "Mudança para Itupeva, na região de Jundiaí."
+        },
+        {
+          "ano": "2009",
+          "texto": "Parceria com a COSMO Instruments, do Japão."
+        },
+        {
+          "ano": "2015",
+          "texto": "Lançamento da 4ª geração de equipamentos: a linha G4."
+        }
+      ],
+      "origem": {
+        "site": "https://tex.com.br/",
+        "coleta": "marca/tex/site/home.txt"
+      }
+    },
+    "o_que_faz": {
+      "texto": "No G4-SE, por exemplo, o equipamento pressuriza a peça, espera a pressão estabilizar e mede a variação durante um tempo. Depois compara a medida com os limites configurados e aprova ou reprova a peça sozinho.",
+      "resultado": "O resultado aparece na tela do equipamento e nas saídas digitais. Pela rede, o CLP lê o mesmo resultado.",
+      "origem": {
+        "site": "https://tex.com.br/produtos/teste-de-estanqueidade-tex-g4-se/",
+        "coleta": "marca/tex/site/produtos_teste-de-estanqueidade-tex-g4-se.txt"
+      }
+    },
+    "linha_g4": {
+      "texto": "A linha G4 tem vários modelos, um para cada tipo de teste.",
+      "modelos": [
+        {
+          "sigla": "G4-SE",
+          "nome": "Teste de estanqueidade",
+          "como": "mede a queda de pressão na peça",
+          "origem": {
+            "site": "https://tex.com.br/produtos/teste-de-estanqueidade-tex-g4-se/",
+            "coleta": "marca/tex/site/produtos_teste-de-estanqueidade-tex-g4-se.txt"
+          }
+        },
+        {
+          "sigla": "G4-DF",
+          "nome": "Diferencial de pressão",
+          "como": "compara a pressão da peça com a de uma referência",
+          "origem": {
+            "site": "https://tex.com.br/produtos/diferencial-de-pressao-tex-g4-df/",
+            "coleta": "marca/tex/site/produtos_diferencial-de-pressao-tex-g4-df.txt"
+          }
+        },
+        {
+          "sigla": "G4-HD",
+          "nome": "Micro diferencial de pressão",
+          "como": "mede vazamentos muito pequenos",
+          "origem": {
+            "site": "https://tex.com.br/produtos/micro-diferencial-de-pressao-tex-g4-hd/",
+            "coleta": "marca/tex/site/produtos_micro-diferencial-de-pressao-tex-g4-hd.txt"
+          }
+        },
+        {
+          "sigla": "G4-VZ",
+          "nome": "Teste de vazão volumétrica",
+          "como": "mede a vazão que passa pela peça",
+          "origem": {
+            "site": "https://tex.com.br/produtos/teste-de-vazao-volumetrica-tex-g4-vz/",
+            "coleta": "marca/tex/site/produtos_teste-de-vazao-volumetrica-tex-g4-vz.txt"
+          }
+        }
+      ],
+      "origem": {
+        "site": "https://tex.com.br/categoria-produtos/",
+        "coleta": "marca/tex/site/categoria-produtos.txt"
+      }
+    },
+    "recursos": {
+      "itens": [
+        "Tela colorida de 5 polegadas, sensível ao toque.",
+        "Comunicação Ethernet: Modbus TCP, Profinet ou EtherNet/IP, conforme o modelo.",
+        "Cadastro de até 1000 peças, com até 16 receitas cada.",
+        "Porta USB para pendrive: resultados, backup e atualização.",
+        "Calibração acreditada, com certificado no próprio equipamento."
+      ],
+      "nota": "Os recursos dependem do modelo.",
+      "origem": {
+        "site": "https://tex.com.br/produtos/teste-de-estanqueidade-tex-g4-se/",
+        "coleta": "marca/tex/site/produtos_teste-de-estanqueidade-tex-g4-se.txt"
+      }
+    },
+    "fotos": {
+      "frente": {
+        "arquivo": "marca/tex/fotos/g4-frente.jpg",
+        "legenda": "Tex G4-SE: a tela de toque fica na frente do equipamento.",
+        "origem": {
+          "site": "https://tex.com.br/produtos/teste-de-estanqueidade-tex-g4-se/",
+          "coleta": "marca/tex/site/produtos_teste-de-estanqueidade-tex-g4-se.txt"
+        },
+        "original": "marca/tex/original/envato-labs-image-edit-2025-10-21T093129.441.png",
+        "largura": 992,
+        "altura": 1056
+      },
+      "perspectiva": {
+        "arquivo": "marca/tex/fotos/g4-perspectiva.jpg",
+        "legenda": "Tex G4-SE.",
+        "origem": {
+          "site": "https://tex.com.br/produtos/teste-de-estanqueidade-tex-g4-se/",
+          "coleta": "marca/tex/site/produtos_teste-de-estanqueidade-tex-g4-se.txt"
+        },
+        "original": "marca/tex/original/envato-labs-image-edit-2025-10-21T093718.876.png",
+        "largura": 992,
+        "altura": 1056
+      },
+      "traseira": {
+        "arquivo": "marca/tex/fotos/g4-traseira.jpg",
+        "legenda": "Traseira do Tex G4: a porta Ethernet, no canto superior direito, liga o equipamento à rede do CLP.",
+        "origem": {
+          "site": "https://tex.com.br/produtos/teste-de-estanqueidade-tex-g4-se/",
+          "coleta": "marca/tex/site/produtos_teste-de-estanqueidade-tex-g4-se.txt"
+        },
+        "original": "marca/tex/original/envato-labs-image-edit-2025-10-21T093848.836.png",
+        "largura": 992,
+        "altura": 1056
+      },
+      "df": {
+        "arquivo": "marca/tex/fotos/g4-df.jpg",
+        "legenda": "Tex G4-DF.",
+        "origem": {
+          "site": "https://tex.com.br/produtos/diferencial-de-pressao-tex-g4-df/",
+          "coleta": "marca/tex/site/produtos_diferencial-de-pressao-tex-g4-df.txt"
+        },
+        "original": "marca/tex/original/envato-labs-image-edit-2025-10-16T153941.209.png",
+        "largura": 992,
+        "altura": 1056
+      },
+      "vz": {
+        "arquivo": "marca/tex/fotos/g4-vz.jpg",
+        "legenda": "Tex G4-VZ.",
+        "origem": {
+          "site": "https://tex.com.br/produtos/teste-de-vazao-volumetrica-tex-g4-vz/",
+          "coleta": "marca/tex/site/produtos_teste-de-vazao-volumetrica-tex-g4-vz.txt"
+        },
+        "original": "marca/tex/original/envato-labs-image-edit-2025-10-21T100729.975.png",
+        "largura": 992,
+        "altura": 1056
+      },
+      "hd": {
+        "arquivo": "marca/tex/fotos/g4-hd.jpg",
+        "legenda": "Tex G4-HD.",
+        "origem": {
+          "site": "https://tex.com.br/produtos/micro-diferencial-de-pressao-tex-g4-hd/",
+          "coleta": "marca/tex/site/produtos_micro-diferencial-de-pressao-tex-g4-hd.txt"
+        },
+        "original": "marca/tex/original/envato-labs-image-edit-2025-10-21T091239.439.png",
+        "largura": 1152,
+        "altura": 896
+      }
+    },
+    "papel_do_padrao": {
+      "texto": "O Padrão TEX é um projeto de TIA Portal com os blocos que comunicam o CLP Siemens com um ou mais equipamentos G4. Com ele, o CLP comanda o teste e lê o resultado pela rede.",
+      "origem": {
+        "audio": "02-introducao/audio-01.webm",
+        "t": "00:01"
+      }
+    }
+  },
+  "db_tex": {
+    "bloco": "Tex [DB1]",
+    "caminho": "Program blocks > TexG4 > 1 - Controle Equipamentos > Tex [DB1]",
+    "campos": [
+      {
+        "nome": "HMI_Link",
+        "tipo": "UDT_TexHMILink",
+        "papel": "Liga a IHM aos equipamentos. Faz a indexação: uma tela só conversa com vários equipamentos. Não altere."
+      },
+      {
+        "nome": "Equipamento1",
+        "tipo": "G4_ModbusTCP",
+        "papel": "Ligado por Modbus TCP."
+      },
+      {
+        "nome": "Equipamento2",
+        "tipo": "G4_Profinet",
+        "papel": "Ligado por Profinet."
+      },
+      {
+        "nome": "Equipamento3",
+        "tipo": "G4_ModbusTCP_Basic",
+        "papel": "Ligado por Modbus TCP, sem os dados das peças."
+      },
+      {
+        "nome": "Equipamento4",
+        "tipo": "G4_Profinet_Basic",
+        "papel": "Ligado por Profinet, sem os dados das peças."
+      }
+    ],
+    "explica": "O Tex [DB1] guarda tudo o que a FB_Tex usa: o HMI_Link e um elemento para cada equipamento. No exemplo são quatro, um de cada bloco.",
+    "acesso": "Por esses elementos você acessa as entradas, as saídas e as outras propriedades de cada equipamento.",
+    "origem": {
+      "audio": "07-db-tex/audio-01.webm",
+      "t": "00:01",
+      "tela": "07-db-tex/foto-01_captura-de-tela-2026-10-02-163853.png"
+    },
+    "acesso_origem": {
+      "audio": "07-db-tex/audio-01.webm",
+      "t": "00:47"
+    }
+  },
+  "usar_dados": {
+    "explica": "Você pode usar as entradas e as saídas dos blocos em qualquer lógica do seu programa: para monitorar, seguir uma sequência ou mostrar o resultado ao operador.",
+    "como": "Chame pelo DB, pelo equipamento e pela propriedade.",
+    "exemplo": {
+      "endereco": "\"Tex\".Equipamento4.ResultOK",
+      "bloco": "Maquina [FB1]",
+      "network": "Usar dados dos equipamentos nas lógicas",
+      "bobina": "#FinalizarSequencia",
+      "texto": "No exemplo, quando o Equipamento4 aprova a peça (ResultOK em true), a máquina finaliza a sequência."
+    },
+    "todas": "Todas as entradas e todas as saídas podem ser usadas assim.",
+    "origem": {
+      "audio": "23-usar-dados-dos-g4-no-programa/audio-01.webm",
+      "t": "00:01",
+      "tela": "23-usar-dados-dos-g4-no-programa/foto-01_captura-de-tela-2026-10-02-163500.png"
+    },
+    "todas_origem": {
+      "audio": "23-usar-dados-dos-g4-no-programa/audio-01.webm",
+      "t": "00:38"
+    }
+  }
+}

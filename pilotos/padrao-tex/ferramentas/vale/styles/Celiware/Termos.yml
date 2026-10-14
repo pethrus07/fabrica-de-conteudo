@@ -1,0 +1,12 @@
+extends: substitution
+message: "Use '%s' em vez de '%s' — um nome só para cada coisa."
+level: error
+ignorecase: true
+swap:
+  botão de pânico: botão de emergência
+  câmera: câmara
+  controlador programável: CLP
+  CLPs Siemens: CLP Siemens
+  bloco de funções: bloco de função
+  equipamento TECS: equipamento Tex
+  tex G4: Tex G4

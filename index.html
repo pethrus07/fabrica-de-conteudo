@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fábrica de Conteúdo — como funciona</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --preto:#0D0D0D; --card:#141414; --card2:#191919; --linha:#282828; --linha2:#383838;
+  --ink:#F2F2F2; --texto:#B9B9B9; --fraco:#7C7C7C;
+  --ouro:#FFB700; --ouro-cl:#FFD666; --ouro-esc:#CC9200; --ouro-fog:#FFB70014;
+  --roxo:#8B5CF6; --roxo-esc:#6A28C9; --roxo-fog:#8B5CF616;
+  --verm:#E5675F;
+  --tit:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+  --corpo:"Plus Jakarta Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;color:var(--texto);font-family:var(--corpo);font-size:16px;line-height:1.6;
+  background:
+    radial-gradient(900px 460px at 84% -6%, #FFB7001c, transparent 62%),
+    radial-gradient(760px 420px at 2% 2%, #6A28C91f, transparent 58%),
+    var(--preto);
+  background-attachment:fixed;
+  padding:44px 20px 90px;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1060px;margin:0 auto}
+
+h1,h2,h3,h4{font-family:var(--tit);color:var(--ink);letter-spacing:-.02em;line-height:1.16;margin:0}
+p{margin:0 0 12px}
+p:last-child{margin-bottom:0}
+strong{color:var(--ink);font-weight:600}
+em{font-style:normal;color:var(--ouro-cl)}
+a{color:var(--ouro);text-decoration:none}
+
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro);font-weight:500}
+.sectit{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:46px 2px 14px}
+.sectit .n{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--preto);background:var(--ouro);border-radius:5px;padding:4px 9px;font-weight:500;flex:none}
+.sectit h2{font-size:clamp(20px,2.4vw,25px);font-weight:700}
+.sectit .sel{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--roxo);border:1px solid var(--roxo-esc);border-radius:999px;padding:3px 10px}
+
+.marca{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.marca .lg{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#FFC534,#CC9200);box-shadow:0 8px 30px #FFB70030;flex:none}
+.marca .lg svg{width:19px;height:auto;display:block}
+.marca h1{font-size:21px;font-weight:700}
+.marca p{margin:3px 0 0;color:var(--fraco);font-size:12.5px}
+
+.hero{background:linear-gradient(180deg,var(--card),#101010);border:1px solid var(--linha);border-radius:20px;padding:30px 32px;margin-bottom:16px}
+.hero h2{font-size:clamp(21px,3vw,30px);font-weight:700;line-height:1.28;margin:12px 0 0;max-width:27ch}
+.hero h2 b{color:var(--ouro)}
+.hero h2 u{text-decoration:none;color:var(--roxo)}
+
+.ficha{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.ficha span{border:1px solid var(--linha);background:var(--card);border-radius:999px;padding:6px 14px;font-size:12.5px;color:var(--fraco)}
+.ficha span b{color:var(--ink);font-weight:600}
+
+.idx{background:var(--card);border:1px solid var(--linha);border-radius:18px;padding:20px 22px}
+.idxg{display:grid;grid-template-columns:repeat(4,1fr);gap:2px 16px;margin-top:12px}
+.idxg a{display:flex;gap:9px;padding:6px 0;font-size:13.5px;color:var(--texto);line-height:1.35}
+.idxg a:hover{color:var(--ouro)}
+.idxg a i{font-family:var(--mono);font-style:normal;font-size:11px;color:var(--fraco);flex:none;padding-top:2px}
+.modo{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid var(--linha)}
+.modo>span{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--fraco)}
+.bts{display:flex;background:var(--card2);border:1px solid var(--linha2);border-radius:999px;padding:3px;gap:3px}
+.bts button{background:none;border:0;color:var(--texto);font-family:var(--corpo);font-size:12px;font-weight:600;padding:5px 15px;border-radius:999px;cursor:pointer}
+.bts button.on{background:var(--ouro);color:#0D0D0D}
+.modo small{color:var(--fraco);font-size:11.5px;flex:1;min-width:200px}
+
+.g{display:grid;gap:14px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:880px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}.idxg{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.g2,.g3,.g4,.idxg{grid-template-columns:1fr}}
+
+.q{background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:18px 20px}
+.q .ic{font-size:19px;line-height:1;margin-bottom:11px;display:block}
+.q h3{font-size:15.5px;font-weight:600;margin-bottom:7px}
+.q h4{font-size:14px;font-weight:600;color:var(--ouro-cl);margin-bottom:8px}
+.q p{font-size:13.5px;line-height:1.55}
+.q ul{margin:0;padding-left:17px;font-size:13.5px}
+.q li{margin:5px 0}
+.q li::marker{color:var(--ouro-esc)}
+.q.ouro{border-color:#5A4100;background:linear-gradient(180deg,#181205,var(--card))}
+.q.roxa{border-color:#3A2270;background:linear-gradient(180deg,#150E26,var(--card))}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{border:1px solid var(--linha2);background:var(--card2);border-radius:999px;padding:7px 14px;font-size:13px;color:var(--texto)}
+.chips span b{color:var(--ink);font-weight:600}
+
+.fluxo{display:flex;flex-wrap:wrap;align-items:center;gap:9px}
+.fluxo .p{background:var(--card2);border:1px solid var(--linha2);border-radius:10px;padding:8px 13px;font-size:13.5px;margin:0}
+.fluxo .p b{color:var(--ink);font-weight:600}
+.fluxo .a{width:0;height:0;border-left:7px solid var(--ouro);border-top:5px solid transparent;border-bottom:5px solid transparent;flex:none}
+
+.dest{border:1px solid var(--linha);border-left:3px solid var(--ouro);background:var(--ouro-fog);border-radius:0 14px 14px 0;padding:18px 22px;margin-top:14px}
+.dest.rx{border-left-color:var(--roxo);background:var(--roxo-fog)}
+.dest.al{border-left-color:var(--verm);background:#E5675F10}
+.dest .r{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro);margin-bottom:9px}
+.dest.rx .r{color:var(--roxo)}
+.dest.al .r{color:var(--verm)}
+.dest p{font-size:14.5px}
+
+.kpi{background:linear-gradient(180deg,var(--card),#101010);border:1px solid var(--linha);border-radius:16px;padding:20px 22px}
+.kpi .n{font-family:var(--tit);font-size:26px;font-weight:700;color:var(--ouro);letter-spacing:-.03em;line-height:1.1}
+.kpi .n.rx{color:var(--roxo)}
+.kpi .l{font-size:13px;color:var(--fraco);margin-top:6px;line-height:1.45}
+
+.passo{display:flex;gap:16px;background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:16px 20px}
+.passo .n{flex:none;width:34px;height:34px;border-radius:9px;background:var(--card2);border:1px solid var(--linha2);display:flex;align-items:center;justify-content:center;font-family:var(--tit);font-weight:700;font-size:15px;color:var(--ouro)}
+.passo.hum{border-color:#5A4100;background:linear-gradient(180deg,#181205,var(--card))}
+.passo.hum .n{background:var(--ouro);color:#0D0D0D;border-color:var(--ouro)}
+.passo h3{font-size:15px;font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.passo p{font-size:13.5px;line-height:1.55}
+.passo .tg{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--preto);background:var(--ouro);border-radius:999px;padding:3px 9px;font-weight:500}
+
+.par{display:grid;grid-template-columns:auto 1fr;gap:9px 13px;font-size:13.5px;align-items:start;margin:0}
+.par dt{font-weight:600;color:var(--ouro-cl);white-space:nowrap}
+.par dd{margin:0;color:var(--texto)}
+@media(max-width:580px){.par{grid-template-columns:1fr;gap:1px}.par dd{margin-bottom:10px}}
+
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:520px}
+th{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--fraco);text-align:left;padding:0 12px 8px;border-bottom:1px solid var(--linha2);font-weight:500}
+td{padding:10px 12px;border-bottom:1px solid var(--linha);vertical-align:top;line-height:1.5}
+tr:last-child td{border-bottom:0}
+th:first-child,td:first-child{padding-left:0}
+td b{color:var(--ouro-cl);font-weight:600}
+
+figure{margin:0}
+figure svg{display:block;width:100%;height:auto;background:var(--card);border:1px solid var(--linha);border-radius:16px}
+figcaption{font-size:12.5px;color:var(--fraco);margin-top:9px}
+
+.pre{background:#080808;border:1px solid var(--linha2);border-radius:16px;padding:18px 20px;overflow-x:auto}
+.pre pre{margin:0;font-family:var(--mono);font-size:12px;line-height:1.75;color:#BEBEBE}
+.pre .c{color:var(--fraco)}
+
+.rod{margin-top:46px;padding-top:22px;border-top:1px solid var(--linha);color:var(--fraco);font-size:12.5px}
+
+body.reuniao .tec{display:none!important}
+
+@media print{
+  body{background:#fff;color:#111;padding:0}
+  .q,.kpi,.hero,.dest,.passo,.idx,.pre,figure{break-inside:avoid;background:#fafafa;border-color:#ddd}
+  h1,h2,h3,h4,strong{color:#000}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="marca">
+  <div class="lg"><svg viewBox="0 0 400 520" fill="#0D0D0D" aria-hidden="true"><path d="M308.484 282.06L244.072 357.593H211L231.18 392H350.77L400 520H244.159L171.652 352.605L177.931 342.661L225 254.736L211.896 226.997L191.439 180.558L159.957 267.483L127.315 354.301L112.868 394.729H139.992L194.254 520H0L200 0L308.484 282.06Z"/></svg></div>
+  <div><h1>Fábrica de Conteúdo</h1><p>manual técnico entra · conteúdo que qualquer um entende sai</p></div>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">A ideia em uma frase</div>
+  <h2>O manual entra <b>uma vez</b>. Saem <b>seis peças diferentes</b> — todas dizendo o que o manual diz, e todas <u>refeitas sozinhas</u> quando ele mudar.</h2>
+</div>
+
+<div class="ficha">
+  <span>Para <b>cliente · Celiware</b></span>
+  <span>De <b>Pedro Oliveira · RYZE</b></span>
+  <span>Data <b>17 ago 2026</b></span>
+  <span>Estágio <b>conceito · nada construído</b></span>
+  <span>Não é <b>proposta comercial</b></span>
+</div>
+
+<div class="idx">
+  <div class="eyebrow">Índice</div>
+  <div class="idxg">
+    <a href="#s1"><i>01</i>O problema</a>
+    <a href="#s2"><i>02</i>A ideia</a>
+    <a href="#s3"><i>03</i>Panorama</a>
+    <a href="#s4"><i>04</i>A fonte</a>
+    <a href="#s5"><i>05</i>O pedido</a>
+    <a href="#s6"><i>06</i>A esteira</a>
+    <a href="#s7"><i>07</i>O que sai</a>
+    <a href="#s8"><i>08</i>O vídeo</a>
+    <a href="#s9"><i>09</i>Rastreabilidade</a>
+    <a href="#s10"><i>10</i>Quem faz o quê</a>
+    <a class="tec" href="#s11"><i>11</i>Arquitetura</a>
+    <a class="tec" href="#s12"><i>12</i>Motor de IA</a>
+    <a class="tec" href="#s13"><i>13</i>Custo</a>
+    <a href="#s14"><i>14</i>Ponto de partida</a>
+    <a href="#s15"><i>15</i>Riscos</a>
+    <a href="#s16"><i>16</i>Decisões</a>
+    <a href="#s17"><i>17</i>Glossário</a>
+  </div>
+  <div class="modo">
+    <span>Modo</span>
+    <div class="bts">
+      <button id="bt-r" onclick="setModo('reuniao')">Reunião</button>
+      <button id="bt-c" class="on" onclick="setModo('completo')">Completo</button>
+    </div>
+    <small>Reunião esconde as três seções técnicas (11, 12 e 13).</small>
+  </div>
+</div>
+
+<div class="sectit" id="s1"><span class="n">01</span><h2>O problema</h2></div>
+<div class="g g3">
+  <div class="q"><span class="ic">🧱</span><h3>A última fase trava</h3><p>Sistema pronto, cliente aprovado — e aí falta manual, vídeo e treinamento. A parte sem engenharia é a que segura a entrega.</p></div>
+  <div class="q"><span class="ic">📄</span><h3>Ninguém lê manual</h3><p>O operador no fundo do mercado não abre PDF de 40 páginas. Ele precisa de 3 minutos de vídeo e um cartaz na parede.</p></div>
+  <div class="q"><span class="ic">🔁</span><h3>Refeito do zero, sempre</h3><p>Cada projeto recomeça na página em branco, mesmo quando 80% do conteúdo já existe escrito.</p></div>
+</div>
+<div class="dest">
+  <div class="r">O que você descreveu</div>
+  <p>“Você manda um conteúdo mais técnico — um manual, uma especificação — e a partir dele saem conteúdos lúdicos e facilitados, inclusive vídeos.”</p>
+</div>
+
+<div class="sectit" id="s2"><span class="n">02</span><h2>A ideia: uma fonte, muitas peças</h2></div>
+<p style="margin-bottom:14px">Um vídeo de treinamento não é documento novo — é <em>o manual dito de outro jeito</em>. Se todas as peças nascem da mesma fonte, três coisas passam a ser verdade ao mesmo tempo:</p>
+<div class="g g3">
+  <div class="q ouro"><span class="ic">🤝</span><h3>Não se contradizem</h3><p>Hoje manual, vídeo e vendedor dizem coisas diferentes — foram escritos em momentos diferentes.</p></div>
+  <div class="q ouro"><span class="ic">⏱️</span><h3>Envelhecem juntas</h3><p>Manual vai pra v2, o sistema marca as seis peças como velhas e refaz.</p></div>
+  <div class="q ouro"><span class="ic">💸</span><h3>Custam uma vez</h3><p>O trabalho pesado é ler a fonte. Feito isso, a sexta peça sai quase de graça.</p></div>
+</div>
+<div class="dest rx">
+  <div class="r">E por que não é só “pedir pro ChatGPT”</div>
+  <div class="chips">
+    <span><b>1.</b> A fonte fica guardada e versionada</span>
+    <span><b>2.</b> Cada frase aponta a página de onde saiu</span>
+    <span><b>3.</b> O pacote inteiro se refaz com um comando</span>
+  </div>
+  <p style="margin-top:13px">O ChatGPT te dá um texto. Isso te dá uma esteira.</p>
+</div>
+
+<div class="sectit" id="s3"><span class="n">03</span><h2>Panorama</h2></div>
+<figure>
+  <svg viewBox="0 0 900 348" xmlns="http://www.w3.org/2000/svg" font-family="Plus Jakarta Sans, sans-serif">
+    <defs><marker id="st" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#FFB700"/></marker></defs>
+    <rect x="26" y="56" width="212" height="234" rx="12" fill="#191919" stroke="#333"/>
+    <text x="42" y="84" fill="#7C7C7C" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">CAMADA 1</text>
+    <text x="42" y="109" fill="#FFB700" font-family="Space Grotesk, sans-serif" font-size="17" font-weight="700">A fonte</text>
+    <text x="42" y="138" fill="#B9B9B9" font-size="12.5">Manual em PDF</text>
+    <text x="42" y="159" fill="#B9B9B9" font-size="12.5">Especificação técnica</text>
+    <text x="42" y="180" fill="#B9B9B9" font-size="12.5">Vídeo da máquina</text>
+    <text x="42" y="201" fill="#B9B9B9" font-size="12.5">Áudio do técnico</text>
+    <text x="42" y="222" fill="#B9B9B9" font-size="12.5">Telas do sistema</text>
+    <line x1="42" y1="240" x2="212" y2="240" stroke="#333"/>
+    <text x="42" y="262" fill="#F2F2F2" font-size="12" font-weight="600">Acervo versionado</text>
+    <text x="42" y="279" fill="#7C7C7C" font-size="11">a única verdade do projeto</text>
+
+    <rect x="344" y="56" width="212" height="234" rx="12" fill="#191919" stroke="#333"/>
+    <text x="360" y="84" fill="#7C7C7C" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">CAMADA 2</text>
+    <text x="360" y="109" fill="#FFB700" font-family="Space Grotesk, sans-serif" font-size="17" font-weight="700">O pedido</text>
+    <text x="360" y="138" fill="#B9B9B9" font-size="12.5">Para quem é?</text>
+    <text x="360" y="159" fill="#B9B9B9" font-size="12.5">Que formato?</text>
+    <text x="360" y="180" fill="#B9B9B9" font-size="12.5">Que tom, que tamanho?</text>
+    <text x="360" y="201" fill="#FFD666" font-size="12.5">O que é intocável?</text>
+    <text x="360" y="222" fill="#B9B9B9" font-size="12.5">O que não pode dizer?</text>
+    <line x1="360" y1="240" x2="530" y2="240" stroke="#333"/>
+    <text x="360" y="262" fill="#F2F2F2" font-size="12" font-weight="600">Formulário curto</text>
+    <text x="360" y="279" fill="#7C7C7C" font-size="11">2 minutos, com modelos prontos</text>
+
+    <rect x="662" y="56" width="212" height="234" rx="12" fill="#191919" stroke="#333"/>
+    <text x="678" y="84" fill="#7C7C7C" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">CAMADA 3</text>
+    <text x="678" y="109" fill="#FFB700" font-family="Space Grotesk, sans-serif" font-size="17" font-weight="700">A esteira</text>
+    <text x="678" y="138" fill="#B9B9B9" font-size="12.5">Esqueleto</text>
+    <text x="678" y="159" fill="#B9B9B9" font-size="12.5">Roteiro</text>
+    <text x="678" y="180" fill="#B9B9B9" font-size="12.5">Auditoria</text>
+    <text x="678" y="201" fill="#B9B9B9" font-size="12.5">Montagem</text>
+    <text x="678" y="222" fill="#B9B9B9" font-size="12.5">Entrega</text>
+    <line x1="678" y1="240" x2="848" y2="240" stroke="#333"/>
+    <text x="678" y="262" fill="#F2F2F2" font-size="12" font-weight="600">Duas aprovações suas</text>
+    <text x="678" y="279" fill="#7C7C7C" font-size="11">o resto é automático</text>
+
+    <line x1="248" y1="173" x2="332" y2="173" stroke="#FFB700" stroke-width="1.6" marker-end="url(#st)"/>
+    <line x1="566" y1="173" x2="650" y2="173" stroke="#FFB700" stroke-width="1.6" marker-end="url(#st)"/>
+    <line x1="26" y1="311" x2="238" y2="311" stroke="#282828"/>
+    <line x1="344" y1="311" x2="874" y2="311" stroke="#282828"/>
+    <text x="26" y="333" fill="#7C7C7C" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.6">UMA VEZ POR PROJETO</text>
+    <text x="344" y="333" fill="#7C7C7C" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.6">UMA VEZ POR PEÇA PRODUZIDA</text>
+  </svg>
+  <figcaption>A camada 1 roda uma vez por projeto. As 2 e 3 rodam uma vez por peça — por isso a sexta peça sai barata.</figcaption>
+</figure>
+
+<div class="sectit" id="s4"><span class="n">04</span><h2>Camada 1 · A fonte</h2></div>
+<p style="margin-bottom:14px">Não produz nada. Recolhe o material técnico e transforma num acervo consultável, com <em>endereço</em> para cada trecho.</p>
+<div class="g g4">
+  <div class="q"><span class="ic">📘</span><h4>Documento</h4><p>Manual, especificação, catálogo. O insumo principal.</p></div>
+  <div class="q"><span class="ic">🎙️</span><h4>Fala</h4><p>O técnico explicando. Muito do que ele sabe nunca foi escrito.</p></div>
+  <div class="q"><span class="ic">💬</span><h4>Reunião</h4><p>Decisões e exceções que não estão no manual.</p></div>
+  <div class="q"><span class="ic">📷</span><h4>Imagem</h4><p>Fotos da máquina e telas. Único insumo humano obrigatório.</p></div>
+</div>
+<div class="g g3" style="margin-top:14px">
+  <div class="q"><h4>1 · Normaliza</h4><p>Tudo vira texto consultável — PDF, áudio transcrito, imagem descrita.</p></div>
+  <div class="q"><h4>2 · Ancora</h4><p>Página 12 do manual, minuto 4:30 do áudio. Sem âncora não há rastreabilidade.</p></div>
+  <div class="q"><h4>3 · Versiona</h4><p>Cada peça fica carimbada com a versão da fonte que a gerou.</p></div>
+</div>
+<div class="dest">
+  <div class="r">Regra que não se quebra</div>
+  <p><strong>A fonte é a única verdade.</strong> Se o manual não diz o torque, o vídeo não diz — aponta a lacuna para uma pessoa resolver. O sistema pode ficar em silêncio; não pode chutar.</p>
+</div>
+
+<div class="sectit" id="s5"><span class="n">05</span><h2>Camada 2 · O pedido</h2></div>
+<p style="margin-bottom:14px">A inversão que faz o sistema funcionar: como o conteúdo já existe, o formulário <strong>não pergunta o conteúdo</strong> — pergunta a <em>transformação</em>. Dois minutos, com modelos prontos.</p>
+<div class="g g2">
+  <div class="q">
+    <h4>Quem vai receber</h4>
+    <dl class="par">
+      <dt>Público</dt><dd>operador · técnico · vendedor · dono</dd>
+      <dt>Sabe quanto</dt><dd>nada · básico · técnico</dd>
+      <dt>Objetivo</dt><dd>operar · resolver · vender · cumprir norma</dd>
+    </dl>
+  </div>
+  <div class="q">
+    <h4>Que cara vai ter</h4>
+    <dl class="par">
+      <dt>Formato</dt><dd>vídeo 3min · guia A4 · cartaz · FAQ</dd>
+      <dt>Canal</dt><dd>WhatsApp · parede · dentro do sistema</dd>
+      <dt>Tom</dt><dd>seco · didático · bem-humorado</dd>
+      <dt>Marca</dt><dd>Celiware · do cliente · neutra</dd>
+    </dl>
+  </div>
+</div>
+<div class="dest rx">
+  <div class="r">O campo que segura o produto</div>
+  <p style="margin-bottom:11px"><strong>Intocáveis</strong> — torque, tensão, código de peça, aviso de segurança. Copiados literalmente e conferidos no fim. Junto vêm as <strong>proibições</strong> (preço, prazo, garantia) e o <strong>glossário</strong> (termo técnico e como chamá-lo para leigo).</p>
+  <p>Simplificar é tirar coisa. Declarar isso na entrada transforma um risco difuso numa <em>lista conferível</em>.</p>
+</div>
+
+<div class="sectit" id="s6"><span class="n">06</span><h2>Camada 3 · A esteira</h2></div>
+<p style="margin-bottom:14px">Não é um botão que devolve o vídeo pronto. É uma sequência com dois pontos de aprovação — porque <strong>errar no esqueleto custa 2 minutos; descobrir no vídeo montado custa a montagem inteira.</strong></p>
+<div class="g">
+  <div class="passo"><div class="n">1</div><div><h3>Esqueleto</h3><p>A IA lê a fonte e propõe a estrutura: quantas partes, o que entra em cada uma, quanto tempo. Ainda sem texto final.</p></div></div>
+  <div class="passo hum"><div class="n">2</div><div><h3>Aprovação<span class="tg">Você</span></h3><p>Corta, reordena, acrescenta. É aqui que entra o que você sabe e o manual não diz — “esse passo é o que todo mundo erra”.</p></div></div>
+  <div class="passo"><div class="n">3</div><div><h3>Roteiro</h3><p>Texto final, fala por fala. Cada afirmação sai com o trecho do manual que a sustenta e a página onde está.</p></div></div>
+  <div class="passo hum"><div class="n">4</div><div><h3>Aprovação<span class="tg">Você</span></h3><p>Leitura final. Corrigir aqui é trocar uma frase; depois é remontar o vídeo.</p></div></div>
+  <div class="passo"><div class="n">5</div><div><h3>Auditoria automática</h3><p>Confere origem, números, intocáveis e proibições. <strong>Falhou, a produção para</strong> — e devolve um relatório apontando a frase e o motivo.</p></div></div>
+  <div class="passo"><div class="n">6</div><div><h3>Montagem e entrega</h3><p>Telas renderizadas, narração gerada, vídeo montado — ou PDF composto. Pacote carimbado com a versão da fonte.</p></div></div>
+</div>
+<div class="dest">
+  <div class="r">Quando o manual muda</div>
+  <p>Sobe a versão nova. As peças antigas aparecem marcadas como desatualizadas e refazer é reexecutar. <strong>Esqueleto e roteiro voltam para aprovação, a montagem é automática.</strong> Não se regrava nada.</p>
+</div>
+
+<div class="sectit" id="s7"><span class="n">07</span><h2>O que sai da mesma fonte</h2></div>
+<div class="g g3">
+  <div class="q"><span class="ic">🎬</span><h3>Vídeo de treinamento</h3><p>3 a 8 min, para o operador. Link com QR colado na máquina.</p></div>
+  <div class="q"><span class="ic">📋</span><h3>Guia rápido</h3><p>1 ou 2 páginas para imprimir e plastificar.</p></div>
+  <div class="q"><span class="ic">🖼️</span><h3>Cartaz de parede</h3><p>A3: os 5 passos e o que fazer quando trava.</p></div>
+  <div class="q"><span class="ic">💬</span><h3>FAQ do agente</h3><p>Alimenta o assistente de WhatsApp que já está no ar.</p></div>
+  <div class="q"><span class="ic">🎓</span><h3>Roteiro de treinamento</h3><p>A sequência da visita, o que demonstrar, as perguntas de conferência.</p></div>
+  <div class="q"><span class="ic">🧭</span><h3>Tour no sistema</h3><p>Passos guiados na própria tela, na primeira vez que a pessoa entra.</p></div>
+</div>
+<div class="dest rx">
+  <div class="r">Encaixe com o que já roda</div>
+  <p>O <strong>FAQ do agente</strong> não é documento parado: alimenta direto a base do assistente de WhatsApp. O mesmo manual que vira vídeo vira, no mesmo passe, a resposta que o cliente recebe às 22h.</p>
+</div>
+
+<div class="sectit" id="s8"><span class="n">08</span><h2>Como o vídeo é feito de verdade</h2></div>
+<div class="dest al" style="margin:0 0 14px">
+  <div class="r">Antes que vire expectativa errada</div>
+  <p><strong>Não é IA gerando imagem de vídeo da máquina.</strong> Modelo generativo inventa o painel, o bico, o rótulo — e a Celiware vende máquina. Vídeo com a máquina errada é pior que nenhum vídeo.</p>
+</div>
+<div class="g g4">
+  <div class="q"><span class="ic">🖥️</span><h4>1 · Telas</h4><p>Compostas na identidade escolhida, geradas por código. Saem sempre iguais.</p></div>
+  <div class="q"><span class="ic">🔊</span><h4>2 · Narração</h4><p>Voz sintética em pt-BR a partir do roteiro aprovado.</p></div>
+  <div class="q"><span class="ic">📹</span><h4>3 · Imagem real</h4><p>Fotos e trechos da máquina de verdade, fornecidos por você.</p></div>
+  <div class="q"><span class="ic">🎞️</span><h4>4 · Montagem</h4><p>Junção automática com legenda embutida. Pronto para enviar.</p></div>
+</div>
+<div class="chips" style="margin-top:14px">
+  <span><b>Refazer é barato</b> — v2 do manual sai em minutos</span>
+  <span><b>Sai igual toda vez</b> — não depende de quem montou</span>
+  <span><b>Escala por cliente</b> — troca o kit visual e o nome</span>
+</div>
+<div class="dest al">
+  <div class="r">O limite honesto</div>
+  <p>Fica com cara de <strong>vídeo institucional bem feito</strong>, não de cinema — e a voz sintética, mesmo boa, é reconhecível. Se num projeto isso não bastar, dá para trocar só a faixa de áudio por locução humana <em>sem refazer o vídeo</em>.</p>
+</div>
+
+<div class="sectit" id="s9"><span class="n">09</span><h2>Rastreabilidade: a nota fiscal do conteúdo</h2></div>
+<p style="margin-bottom:14px">Quando a IA lê o manual, ela devolve junto <strong>o pedaço literal de onde tirou e a página</strong>. Não é a IA afirmando que leu — é o próprio serviço devolvendo o recorte, verificável.</p>
+<figure>
+  <svg viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg" font-family="Plus Jakarta Sans, sans-serif">
+    <defs><marker id="st2" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#FFB700"/></marker></defs>
+    <rect x="26" y="34" width="250" height="184" rx="12" fill="#191919" stroke="#333"/>
+    <text x="44" y="62" fill="#7C7C7C" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">FONTE</text>
+    <text x="44" y="90" fill="#F2F2F2" font-size="13" font-weight="600">Manual v2 · página 12</text>
+    <text x="44" y="120" fill="#B9B9B9" font-size="12">“Aperte o parafuso de fixação</text>
+    <text x="44" y="139" fill="#B9B9B9" font-size="12">do cabeçote com torque de</text>
+    <text x="44" y="158" fill="#FFD666" font-size="12" font-weight="600">18 N·m, sem ultrapassar.”</text>
+    <rect x="44" y="176" width="184" height="26" rx="6" fill="#222" stroke="#383838"/>
+    <text x="56" y="193" fill="#7C7C7C" font-family="JetBrains Mono, monospace" font-size="10">trecho literal guardado</text>
+
+    <rect x="326" y="34" width="250" height="184" rx="12" fill="#191919" stroke="#333"/>
+    <text x="344" y="62" fill="#7C7C7C" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">ROTEIRO GERADO</text>
+    <text x="344" y="90" fill="#F2F2F2" font-size="13" font-weight="600">Vídeo · cena 4</text>
+    <text x="344" y="120" fill="#B9B9B9" font-size="12">“Agora aperte esse parafuso.</text>
+    <text x="344" y="139" fill="#B9B9B9" font-size="12">Firme, mas sem forçar:</text>
+    <text x="344" y="158" fill="#FFD666" font-size="12" font-weight="600">18 N·m é o ponto.”</text>
+    <rect x="344" y="176" width="184" height="26" rx="6" fill="#222" stroke="#383838"/>
+    <text x="356" y="193" fill="#7C7C7C" font-family="JetBrains Mono, monospace" font-size="10">origem: manual v2, p.12</text>
+
+    <rect x="626" y="34" width="250" height="184" rx="12" fill="#191919" stroke="#CC9200"/>
+    <text x="644" y="62" fill="#FFB700" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2">AUDITORIA</text>
+    <text x="644" y="90" fill="#F2F2F2" font-size="13" font-weight="600">Confere antes de montar</text>
+    <text x="644" y="118" fill="#B9B9B9" font-size="12">Tem origem?</text>
+    <text x="644" y="140" fill="#B9B9B9" font-size="12">O número bate igual?</text>
+    <text x="644" y="162" fill="#B9B9B9" font-size="12">Os intocáveis estão lá?</text>
+    <rect x="644" y="176" width="184" height="26" rx="6" fill="#FFB700"/>
+    <text x="656" y="193" fill="#0D0D0D" font-family="JetBrains Mono, monospace" font-size="10" font-weight="500">falhou = não entrega</text>
+
+    <line x1="286" y1="126" x2="316" y2="126" stroke="#FFB700" stroke-width="1.6" marker-end="url(#st2)"/>
+    <line x1="586" y1="126" x2="616" y2="126" stroke="#FFB700" stroke-width="1.6" marker-end="url(#st2)"/>
+  </svg>
+  <figcaption>A frase muda de roupa — vira linguagem de operador — mas o número atravessa intacto, e a origem viaja junto.</figcaption>
+</figure>
+<div class="g g2" style="margin-top:14px">
+  <div class="q">
+    <h4>O que a auditoria confere</h4>
+    <ul>
+      <li>Toda afirmação tem origem</li>
+      <li>Todo número bate igual ao da fonte</li>
+      <li>Nenhum intocável sumiu</li>
+      <li>Nenhuma proibição entrou</li>
+      <li>O glossário foi respeitado</li>
+    </ul>
+  </div>
+  <div class="q ouro">
+    <h4>Por que isso é comercial</h4>
+    <p>Treinamento que erra um torque ou pula um passo de segurança não é material ruim: é <strong>passivo</strong>.</p>
+    <p style="margin-top:9px">A frase que se diz ao cliente vira objetiva: <em>“tudo que a gente entrega aponta para a página do seu manual — e o que não aponta a gente não entrega”</em>. Difícil um concorrente com ChatGPT prometer isso.</p>
+  </div>
+</div>
+
+<div class="sectit" id="s10"><span class="n">10</span><h2>Quem faz o quê</h2></div>
+<div class="g g2">
+  <div class="q"><h4>🤖 A máquina faz</h4>
+    <ul>
+      <li>Ler o manual inteiro, todas as vezes</li>
+      <li>Propor a estrutura e escrever no tom pedido</li>
+      <li>Guardar de onde cada frase saiu</li>
+      <li>Conferir números, intocáveis e proibições</li>
+      <li>Montar telas, narração e vídeo</li>
+      <li>Refazer tudo quando a fonte mudar</li>
+    </ul>
+  </div>
+  <div class="q ouro"><h4>🧑‍🔧 Você faz</h4>
+    <ul>
+      <li>Definir público, objetivo e tom</li>
+      <li>Declarar intocáveis e proibições</li>
+      <li>Aprovar esqueleto e roteiro</li>
+      <li>Fornecer foto e vídeo reais da máquina</li>
+      <li>Trazer o que o manual não diz</li>
+      <li>Dar a palavra final antes do cliente</li>
+    </ul>
+  </div>
+</div>
+<div class="g g2" style="margin-top:14px">
+  <div class="kpi"><div class="n">10 a 20 min</div><div class="l">de pessoa por peça — o pedido e as duas aprovações</div></div>
+  <div class="kpi"><div class="n rx">horas ou dias</div><div class="l">é o que o mesmo material leva hoje, escrito do zero</div></div>
+</div>
+
+<div class="sectit tec" id="s11"><span class="n">11</span><h2>Arquitetura</h2><span class="sel">Técnico</span></div>
+<div class="tec">
+<p style="margin-bottom:14px">Nada aqui é stack nova — é a mesma combinação que já sustenta três sistemas no ar. A peça inédita é a esteira de vídeo.</p>
+<div class="q"><div class="tw"><table>
+  <thead><tr><th style="width:26%">Peça</th><th style="width:26%">Onde roda</th><th>Papel</th></tr></thead>
+  <tbody>
+    <tr><td><b>Painel e fila</b></td><td>Cloudflare Worker</td><td>Interface, estado, disparo das etapas, aprovações</td></tr>
+    <tr><td><b>Estado</b></td><td>Banco D1</td><td>Projetos, fontes, versões, pedidos, peças, auditorias</td></tr>
+    <tr><td><b>Arquivos</b></td><td>Armazenamento R2</td><td>Manuais, imagens, vídeos, pacotes de entrega</td></tr>
+    <tr><td><b>Motor de texto</b></td><td>API da Anthropic</td><td>Esqueleto, roteiro, estruturação</td></tr>
+    <tr><td><b>Transcrição</b></td><td>Máquina local, offline</td><td>Áudio e vídeo viram texto sem sair da máquina</td></tr>
+    <tr><td><b>Render pesado</b></td><td>Máquina local ou contêiner</td><td>Telas, narração, montagem do vídeo</td></tr>
+  </tbody>
+</table></div></div>
+<div class="dest al">
+  <div class="r">Restrição que decide o desenho</div>
+  <p>Montagem de vídeo não roda dentro de um Worker. Então o Worker <strong>orquestra</strong> e o render roda fora, puxando da fila. Consequência prática: a v1 pode ter o render na máquina do escritório e ainda ser um sistema de verdade.</p>
+</div>
+<div class="g g2" style="margin-top:14px">
+  <div class="q"><h4>Formato do pacote</h4><p>Cada peça sai autoexplicativa — o mesmo padrão do estúdio de briefing, que já se provou. Dá para reexecutar, auditar depois e entregar para outra pessoa continuar.</p></div>
+  <div class="pre"><pre><span class="c"># pacote de uma peça</span>
+peca.json        <span class="c"># roteiro, cena a cena</span>
+origens.json     <span class="c"># cada afirmação e sua fonte</span>
+auditoria.json   <span class="c"># o que foi conferido</span>
+MARCA/  MIDIA/  SAIDA/
+LEIA-PRIMEIRO.md <span class="c"># como remontar do zero</span></pre></div>
+</div>
+</div>
+
+<div class="sectit tec" id="s12"><span class="n">12</span><h2>O motor de IA</h2><span class="sel">Técnico</span></div>
+<div class="tec">
+<p style="margin-bottom:14px">Não é um prompt gigante. São chamadas curtas com papéis distintos — e a parte que mais garante qualidade não é IA nenhuma.</p>
+<div class="fluxo" style="margin-bottom:14px">
+  <span class="p"><b>1.</b> Acervo</span><span class="a"></span>
+  <span class="p"><b>2.</b> Esqueleto</span><span class="a"></span>
+  <span class="p"><b>3.</b> Roteiro <em>com citações</em></span><span class="a"></span>
+  <span class="p"><b>4.</b> Estruturação</span><span class="a"></span>
+  <span class="p" style="border-color:#5A4100"><b>5.</b> Auditoria — <b style="color:#FFB700">código, sem IA</b></span>
+</div>
+<div class="g g3">
+  <div class="q"><h4>Um modelo só</h4><p>Nada de misturar modelo por etapa. Regula-se o gasto pelo nível de esforço: baixo no esqueleto, alto no roteiro, máximo quando o material tem passo de segurança.</p></div>
+  <div class="q"><h4>O manual sempre no mesmo lugar</h4><p>Como as seis peças leem o mesmo manual, ele fica num trecho fixo em cache. Da segunda peça em diante, relê-lo custa <strong>~10% do preço cheio</strong>.</p></div>
+  <div class="q"><h4>Citação e JSON não convivem</h4><p>Restrição real da API: a etapa que precisa de rastreabilidade é separada da que devolve JSON. Ignorar isso quebra na hora de implementar.</p></div>
+</div>
+<div class="dest">
+  <div class="r">Conta de IA</div>
+  <p>A chave deve ser <strong>da Celiware</strong>, nunca do cliente final. Cobra-se pela entrega, não pelo consumo — repassar conta de token transforma o cliente em auditor da margem.</p>
+</div>
+</div>
+
+<div class="sectit tec" id="s13"><span class="n">13</span><h2>Custo de operação</h2><span class="sel">Técnico</span></div>
+<div class="tec">
+<div class="dest al" style="margin:0 0 14px">
+  <div class="r">Leitura obrigatória</div>
+  <p>Isto é <strong>custo de rodar</strong>, não preço de venda, e não entra em documento de cliente. Preço se decide por valor entregue.</p>
+</div>
+<div class="g g3">
+  <div class="kpi"><div class="n">US$ 0,81</div><div class="l">ler o manual e guardar em cache — uma vez por versão</div></div>
+  <div class="kpi"><div class="n">US$ 0,27</div><div class="l">produzir uma peça — esqueleto, roteiro e estruturação</div></div>
+  <div class="kpi" style="border-color:#5A4100"><div class="n">~R$ 13</div><div class="l"><strong>o pacote completo com 6 peças</strong> — metade disso rodando em lote noturno</div></div>
+</div>
+<p style="margin-top:14px;font-size:14px">Premissas: manual de ~100 páginas, 6 peças, câmbio arredondado em R$ 5,50. Fora isso, centavos de geração de voz e hospedagem que segue perto de zero neste volume.</p>
+<div class="chips" style="margin-top:12px">
+  <span>O que custa de verdade: <b>tempo de render</b></span>
+  <span><b>captar imagem real</b> da máquina</span>
+  <span><b>construir</b> a esteira — operar é barato</span>
+</div>
+</div>
+
+<div class="sectit" id="s14"><span class="n">14</span><h2>Ponto de partida</h2></div>
+<div class="g g2">
+  <div class="q ouro"><h4>✅ Já roda hoje</h4>
+    <ul>
+      <li>Transcrição de áudio e vídeo offline</li>
+      <li>Documento e PDF na identidade, reproduzíveis</li>
+      <li>Worker + banco + armazenamento — 3 sistemas no ar</li>
+      <li>Motor de formulário que monta pacote pronto para IA</li>
+      <li>Tour guiado dentro de sistema, com cliente real</li>
+      <li>Assistente de WhatsApp com base de conhecimento</li>
+    </ul>
+  </div>
+  <div class="q"><h4>🔨 Falta construir</h4>
+    <ul>
+      <li>Narração pt-BR e montagem de vídeo — a peça inédita</li>
+      <li>Rastreabilidade e a auditoria que aborta</li>
+      <li>O acervo versionado</li>
+      <li>O painel que amarra projeto, fonte, pedido e peça</li>
+      <li>Os moldes de tela de cada formato</li>
+    </ul>
+  </div>
+</div>
+<div class="dest">
+  <div class="r">Sugestão de primeiro passo</div>
+  <p>Não construir especulativamente. <strong>A próxima entrega que já termina em manual, vídeo e treinamento vira o piloto:</strong> faz-se à mão, mas já na estrutura que o sistema vai usar. O cliente recebe no prazo e saímos com o formato validado por uso real — não por suposição.</p>
+</div>
+
+<div class="sectit" id="s15"><span class="n">15</span><h2>Riscos e limites</h2></div>
+<div class="g g3">
+  <div class="q"><h4>Fonte ruim, peça ruim</h4><p>Manual incompleto não vira treinamento completo. A diferença é que o sistema <em>acusa</em> a lacuna em vez de inventar.</p></div>
+  <div class="q"><h4>Imagem real é humana</h4><p>Sem foto e vídeo da máquina, sobra só texto e esquema. Funciona, mas perde muito.</p></div>
+  <div class="q"><h4>Não substitui o presencial</h4><p>Encurta e prepara a visita. O valor é o cliente chegar já sabendo o básico.</p></div>
+  <div class="q"><h4>Voz sintética é reconhecível</h4><p>Nomes próprios e siglas pedem ajuste de pronúncia caso a caso.</p></div>
+  <div class="q"><h4>Um idioma por vez</h4><p>Português primeiro. Outro idioma é outra derivação — barata, mas quer revisão de quem fala.</p></div>
+  <div class="q"><h4>A responsabilidade continua nossa</h4><p>A auditoria reduz muito o risco, não zera. A aprovação humana é parte do processo, não formalidade.</p></div>
+</div>
+
+<div class="sectit" id="s16"><span class="n">16</span><h2>Decisões que dependem de você</h2></div>
+<p style="margin-bottom:14px">Nenhuma precisa ser respondida agora — mas todas antes da primeira linha de código.</p>
+<div class="g">
+  <div class="passo hum"><div class="n">1</div><div><h3>Ferramenta interna ou produto para vender?</h3><p>Interna: um cliente, uma marca, sem controle de acesso — bem mais simples. Produto: contas separadas, identidade por cliente, cobrança. <strong>Muda quase tudo</strong>, e dá para começar interno virando produto depois — desde que se saiba desde já.</p></div></div>
+  <div class="passo hum"><div class="n">2</div><div><h3>Qual entrega serve de piloto?</h3><p>O ideal é a próxima que já termina em manual, vídeo e treinamento: o material sai de qualquer jeito, e sai validando o formato.</p></div></div>
+  <div class="passo hum"><div class="n">3</div><div><h3>Quanto de “lúdico” é lúdico?</h3><p>Entre “linguagem simples com telas limpas” e “desenho animado com mascote” tem uma faixa larga. A primeira já está desenhada aqui e é barata; a segunda é outro projeto, outro custo, outro prazo.</p></div></div>
+  <div class="passo hum"><div class="n">4</div><div><h3>De quem é a marca do material?</h3><p>Celiware, cliente final ou neutra. Se for do cliente, cada projeto precisa de um kit visual e de alguém para montá-lo.</p></div></div>
+  <div class="passo hum"><div class="n">5</div><div><h3>Quem é dono da conta de IA e da infra?</h3><p>Define quem paga, quem administra e o que acontece com o acervo dos clientes se a parceria mudar de forma.</p></div></div>
+  <div class="passo hum"><div class="n">6</div><div><h3>Quais peças entram na v1?</h3><p>As sete do catálogo são muita coisa para a primeira volta. Meu recorte sugerido: <strong>vídeo, guia rápido e roteiro de treinamento</strong> — os que a entrega já exige de você hoje.</p></div></div>
+</div>
+
+<div class="sectit" id="s17"><span class="n">17</span><h2>Glossário</h2></div>
+<div class="g g2">
+  <div class="q"><dl class="par">
+    <dt>Fonte</dt><dd>o material técnico original — a única coisa aceita como verdade</dd>
+    <dt>Derivado</dt><dd>uma peça gerada da fonte: vídeo, cartaz, FAQ</dd>
+    <dt>Pedido</dt><dd>o formulário curto que diz para quem é e com que limites</dd>
+    <dt>Intocável</dt><dd>trecho que aparece literalmente, sem simplificação</dd>
+    <dt>Esqueleto</dt><dd>a estrutura do material antes do texto final</dd>
+  </dl></div>
+  <div class="q"><dl class="par">
+    <dt>Rastreabilidade</dt><dd>cada frase carregar o trecho de fonte de onde saiu</dd>
+    <dt>Auditoria</dt><dd>a conferência automática antes da montagem</dd>
+    <dt>Render</dt><dd>transformar o roteiro em arquivo final</dd>
+    <dt>Cache</dt><dd>o serviço guardar o manual já lido para não recobrar a leitura</dd>
+    <dt>Token</dt><dd>a unidade que a IA cobra, mais ou menos um pedaço de palavra</dd>
+  </dl></div>
+</div>
+
+<div class="rod">
+  <p><strong style="color:var(--texto)">Fábrica de Conteúdo</strong> — nome de trabalho. Documento de conceito para a reunião com o cliente em 17 de agosto de 2026. Nada foi construído; os custos são estimativas com as premissas da seção 13.</p>
+  <p style="margin-top:6px">Pedro Oliveira · RYZE · ryzecode.com.br</p>
+</div>
+
+</div>
+<script>
+function setModo(m){
+  var r = m === 'reuniao';
+  document.body.classList.toggle('reuniao', r);
+  document.getElementById('bt-r').classList.toggle('on', r);
+  document.getElementById('bt-c').classList.toggle('on', !r);
+  try{ localStorage.setItem('fc-modo', m); }catch(e){}
+}
+try{ if(localStorage.getItem('fc-modo') === 'reuniao') setModo('reuniao'); }catch(e){}
+</script>
+</body>
+</html>

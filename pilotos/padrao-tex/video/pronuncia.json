@@ -1,0 +1,197 @@
+{
+  "_leia": "O que a VOZ lê no lugar do nome escrito. A legenda e a tela mostram sempre o nome exato. Cada grafia foi escolhida por transcrição reversa (faster-whisper large-v3-turbo) entre 2 a 5 candidatas, em 02/10/2026, voz pt-BR-FranciscaNeural a -6%. Os marcados 'imperfeito' ainda soam diferentes para a máquina; a decisão final é de ouvido humano.",
+  "voz": "pt-BR-FranciscaNeural",
+  "ritmo": "-6%",
+  "termos": {
+    "ReadyToTest": {
+      "fala": "Rédi Tu Test",
+      "ouvido": "Red to Test",
+      "estado": "aceitável"
+    },
+    "BlockExhaust": {
+      "fala": "Blók Égzóst",
+      "ouvido": "Block Exhaust",
+      "estado": "ok"
+    },
+    "Busy": {
+      "fala": "Bízi",
+      "ouvido": "busy",
+      "estado": "ok"
+    },
+    "DB_Parts": {
+      "fala": "DB Párts",
+      "ouvido": "DB Parts",
+      "estado": "ok"
+    },
+    "ResultNOK": {
+      "fala": "Result Not OK",
+      "ouvido": "result not ok",
+      "estado": "ok"
+    },
+    "ResultOK": {
+      "fala": "Result OK",
+      "ouvido": "",
+      "estado": "não medido"
+    },
+    "UploadAllFromTex": {
+      "fala": "Upload Ól From Tex",
+      "ouvido": "upload all Frontex",
+      "estado": "aceitável"
+    },
+    "DownloadAllToTex": {
+      "fala": "Download Ól Tu Tex",
+      "ouvido": "Download Autotex",
+      "estado": "aceitável"
+    },
+    "UploadOne": {
+      "fala": "Upload One",
+      "ouvido": "",
+      "estado": "não medido"
+    },
+    "DownloadOne": {
+      "fala": "Download One",
+      "ouvido": "",
+      "estado": "não medido"
+    },
+    "TimeElapsed": {
+      "fala": "Taim Elépst",
+      "ouvido": "tá em elapsed",
+      "estado": "imperfeito"
+    },
+    "G4_ModbusTCP": {
+      "fala": "G4 Mód bâs TCP",
+      "ouvido": "G4 mod base TCP",
+      "estado": "imperfeito"
+    },
+    "Modbus": {
+      "fala": "Mód bâs",
+      "ouvido": "mod base",
+      "estado": "imperfeito"
+    },
+    "FB_Tex": {
+      "fala": "FB Tex",
+      "ouvido": "FB-Tex",
+      "estado": "ok"
+    },
+    "HMI_Link": {
+      "fala": "HMI Link",
+      "ouvido": "HMI link",
+      "estado": "ok"
+    },
+    "TexG4": {
+      "fala": "Tex G4",
+      "ouvido": "Tex G4",
+      "estado": "ok"
+    },
+    "ActualBCD": {
+      "fala": "Actual BCD",
+      "ouvido": "Actual BCD",
+      "estado": "ok"
+    },
+    "Rework": {
+      "fala": "Riwork",
+      "ouvido": "rework",
+      "estado": "ok"
+    },
+    "Profinet": {
+      "fala": "Prófinéti",
+      "ouvido": "Profinet",
+      "estado": "ok"
+    },
+    "G4_Profinet": {
+      "fala": "G4 Prófinéti",
+      "ouvido": "",
+      "estado": "derivado"
+    },
+    "G4_Profinet_Basic": {
+      "fala": "G4 Prófinéti Bêisic",
+      "ouvido": "",
+      "estado": "derivado"
+    },
+    "G4_ModbusTCP_Basic": {
+      "fala": "G4 Mód bâs TCP Bêisic",
+      "ouvido": "G4 Modbus TCP Basic",
+      "estado": "ok"
+    },
+    "PN_IN": {
+      "fala": "P N In",
+      "ouvido": "PNI",
+      "estado": "aceitável"
+    },
+    "PN_OUT": {
+      "fala": "P N Aut",
+      "ouvido": "PNAUT",
+      "estado": "aceitável"
+    },
+    "IN_TexB": {
+      "fala": "In Tex B",
+      "ouvido": "Intex-B",
+      "estado": "aceitável"
+    },
+    "OUT_TexB": {
+      "fala": "Out Tex B",
+      "ouvido": "Alt-Tex B",
+      "estado": "aceitável"
+    },
+    "UDT_TexRegisters": {
+      "fala": "UDT Tex Registers",
+      "ouvido": "UDT-TEX Registers",
+      "estado": "ok"
+    },
+    "TEX-G4": {
+      "fala": "Tex G4",
+      "ouvido": "Tex G4",
+      "estado": "ok"
+    },
+    "GSD": {
+      "fala": "GSD",
+      "ouvido": "GSD",
+      "estado": "ok"
+    },
+    "1.5": {
+      "fala": "um ponto cinco",
+      "ouvido": "1.5",
+      "estado": "ok"
+    },
+    "PLC data types": {
+      "fala": "PLC dêita táips",
+      "ouvido": "PLC Data Types",
+      "estado": "ok"
+    },
+    "Screens": {
+      "fala": "Scríns",
+      "ouvido": "screens",
+      "estado": "ok"
+    },
+    "HMI tags": {
+      "fala": "HMI tégs",
+      "ouvido": "HMI Tags",
+      "estado": "ok"
+    },
+    "Equipamento4": {
+      "fala": "Equipamento quatro",
+      "ouvido": "equipamento 4",
+      "estado": "ok"
+    },
+    "G4-SE": {
+      "fala": "G quatro S E",
+      "ouvido": "G4-SE",
+      "estado": "ok"
+    },
+    "G4-DF": {
+      "fala": "G quatro D F",
+      "ouvido": "G4-DF",
+      "estado": "ok"
+    },
+    "G4-HD": {
+      "fala": "G quatro H D",
+      "ouvido": "G4-HD",
+      "estado": "ok"
+    },
+    "G4-VZ": {
+      "fala": "G quatro V Z",
+      "ouvido": "G4-VZ",
+      "estado": "ok"
+    }
+  }
+}

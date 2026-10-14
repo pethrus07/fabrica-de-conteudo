@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<!-- Renderizador dos vídeos do Padrão TEX. Cada quadro é render(t): o estado inteiro sai do tempo,
+     então o mesmo roteiro gera sempre o mesmo vídeo (nada depende de animação CSS rodando). -->
+<style>
+@font-face{font-family:"Plex";src:url(../marca/fontes/IBMPlexSans-400.ttf);font-weight:400}
+@font-face{font-family:"Plex";src:url(../marca/fontes/IBMPlexSans-500.ttf);font-weight:500}
+@font-face{font-family:"Plex";src:url(../marca/fontes/IBMPlexSans-600.ttf);font-weight:600}
+@font-face{font-family:"Plex";src:url(../marca/fontes/IBMPlexSans-700.ttf);font-weight:700}
+@font-face{font-family:"PlexCond";src:url(../marca/fontes/IBMPlexSansCondensed-Bold.ttf);font-weight:700}
+@font-face{font-family:"PlexMono";src:url(../marca/fontes/IBMPlexMono-Regular.ttf);font-weight:400}
+@font-face{font-family:"PlexMono";src:url(../marca/fontes/IBMPlexMono-SemiBold.ttf);font-weight:600}
+/* o SVG do bloco pede "IBM Plex Sans/Mono" pelo nome */
+@font-face{font-family:"IBM Plex Sans";src:url(../marca/fontes/IBMPlexSans-500.ttf);font-weight:500}
+@font-face{font-family:"IBM Plex Sans";src:url(../marca/fontes/IBMPlexSans-400.ttf);font-weight:400}
+@font-face{font-family:"IBM Plex Sans";src:url(../marca/fontes/IBMPlexSans-600.ttf);font-weight:600}
+@font-face{font-family:"IBM Plex Sans";src:url(../marca/fontes/IBMPlexSans-700.ttf);font-weight:700}
+@font-face{font-family:"IBM Plex Mono";src:url(../marca/fontes/IBMPlexMono-Regular.ttf);font-weight:400}
+:root{--azul:#003895;--azul2:#002566;--dest:#D32E12;--ink:#0F1B26;--txt:#2B3A48;--mut:#566676;--bg:#F3F5F8;--line:#DDE3EA;--fog:#E8EFF5}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);font-family:"Plex";color:var(--txt);-webkit-font-smoothing:antialiased}
+#topo{position:absolute;left:0;top:0;width:1920px;height:84px;display:flex;align-items:center;gap:18px;padding:0 56px;background:#fff;border-bottom:1px solid var(--line);z-index:5}
+#topo img{height:40px}
+#topo .marca{font-weight:700;color:var(--azul);font-size:24px}
+#topo .sep{width:1px;height:30px;background:var(--line)}
+#topo .tit{font-size:24px;color:var(--mut)}
+#topo .prog{margin-left:auto;width:340px;height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+#topo .prog i{display:block;height:100%;background:var(--dest);width:0}
+#palco{position:absolute;left:0;top:84px;width:1920px;height:996px}
+.cena{position:absolute;inset:0;opacity:0}
+.cena.cheia{position:fixed;left:0;top:0;width:1920px;height:1080px;z-index:8}
+/* legenda: até 2 linhas de 42 caracteres, fundo escuro para ler sobre qualquer tela */
+#legenda{position:absolute;left:50%;bottom:48px;transform:translateX(-50%);width:max-content;max-width:1080px;text-align:center;font-size:44px;line-height:1.3;font-weight:500;color:#fff;background:rgba(15,27,38,.88);padding:14px 32px 16px;border-radius:14px;z-index:9;opacity:0}
+#legenda .l{display:block;white-space:nowrap}
+#legenda b{font-family:"PlexMono";font-weight:600;color:#A9C6FF;font-size:.92em}
+
+/* ---- título e fim ---- */
+.cartao{background:var(--azul);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:0 160px}
+.cartao .lg{background:#fff;border-radius:18px;padding:16px 22px;width:max-content;margin-bottom:auto;margin-top:120px}
+.cartao .lg img{height:62px;display:block}
+.cartao .kick::before{content:"";display:block;width:72px;height:7px;border-radius:4px;background:var(--dest);margin-bottom:26px}
+.cartao .kick{font-size:30px;letter-spacing:6px;font-weight:600;color:rgba(255,255,255,.82);text-transform:uppercase}
+.cartao h1{font-family:"PlexCond";font-size:150px;line-height:1;margin-top:14px;letter-spacing:-1px}
+.cartao h2{font-size:46px;font-weight:500;color:rgba(255,255,255,.86);margin-top:22px}
+.cartao .pe{margin-top:auto;margin-bottom:240px;font-size:24px;color:rgba(255,255,255,.6)}
+.cartao .lista{margin-top:40px;display:flex;gap:22px}
+.cartao .lista span{border:2px solid rgba(255,255,255,.35);border-radius:99px;padding:12px 26px;font-size:28px;color:#fff}
+
+/* ---- tela (captura com marcas) ---- */
+.janela{position:absolute;left:140px;top:44px;width:1640px;height:740px;overflow:hidden;border-radius:18px;background:#fff;box-shadow:0 24px 60px rgba(15,27,38,.16);border:1px solid var(--line)}
+.cam{position:absolute;left:0;top:0;transform-origin:0 0}
+.cam img{display:block;image-rendering:auto}
+.mk{position:absolute;border:4px solid var(--dest);border-radius:6px;opacity:0}
+.mk .n{position:absolute;right:-50px;top:50%;width:40px;height:40px;margin-top:-20px;border-radius:99px;background:var(--dest);color:#fff;font-weight:700;font-size:22px;display:flex;align-items:center;justify-content:center;border:3px solid #fff}
+.chip{position:absolute;left:140px;top:-2px;transform:translateY(-100%);opacity:0}
+.rot{position:absolute;left:170px;top:62px;z-index:3;display:flex;align-items:center;gap:16px;background:var(--ink);color:#fff;font-size:30px;font-weight:600;padding:12px 26px 12px 14px;border-radius:99px;opacity:0;box-shadow:0 10px 30px rgba(15,27,38,.25)}
+.rot .n{width:44px;height:44px;border-radius:99px;background:var(--dest);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700}
+
+/* ---- bloco (diagrama vetorial) ---- */
+.diag{position:absolute;left:60px;top:40px;width:1180px;height:760px;overflow:hidden;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:0 24px 60px rgba(15,27,38,.12)}
+.diag .cam svg{display:block}
+.card{position:absolute;left:1290px;top:40px;width:570px;height:760px;border-radius:18px;background:#fff;border:1px solid var(--line);padding:56px 48px;box-shadow:0 24px 60px rgba(15,27,38,.12)}
+.card .g{font-size:24px;letter-spacing:4px;text-transform:uppercase;color:var(--dest);font-weight:600}
+.card .nome{font-family:"PlexMono";font-weight:600;font-size:58px;color:var(--azul2);margin-top:18px;line-height:1.1;word-break:break-all}
+.card .tipo{margin-top:16px;font-size:26px;color:var(--mut)}
+.card .tipo span{display:inline-block;background:var(--fog);color:var(--azul2);border-radius:99px;padding:6px 18px;font-weight:600;margin-right:10px}
+.card .desc{margin-top:34px;font-size:34px;line-height:1.38;color:var(--ink)}
+.card .lista{margin-top:30px;display:flex;flex-direction:column;gap:14px}
+.card .lista div{font-family:"PlexMono";font-size:30px;color:var(--azul2);padding:10px 18px;border-radius:10px;background:var(--fog)}
+
+/* ---- fluxo ---- */
+.fluxo{position:absolute;left:120px;top:60px;width:1680px}
+.fluxo h3{font-size:44px;color:var(--ink);font-weight:700;margin-bottom:34px}
+.etapas{display:grid;grid-template-columns:repeat(4,1fr);gap:30px 54px}
+.et{position:relative;height:236px;border-radius:18px;background:#fff;border:2px solid var(--line);padding:24px 26px;opacity:.18}
+.et .k{font-size:26px;font-weight:700;color:var(--dest)}
+.et .s{font-family:"PlexMono";font-weight:600;font-size:27px;color:var(--azul2);margin-top:8px}
+.et .x{font-size:28px;color:var(--txt);margin-top:10px;line-height:1.3}
+.et.vista{opacity:1}
+.et.ativa{border-color:var(--dest);box-shadow:0 0 0 6px rgba(211,46,18,.18)}
+.et .seta{position:absolute;right:-44px;top:50%;margin-top:-22px;font-size:40px;color:var(--dest);font-weight:700}
+
+/* ---- trocas (upload / download) ---- */
+/* ---- cartão de capítulo ---- */
+.cartao.cap h1{font-size:120px}
+.cartao.cap .kick{font-size:34px}
+/* ---- pastas a copiar ---- */
+.pastas{position:absolute;left:120px;top:50px;width:1680px}
+.pastas h3{font-size:44px;color:var(--ink);font-weight:700;margin-bottom:28px}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px 30px}
+.pc{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px;opacity:.35}
+.pc.vista{opacity:1}
+.pc.ativa{border-color:var(--dest);box-shadow:0 0 0 6px rgba(211,46,18,.18)}
+.pc .pi{height:200px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:10px;background:var(--well,#F7F9FB)}
+.pc .pi img{max-width:100%;max-height:200px;image-rendering:auto}
+.pc .pl{margin-top:14px;font-size:30px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:14px}
+.pc .pl .n{width:42px;height:42px;border-radius:99px;background:var(--azul);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex:none}
+/* ---- escolha do bloco ---- */
+.escolha{position:absolute;left:160px;top:60px;width:1600px}
+.escolha h3{font-size:44px;color:var(--ink);font-weight:700;margin-bottom:34px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.bc{height:560px;border-radius:20px;background:#fff;border:2px solid var(--line);padding:34px 30px;transition:none}
+.bc .pr{font-size:24px;letter-spacing:3px;text-transform:uppercase;color:var(--dest);font-weight:600}
+.bc .nm{font-family:"PlexMono";font-weight:600;font-size:30px;color:var(--azul2);margin-top:14px;line-height:1.15;overflow-wrap:normal;word-break:normal}
+.bc .tg{display:inline-block;margin-top:22px;font-size:22px;font-weight:600;border-radius:99px;padding:8px 18px}
+.bc .tg.sim{background:var(--azul);color:#fff}
+.bc .tg.nao{background:var(--fog);color:var(--azul2)}
+.bc .ds{margin-top:24px;font-size:28px;line-height:1.38;color:var(--ink)}
+.bc.ativa{border-color:var(--dest);box-shadow:0 0 0 6px rgba(211,46,18,.18)}
+.trocas{position:absolute;left:120px;top:80px;width:1680px;height:700px}
+.cx{position:absolute;top:170px;width:470px;height:300px;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.cx b{font-size:48px}
+.cx span{font-size:30px;margin-top:10px}
+.cx.tex{left:0;background:var(--azul);color:#fff}
+.cx.tex span{color:rgba(255,255,255,.75)}
+.cx.clp{right:0;background:#fff;border:3px solid var(--azul);color:var(--azul)}
+.cx.clp span{font-family:"PlexMono";color:var(--azul2)}
+.via{position:absolute;left:510px;width:660px;height:120px;opacity:.15}
+.via.up{top:170px}.via.dn{top:350px}
+.via .lb{font-family:"PlexMono";font-size:30px;font-weight:600;color:var(--azul2);text-align:center}
+.via svg{display:block;margin-top:10px}
+.extra{position:absolute;left:0;right:0;top:560px;text-align:center;opacity:0}
+.extra span{display:inline-block;font-family:"PlexMono";font-size:30px;color:var(--azul2);background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 22px;margin:0 8px}
+/* ---- equipamento: foto do site da Tex + itens que acendem com a fala ---- */
+.equip{position:absolute;left:120px;top:44px;width:1680px;height:740px}
+.equip .ft{position:absolute;left:0;top:0;width:700px;height:740px;border-radius:22px;overflow:hidden;background:#E9ECEF;box-shadow:0 24px 60px rgba(15,27,38,.14)}
+.equip .ft img{width:100%;height:100%;object-fit:cover;transform-origin:50% 55%}
+.equip .tx{position:absolute;left:770px;top:150px;width:910px}
+.equip .kk{font-size:26px;letter-spacing:5px;text-transform:uppercase;color:var(--dest);font-weight:600}
+.equip h3{font-family:"PlexCond";font-size:76px;line-height:1.05;color:var(--azul);margin-top:14px}
+.equip ul{list-style:none;margin-top:34px;display:flex;flex-direction:column;gap:16px}
+.equip li{font-size:34px;line-height:1.3;color:var(--ink);padding:14px 22px 14px 26px;border-left:6px solid var(--line);border-radius:4px;opacity:.28}
+.equip li b{color:var(--azul);font-weight:700}
+.equip li.vista{opacity:1}
+.equip li.ativa{border-left-color:var(--dest);background:#fff;box-shadow:0 8px 24px rgba(15,27,38,.08)}
+/* ---- linha G4: um cartão com foto por modelo ---- */
+.linha{position:absolute;left:120px;top:50px;width:1680px}
+.linha h3{font-size:44px;color:var(--ink);font-weight:700;margin-bottom:30px}
+.lgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.lm{border-radius:20px;background:#fff;border:2px solid var(--line);overflow:hidden;opacity:.4}
+.lm .fi{height:400px;background:#E9ECEF;overflow:hidden}
+.lm .fi img{width:100%;height:100%;object-fit:cover}
+.lm .tt{padding:22px 26px 28px}
+.lm .sg{font-family:"PlexCond";font-size:52px;color:var(--azul);line-height:1}
+.lm .nm{font-size:28px;font-weight:600;color:var(--ink);margin-top:10px}
+.lm .cm{font-size:24px;color:var(--mut);margin-top:6px;line-height:1.3}
+.lm.vista{opacity:1}
+.lm.ativa{border-color:var(--dest);box-shadow:0 0 0 6px rgba(211,46,18,.18)}
+</style>
+</head>
+<body>
+<div id="topo"><img src="../marca/tex/original/TEX-logo.png" alt=""><span class="marca">Padrão TEX</span><span class="sep"></span><span class="tit" id="titv"></span><span class="prog"><i id="prog"></i></span></div>
+<div id="palco"></div>
+<div id="legenda"></div>
+<script>
+let TL, MK, D, ID = {};
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;"}[c]));
+const ease = x => x < 0 ? 0 : x > 1 ? 1 : x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+const lerp = (a, b, k) => a + (b - a) * k;
+let NOMES = [];
+
+function realca(txt) {   // nomes de pino em destaque na legenda (sinalização, Mayer)
+  let h = esc(txt);
+  for (const n of NOMES) h = h.replace(new RegExp(`(^|[^\\w>])(${n})(?![\\w<])`, "g"), "$1<b>$2</b>");
+  return h;
+}
+
+let PROF_ENT = [];
+function init(tl, marcas, dados, svg, svg2) {
+  TL = tl; MK = marcas; D = dados;
+  // entradas do G4_Profinet: as do Modbus sem IP/Port/Connect, mais PN_IN e PN_OUT (mesma regra do diagrama.py)
+  if (dados.profinet) {
+    const pf = dados.profinet.bloco;
+    PROF_ENT = [...dados.entradas.filter(p => !pf.retiradas.includes(p.nome)), ...pf.novas];
+  }
+  const extra = dados.profinet ? [...dados.profinet.bloco.novas.map(p => p.nome), ...dados.profinet.tags.itens.flatMap(t => [t.nome, t.tipo])] : [];
+  const blocos = (dados.blocos_g4 || []).map(b => b.nome);
+  NOMES = [...dados.entradas.map(p => p.nome), ...dados.saidas.map(p => p.nome), ...extra, ...blocos, "FB_Tex", "DB_Parts", "TexG4", "TEX-G4", "G4_ModbusTCP", "true", "TRUE", "NumChamber", "NumTest", "PressureMax"]
+    .sort((a, b) => b.length - a.length).map(n => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  $("#titv").textContent = `${tl.subtitulo} · ${tl.titulo}`;
+  const palco = $("#palco");
+  tl.cenas.forEach((c, i) => {
+    const el = document.createElement("div");
+    el.className = "cena"; el.id = "c" + i;
+    if (c.tipo === "titulo" || c.tipo === "fim") {
+      el.classList.add("cheia", "cartao");
+      el.innerHTML = c.tipo === "titulo"
+        ? `<div class="lg"><img src="../marca/tex/original/TEX-logo.png"></div><div class="kick">${esc(tl.subtitulo)}</div><h1>${esc(tl.titulo)}</h1><h2>Padrão TEX · Tex G4 com CLP Siemens</h2><div class="pe">${esc(dados.produto.fabricante)} · TIA Portal</div>`
+        : `<div class="lg"><img src="../marca/tex/original/TEX-logo.png"></div><div class="kick">Padrão TEX</div><h1>Pronto.</h1><h2>${esc(tl.id === "video-1" ? "Próximo: Operando pelo CLP" : (tl.id === "video-completo" ? "Consulte o manual e os guias rápidos" : "Consulte cada pino no material escrito"))}</h2>${tl.id === "video-completo" ? '<div class="lista"><span>Manual</span><span>Guia · Bloco Modbus</span><span>Guia · Bloco Profinet</span><span>Guia · IHM</span></div>' : '<div class="lista"><span>Guia de integração</span><span>Referência rápida</span></div>'}<div class="pe">Narração sintética</div>`;
+    } else if (c.tipo === "tela") {
+      const f = marcas[c.figura];
+      el.innerHTML = `<div class="janela"><div class="cam"><img src="../trabalho/${f.arquivo}">${f.marcas.map(m => `<div class="mk" data-n="${m.n}"><span class="n">${m.n}</span></div>`).join("")}</div></div><div class="rot"><span class="n"></span><span class="t"></span></div>`;
+    } else if (c.tipo === "bloco") {
+      el.innerHTML = `<div class="diag"><div class="cam">${c.diagrama === "profinet" ? svg2 : svg}</div></div><div class="card"><div class="g"></div><div class="nome"></div><div class="tipo"></div><div class="desc"></div><div class="lista"></div></div>`;
+    } else if (c.tipo === "fluxo") {
+      const p = dados.procedimentos.find(x => x.id === "testar");
+      const et = [...p.fluxo, p.fluxo_fim];
+      el.innerHTML = `<div class="fluxo"><h3>${esc(p.titulo)}</h3><div class="etapas">${et.map((e, k) => `<div class="et" data-k="${k + 1}"><div class="k">${k + 1}</div><div class="s">${esc(e.sinal)}</div><div class="x">${esc(e.texto)}</div>${(k % 4 < 3 && k < et.length - 1) ? '<span class="seta">›</span>' : ""}</div>`).join("")}</div></div>`;
+    } else if (c.tipo === "capitulo") {
+      el.classList.add("cheia", "cartao", "cap");
+      el.innerHTML = `<div class="lg"><img src="../marca/tex/original/TEX-logo.png"></div><div class="kick">Parte ${c.parte} de ${tl.cenas.filter(x => x.tipo === "capitulo").length}</div><h1>${esc(c.titulo)}</h1><div class="pe">Padrão TEX · ${esc(tl.titulo)}</div>`;
+    } else if (c.tipo === "pastas") {
+      const ps = dados.copiar.pastas;
+      el.innerHTML = `<div class="pastas"><h3>Copiar as pastas TexG4 para o seu projeto</h3><div class="pgrid">${ps.map((p, k) => `<div class="pc" data-k="${k + 1}"><div class="pi"><img src="../fonte/padrao-tex_2026-10-02/${p.tela}"></div><div class="pl"><span class="n">${k + 1}</span>${esc(p.onde)}</div></div>`).join("")}</div></div>`;
+    } else if (c.tipo === "escolha") {
+      el.innerHTML = `<div class="escolha"><h3>Qual bloco usar</h3><div class="cards">${dados.blocos_g4.map((b, k) => `<div class="bc" data-k="${k + 1}"><div class="pr">${esc(b.protocolo)}</div><div class="nm">${esc(b.nome).replace(/_/g, "_<wbr>")}</div><div class="tg ${b.pecas ? "sim" : "nao"}">${b.pecas ? "Completo: com upload e download" : "Básico: sem upload e download"}</div><div class="ds">${esc(b.descricao)}</div></div>`).join("")}</div></div>`;
+    } else if (c.tipo === "equip") {
+      const f = dados.equipamento.fotos[c.foto];
+      el.innerHTML = `<div class="equip"><div class="ft"><img src="../${f.arquivo}"></div><div class="tx"><div class="kk">${esc(c.kick || "")}</div><h3>${esc(c.titulo)}</h3><ul>${(c.itens || []).map((x, k) => `<li data-k="${k + 1}">${x}</li>`).join("")}</ul></div></div>`;
+    } else if (c.tipo === "linha") {
+      const ms = dados.equipamento.linha_g4.modelos, fk = {"G4-SE": "frente", "G4-DF": "df", "G4-HD": "hd", "G4-VZ": "vz"};
+      el.innerHTML = `<div class="linha"><h3>${esc(c.titulo || "A linha G4")}</h3><div class="lgrid">${ms.map((m, k) => `<div class="lm" data-k="${k + 1}"><div class="fi"><img src="../${dados.equipamento.fotos[fk[m.sigla]].arquivo}"></div><div class="tt"><div class="sg">${esc(m.sigla)}</div><div class="nm">${esc(m.nome)}</div><div class="cm">${esc(m.como)}</div></div></div>`).join("")}</div></div>`;
+    } else if (c.tipo === "trocas") {
+      const seta = (dir) => `<svg width="660" height="60" viewBox="0 0 660 60"><line x1="${dir > 0 ? 20 : 640}" y1="30" x2="${dir > 0 ? 610 : 50}" y2="30" stroke="#D32E12" stroke-width="10" stroke-linecap="round" stroke-dasharray="26 18" class="fx"/><path d="${dir > 0 ? "M600 8 L645 30 L600 52 Z" : "M60 8 L15 30 L60 52 Z"}" fill="#D32E12"/></svg>`;
+      el.innerHTML = `<div class="trocas"><div class="cx tex"><b>Equipamento Tex</b><span>peças configuradas</span></div><div class="cx clp"><b>CLP</b><span>DB_Parts</span></div><div class="via up"><div class="lb">UploadAllFromTex</div>${seta(1)}</div><div class="via dn"><div class="lb">DownloadAllToTex</div>${seta(-1)}</div><div class="extra"><span>Chamber</span><span>Test</span><span>UploadOne</span><span>DownloadOne</span></div></div>`;
+    }
+    palco.appendChild(el);
+  });
+  // geometria de cada diagrama, POR CENA (Modbus e Profinet têm pinos em linhas diferentes)
+  tl.cenas.forEach((c, i) => {
+    if (c.tipo !== "bloco") return;
+    const el = $("#c" + i), svgEl = el.querySelector(".diag svg"), vb = svgEl.viewBox.baseVal;
+    el._geo = {w: vb.width, h: vb.height, pin: {}};
+    el.querySelectorAll("g[id^=pin-]").forEach(g => { const b = g.getBBox(); el._geo.pin[g.id.slice(4)] = {x: b.x, y: b.y, w: b.width, h: b.height}; });
+  });
+}
+
+// foco ativo de uma cena no instante t: o último segmento com foco que já começou
+function focoEm(c, t) {
+  let f = null, desde = c.ini;
+  for (const s of c.segmentos) if (s.foco && s.ini <= t) { if (!f || f !== s.foco) desde = s.ini; f = s.foco; }
+  return {f, desde};
+}
+function historicoFocos(c, t) { return c.segmentos.filter(s => s.foco && s.ini <= t).map(s => s.foco); }
+
+// câmera: alvo = retângulo (em px do conteúdo) a enquadrar; transição suave de 0,9 s + empurrão lento contínuo
+// prender = true: o deslocamento fica dentro da imagem (sem faixa vazia ao lado); se a imagem ampliada
+// for menor que a área, ela centraliza naquele eixo. Foi a captura da IHM, pequena, que mostrou o defeito.
+function camera(c, t, alvoDe, area, base, maxS = 99, prender = false) {
+  const focos = c.segmentos.filter(s => s.foco).map(s => ({t: s.ini, a: alvoDe(s.foco)}));
+  let ant = base, atual = base, desde = c.ini;
+  for (const k of focos) { if (k.t <= t) { ant = atual; atual = k.a || atual; desde = k.t; } }
+  const k = ease((t - desde) / 0.9);
+  const r = {x: lerp(ant.x, atual.x, k), y: lerp(ant.y, atual.y, k), w: lerp(ant.w, atual.w, k), h: lerp(ant.h, atual.h, k)};
+  const s0 = Math.min(area.w / r.w, area.h / r.h, maxS);
+  const drift = 1 + 0.0045 * Math.min(14, t - desde);          // nunca fica parado: empurrão lento e contínuo (até 6%)
+  const s = s0 * drift;
+  let tx = area.w / 2 - (r.x + r.w / 2) * s, ty = area.h / 2 - (r.y + r.h / 2) * s;
+  if (prender) {
+    const cw = base.w * s, ch = base.h * s;
+    tx = cw >= area.w ? Math.min(0, Math.max(area.w - cw, tx)) : (area.w - cw) / 2;
+    ty = ch >= area.h ? Math.min(0, Math.max(area.h - ch, ty)) : (area.h - ch) / 2;
+  }
+  return `translate(${tx}px,${ty}px) scale(${s})`;
+}
+
+function render(t) {
+  $("#prog").style.width = (100 * t / TL.duracao) + "%";
+  let leg = "";
+  TL.cenas.forEach((c, i) => {
+    const el = $("#c" + i);
+    // transição cruzada: a cena nova surge POR CIMA da anterior nos 0,4 s antes do seu início.
+    // (sumir uma e depois aparecer a outra deixava um quadro só com o fundo: um piscar branco)
+    const X = 0.4;
+    el.style.opacity = (t >= c.ini - X && t < c.fim) ? Math.min(1, ease((t - (c.ini - X)) / X)) : 0;
+    if (t < c.ini - X - 0.05 || t > c.fim + 0.05) return;
+    for (const s of c.segmentos) for (const l of s.legendas) if (l.ini <= t && t < l.fim) leg = l.linhas;
+    const {f} = focoEm(c, t);
+    // cenas sem câmera ganham um avanço lento do conteúdo inteiro: sem isso a tela fica imóvel 5 a 6 s
+    // vaivém lento em velocidade constante (onda triangular de 16 s, até 3%): nunca para e nunca cresce sem limite.
+    // Crescer para sempre empurrava os cartões para fora; parar em 10 s deixava a tela imóvel 6 s.
+    const fase = ((t - c.ini) % 16) / 16;
+    const avanco = 1 + 0.03 * (fase < 0.5 ? 2 * fase : 2 - 2 * fase);
+    const conteudo = c.tipo === "fluxo" ? el.querySelector(".fluxo") : c.tipo === "trocas" ? el.querySelector(".trocas") : c.tipo === "escolha" ? el.querySelector(".escolha") : c.tipo === "pastas" ? el.querySelector(".pastas") : c.tipo === "linha" ? el.querySelector(".linha") : null;
+    if (conteudo) { conteudo.style.transformOrigin = "50% 40%"; conteudo.style.transform = `scale(${avanco})`; }
+    if (c.tipo === "titulo" || c.tipo === "fim" || c.tipo === "capitulo") {
+      el.style.transformOrigin = "30% 50%"; el.style.transform = `scale(${avanco})`;
+      const k = ease((t - c.ini) / 1.2);
+      el.querySelector("h1").style.transform = `translateY(${(1 - k) * 30}px)`;
+      el.querySelector("h1").style.opacity = k;
+    }
+    if (c.tipo === "tela") {
+      const fig = MK[c.figura], img = el.querySelector("img");
+      const area = {w: 1640, h: 740};
+      const fit = Math.min(area.w / fig.largura, area.h / fig.altura);
+      const W = fig.largura * fit, H = fig.altura * fit;
+      img.style.width = W + "px"; img.style.height = H + "px";
+      const box = n => { const m = fig.marcas.find(x => x.n === n); return {x: m.x0 / 100 * W, y: m.y0 / 100 * H, w: (m.x1 - m.x0) / 100 * W, h: (m.y1 - m.y0) / 100 * H}; };
+      const base = {x: 0, y: 0, w: W, h: H};
+      const alvo = foco => { if (!foco || !foco.startsWith("marca:")) return base; const b = box(+foco.split(":")[1]);
+        // enquadra a marca com contexto: no máximo 2,3× de zoom
+        const cw = Math.max(b.w * 3.2, area.w / 2.3), ch = Math.max(b.h * 6, area.h / 2.3);
+        return {x: b.x + b.w / 2 - cw / 2, y: b.y + b.h / 2 - ch / 2, w: cw, h: ch}; };
+      // ampliação real da captura limitada a 2x: acima disso o pixel da tela original aparece.
+      // Captura muito pequena (a da biblioteca tem 271 px) pode pedir mais na cena (zoom_max), senão fica um selo no cartão
+      const tr = camera(c, t, alvo, area, base, (c.zoom_max || 2.0) / fit, true);
+      el.querySelector(".cam").style.transform = tr;
+      // a marca vive dentro da câmera: compensa a escala para o número e a borda terem sempre o mesmo tamanho na tela
+      const sc = +tr.match(/scale\(([\d.]+)\)/)[1];
+      el.querySelectorAll(".mk").forEach(d => { d.style.borderWidth = (4 / sc) + "px"; const n = d.querySelector(".n"); n.style.transform = `scale(${1 / sc})`; n.style.right = (-30 / sc - 20) + "px"; });
+      const hist = historicoFocos(c, t).filter(x => x.startsWith("marca:")).map(x => +x.split(":")[1]);
+      const ativo = f && f.startsWith("marca:") ? +f.split(":")[1] : null;
+      fig.marcas.forEach(m => {
+        const d = el.querySelector(`.mk[data-n="${m.n}"]`), b = box(m.n);
+        Object.assign(d.style, {left: b.x + "px", top: b.y + "px", width: b.w + "px", height: b.h + "px"});
+        d.style.opacity = m.n === ativo ? 1 : hist.includes(m.n) ? .38 : 0;
+      });
+      const rot = el.querySelector(".rot");
+      if (ativo) { const m = fig.marcas.find(x => x.n === ativo); rot.querySelector(".n").textContent = m.n; rot.querySelector(".t").textContent = m.legenda; rot.style.opacity = 1; }
+      else rot.style.opacity = 0;
+    }
+    if (c.tipo === "bloco") {
+      const area = {w: 1180, h: 760};
+      const G = el._geo, ENT = c.diagrama === "profinet" ? PROF_ENT : D.entradas;
+      const fit = Math.min(area.w / G.w, area.h / G.h);
+      const svg = el.querySelector("svg");
+      svg.setAttribute("width", G.w * fit); svg.setAttribute("height", G.h * fit);
+      const P = n => { const b = G.pin[n]; return {x: b.x * fit, y: b.y * fit, w: b.w * fit, h: b.h * fit}; };
+      const base = {x: 0, y: 0, w: G.w * fit, h: G.h * fit};
+      const grupoPins = g => [...ENT, ...D.saidas].filter(p => p.grupo === g).map(p => p.nome);
+      const uniao = bs => { const x0 = Math.min(...bs.map(b => b.x)), y0 = Math.min(...bs.map(b => b.y)), x1 = Math.max(...bs.map(b => b.x + b.w)), y1 = Math.max(...bs.map(b => b.y + b.h)); return {x: x0, y: y0, w: x1 - x0, h: y1 - y0}; };
+      // enquadra o LADO do pino inteiro (entradas: grupo + exemplos + bloco; saídas: bloco + grupo),
+      // e na vertical umas 9 linhas em volta, para o pino nunca aparecer sem contexto
+      const entrada = n => ENT.some(p => p.nome === n);
+      const caixa = G.pin["ENO"], caixaE = G.pin["EN"];
+      const alvo = foco => {
+        if (!foco) return base;
+        const nomes = foco.startsWith("pin:") ? [foco.slice(4)] : grupoPins(foco.slice(6));
+        const b = uniao(nomes.map(P));
+        const ladoE = entrada(nomes[0]);
+        // borda do bloco: o destaque de ENO começa 175 px antes da caixa; o de EN termina 175 px depois dela
+        const bx1 = caixa.x + 175, bx0 = caixaE.x + caixaE.w - 175;
+        const x0 = ladoE ? 0 : (bx0 - 24) * fit, x1 = ladoE ? (bx1 + 24) * fit : base.w;
+        const ch = Math.max(b.h * 1.6, P(nomes[0]).h * 9);
+        return {x: x0, y: b.y + b.h / 2 - ch / 2, w: x1 - x0, h: ch};
+      };
+      el.querySelector(".cam").style.transform = camera(c, t, alvo, area, base);
+      el.querySelectorAll("g[id^=pin-]").forEach(g => g.classList.remove("on"));
+      const card = el.querySelector(".card");
+      if (f && f.startsWith("pin:")) {
+        const nome = f.slice(4); el.querySelector(`#pin-${nome}`).classList.add("on");
+        const p = [...ENT, ...D.saidas].find(x => x.nome === nome);
+        const lado = ENT.includes(p) ? "Entrada" : "Saída";
+        card.querySelector(".g").textContent = D.grupos[p.grupo];
+        card.querySelector(".nome").textContent = p.nome;
+        card.querySelector(".tipo").innerHTML = `<span>${lado}</span>${esc(p.tipo)}`;
+        card.querySelector(".desc").textContent = p.descricao;
+        card.querySelector(".lista").innerHTML = "";
+      } else if (f && f.startsWith("grupo:")) {
+        const g = f.slice(6);
+        grupoPins(g).forEach(n => el.querySelector(`#pin-${n}`).classList.add("on"));
+        card.querySelector(".g").textContent = ENT.some(p => p.grupo === g) ? "Entradas" : "Saídas";
+        card.querySelector(".nome").textContent = D.grupos[g];
+        card.querySelector(".tipo").innerHTML = "";
+        card.querySelector(".desc").textContent = "";
+        card.querySelector(".lista").innerHTML = grupoPins(g).map(n => `<div>${esc(n)}</div>`).join("");
+      }
+      const {desde} = focoEm(c, t);
+      const k = ease((t - desde) / 0.5);
+      card.style.opacity = f ? k : 0; card.style.transform = `translateY(${(1 - k) * 18}px)`;
+    }
+    if (c.tipo === "pastas") {
+      const n = f ? +f.split(":")[1] : 0;
+      el.querySelectorAll(".pc").forEach(e => { const k = +e.dataset.k; e.classList.toggle("vista", n === 0 || k <= n); e.classList.toggle("ativa", k === n); });
+    }
+    if (c.tipo === "escolha") {
+      const n = f ? +f.split(":")[1] : 0;
+      el.querySelectorAll(".bc").forEach(e => { const k = +e.dataset.k; e.classList.toggle("ativa", k === n); e.style.opacity = (n === 0 || k === n) ? 1 : 0.42; });
+    }
+    if (c.tipo === "fluxo") {
+      const n = f ? +f.split(":")[1] : 0;
+      el.querySelectorAll(".et").forEach(e => { const k = +e.dataset.k; e.classList.toggle("vista", k <= n); e.classList.toggle("ativa", k === n || (n === 2 && k === 1)); });
+    }
+    if (c.tipo === "equip") {
+      // aproximação lenta e contínua da foto (até 8% na cena): a foto nunca fica parada
+      const k = Math.min(1, (t - c.ini) / Math.max(1, c.fim - c.ini));
+      el.querySelector(".ft img").style.transform = `scale(${1.02 + 0.06 * k}) translateY(${-10 * k}px)`;
+      const n = f && f.startsWith("item:") ? +f.split(":")[1] : 0;
+      el.querySelectorAll(".equip li").forEach(e => { const j = +e.dataset.k; e.classList.toggle("vista", j <= n || f === "tudo"); e.classList.toggle("ativa", j === n); });
+      const tx = el.querySelector(".tx"), kk = ease((t - c.ini) / 0.8);
+      tx.style.opacity = kk; tx.style.transform = `translateX(${(1 - kk) * 30}px)`;
+    }
+    if (c.tipo === "linha") {
+      const n = f && f.startsWith("modelo:") ? +f.split(":")[1] : 0;
+      el.querySelectorAll(".lm").forEach(e => { const j = +e.dataset.k; e.classList.toggle("vista", n === 0 || j <= n || f === "tudo"); e.classList.toggle("ativa", j === n); });
+      // só trocar o destaque a cada frase deixava a tela imóvel 4 a 5 s (freezedetect reprovou): foto em aproximação lenta
+      const k = Math.min(1, (t - c.ini) / Math.max(1, c.fim - c.ini));
+      el.querySelectorAll(".lm .fi img").forEach(i => i.style.transform = `scale(${1.02 + 0.08 * k})`);
+    }
+    if (c.tipo === "trocas") {
+      const hist = historicoFocos(c, t);
+      const on = x => hist.includes("troca:" + x);
+      el.querySelector(".via.up").style.opacity = on("upload") ? 1 : .15;
+      el.querySelector(".via.dn").style.opacity = on("download") ? 1 : .15;
+      el.querySelector(".extra").style.opacity = on("um") ? 1 : 0;
+      el.querySelectorAll(".fx").forEach((l, k) => l.style.strokeDashoffset = (k === 0 ? -1 : 1) * t * 70);
+    }
+  });
+  const L = $("#legenda");
+  L.innerHTML = (Array.isArray(leg) ? leg : [leg]).map(l => `<span class="l">${realca(l)}</span>`).join(""); L.style.opacity = leg ? 1 : 0;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1255 @@
+{
+  "_leia": "Roteiros dos 2 vídeos. 'texto' é o que aparece na legenda (nome de pino exato); a voz lê o mesmo texto com o vocabulário falado de pronuncia.json. 'foco' acende um elemento no início do segmento. Toda afirmação vem de dados/padrao-tex.json (que aponta o áudio/minuto do cliente). Frases de no máximo 20 palavras, imperativo, segunda pessoa (ASD-STE100 5.1–5.3).",
+  "videos": [
+    {
+      "id": "video-1",
+      "titulo": "Montando a comunicação",
+      "subtitulo": "Vídeo 1 de 2",
+      "cenas": [
+        {
+          "tipo": "titulo",
+          "segmentos": [
+            {
+              "texto": "Neste vídeo, você liga um equipamento Tex G4 a um CLP Siemens."
+            },
+            {
+              "texto": "Por Modbus TCP ou por Profinet, com o Padrão TEX, no TIA Portal."
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "arvore",
+          "segmentos": [
+            {
+              "texto": "Na árvore do projeto, tudo o que comanda os equipamentos Tex fica na pasta TexG4.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Em Controle Equipamentos ficam a FB_Tex e a DB Tex. Elas chamam o bloco de cada equipamento.",
+              "foco": "marca:2"
+            },
+            {
+              "texto": "Em Banco de dados peças fica o DB_Parts, com os dados das peças.",
+              "foco": "marca:3"
+            },
+            {
+              "texto": "A pasta Library traz a biblioteca pronta. Não altere esses blocos.",
+              "foco": "marca:4"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "main",
+          "segmentos": [
+            {
+              "texto": "Abra o bloco Main do seu programa.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Coloque nele a chamada da FB_Tex, com a DB Tex. É ela que chama todos os equipamentos.",
+              "foco": "marca:2"
+            }
+          ]
+        },
+        {
+          "tipo": "escolha",
+          "segmentos": [
+            {
+              "texto": "Antes de montar, escolha o bloco. Existem quatro blocos de comunicação G4.",
+              "foco": "card:0"
+            },
+            {
+              "texto": "O G4_ModbusTCP é o completo: comandos, leituras e os dados das peças.",
+              "foco": "card:1"
+            },
+            {
+              "texto": "O G4_ModbusTCP_Basic faz só o básico, sem upload nem download das peças.",
+              "foco": "card:2"
+            },
+            {
+              "texto": "O G4_Profinet é completo como o Modbus, mas fala Profinet.",
+              "foco": "card:3"
+            },
+            {
+              "texto": "E o G4_Profinet_Basic é o Profinet sem os parâmetros do equipamento.",
+              "foco": "card:4"
+            },
+            {
+              "texto": "Primeiro, você monta o Modbus TCP. Depois, o Profinet."
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "fbvazia",
+          "segmentos": [
+            {
+              "texto": "Agora abra a FB_Tex. No padrão, ela já vem com um equipamento de teste montado.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Uma FB_Tex pode ter um ou mais equipamentos.",
+              "foco": "marca:2"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "adicionando",
+          "segmentos": [
+            {
+              "texto": "Na pasta Library, escolha o G4_ModbusTCP. É o bloco com a comunicação completa por Modbus TCP.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Agora, arraste o bloco para a primeira network. Depois, preencha as entradas.",
+              "foco": "marca:2"
+            }
+          ]
+        },
+        {
+          "tipo": "bloco",
+          "segmentos": [
+            {
+              "texto": "As cinco primeiras entradas dizem com qual equipamento o bloco conversa.",
+              "foco": "grupo:comunicacao"
+            },
+            {
+              "texto": "Em Modelo, coloque as duas letras do modelo do G4.",
+              "foco": "pin:Modelo"
+            },
+            {
+              "texto": "Em Name, dê um nome ao equipamento. É o nome que aparece na IHM.",
+              "foco": "pin:Name"
+            },
+            {
+              "texto": "Em IP, coloque o endereço IP do equipamento Tex.",
+              "foco": "pin:IP"
+            },
+            {
+              "texto": "Em Port, a porta. A porta padrão do Modbus é 502.",
+              "foco": "pin:Port"
+            },
+            {
+              "texto": "E em Connect, coloque true para ligar a conexão.",
+              "foco": "pin:Connect"
+            }
+          ]
+        },
+        {
+          "tipo": "bloco",
+          "segmentos": [
+            {
+              "texto": "Em Part, ligue uma posição do banco de peças, o DB_Parts.",
+              "foco": "pin:Part"
+            },
+            {
+              "texto": "É ali que ficam os dados da peça.",
+              "foco": "pin:Part"
+            },
+            {
+              "texto": "Em HMI_Link, ligue a estrutura HMI_Link do próprio bloco.",
+              "foco": "pin:HMI_Link"
+            },
+            {
+              "texto": "Assim a IHM conversa com este e com os outros blocos Tex.",
+              "foco": "pin:HMI_Link"
+            },
+            {
+              "texto": "Com Connect em true, a saída Connected fica true quando o equipamento está conectado.",
+              "foco": "pin:Connected"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "rede",
+          "segmentos": [
+            {
+              "texto": "Agora, o Profinet. Inclua o GSD do Tex no TIA Portal."
+            },
+            {
+              "texto": "Coloque o TEX-G4 na mesma rede do CLP.",
+              "foco": "marca:2"
+            },
+            {
+              "texto": "No padrão, a IHM também está nessa rede.",
+              "foco": "marca:3"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "gsd",
+          "segmentos": [
+            {
+              "texto": "No TEX-G4, o módulo tem 256 bytes de entrada e de saída.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "As entradas e as saídas começam no endereço 300.",
+              "foco": "marca:2"
+            },
+            {
+              "texto": "O gateway Profinet fica no IP final 208. Ele conversa por Modbus com o Tex, no 205.",
+              "foco": "marca:3"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "tags",
+          "segmentos": [
+            {
+              "texto": "Nas PLC tags, crie IN_TexB e OUT_TexB, do tipo UDT_TexRegisters.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "As duas começam no endereço 308.",
+              "foco": "marca:2"
+            }
+          ]
+        },
+        {
+          "tipo": "bloco",
+          "diagrama": "profinet",
+          "segmentos": [
+            {
+              "texto": "Na FB_Tex, use o G4_Profinet. Ele não tem IP, Port nem Connect: isso é só do Modbus.",
+              "foco": "grupo:comunicacao"
+            },
+            {
+              "texto": "Ligue IN_TexB em PN_IN.",
+              "foco": "pin:PN_IN"
+            },
+            {
+              "texto": "E OUT_TexB em PN_OUT. As outras entradas são iguais às do Modbus TCP.",
+              "foco": "pin:PN_OUT"
+            }
+          ]
+        },
+        {
+          "tipo": "fim",
+          "segmentos": [
+            {
+              "texto": "Pronto: o equipamento está ligado ao CLP."
+            },
+            {
+              "texto": "No próximo vídeo, você inicia um teste de estanqueidade."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "video-2",
+      "titulo": "Operando pelo CLP",
+      "subtitulo": "Vídeo 2 de 2",
+      "cenas": [
+        {
+          "tipo": "titulo",
+          "segmentos": [
+            {
+              "texto": "Neste vídeo, você comanda um teste de estanqueidade pelo CLP e lê o resultado."
+            }
+          ]
+        },
+        {
+          "tipo": "bloco",
+          "segmentos": [
+            {
+              "texto": "As entradas de comando ficam logo abaixo da comunicação.",
+              "foco": "grupo:comando"
+            },
+            {
+              "texto": "Automatic diz se a máquina está em automático. Só assim o CLP comanda o Tex.",
+              "foco": "pin:Automatic"
+            },
+            {
+              "texto": "Em manual, quem acessa o equipamento é a IHM.",
+              "foco": "pin:Automatic"
+            },
+            {
+              "texto": "Em BCD, coloque o número da peça. Para testar a peça 3, coloque 3.",
+              "foco": "pin:BCD"
+            },
+            {
+              "texto": "Start inicia o teste.",
+              "foco": "pin:Start"
+            },
+            {
+              "texto": "Stop para o teste em andamento.",
+              "foco": "pin:Stop"
+            },
+            {
+              "texto": "BlockExhaust ativa ou não a exaustão depois do teste.",
+              "foco": "pin:BlockExhaust"
+            },
+            {
+              "texto": "E Reset reinicia o equipamento Tex, quando necessário.",
+              "foco": "pin:Reset"
+            }
+          ]
+        },
+        {
+          "tipo": "fluxo",
+          "segmentos": [
+            {
+              "texto": "Para iniciar um teste, siga esta sequência.",
+              "foco": "etapa:0"
+            },
+            {
+              "texto": "Com o bloco conectado, coloque Automatic em true.",
+              "foco": "etapa:2"
+            },
+            {
+              "texto": "Coloque em BCD o número da peça.",
+              "foco": "etapa:3"
+            },
+            {
+              "texto": "Confira se a saída ReadyToTest está true.",
+              "foco": "etapa:4"
+            },
+            {
+              "texto": "Então ative a entrada Start. Só envie Start com ReadyToTest em true.",
+              "foco": "etapa:5"
+            },
+            {
+              "texto": "Busy fica true enquanto o Tex testa.",
+              "foco": "etapa:6"
+            },
+            {
+              "texto": "No fim, ResultOK ou ResultNOK indica o resultado.",
+              "foco": "etapa:7"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "monitorado",
+          "segmentos": [
+            {
+              "texto": "Este é o bloco monitorado logo depois do Start."
+            },
+            {
+              "texto": "Automatic está em TRUE.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Start também.",
+              "foco": "marca:2"
+            },
+            {
+              "texto": "Busy em TRUE: o Tex está testando.",
+              "foco": "marca:3"
+            },
+            {
+              "texto": "E ActualBCD mostra a peça chamada: a peça 1.",
+              "foco": "marca:4"
+            }
+          ]
+        },
+        {
+          "tipo": "bloco",
+          "segmentos": [
+            {
+              "texto": "Durante e depois do teste, leia as saídas.",
+              "foco": "grupo:resultado"
+            },
+            {
+              "texto": "ResultOK indica que o último teste deu resultado OK.",
+              "foco": "pin:ResultOK"
+            },
+            {
+              "texto": "ResultNOK indica que não deu.",
+              "foco": "pin:ResultNOK"
+            },
+            {
+              "texto": "Rework fica true quando a peça está marcada como retrabalho.",
+              "foco": "pin:Rework"
+            },
+            {
+              "texto": "Pressure mostra a pressão atual.",
+              "foco": "pin:Pressure"
+            },
+            {
+              "texto": "E Leak, o vazamento calculado pelo Tex.",
+              "foco": "pin:Leak"
+            },
+            {
+              "texto": "TimeElapsed conta o tempo desde o início do teste.",
+              "foco": "pin:TimeElapsed"
+            },
+            {
+              "texto": "State mostra a etapa: esvaziando, enchendo, equalizando ou medindo.",
+              "foco": "pin:State"
+            }
+          ]
+        },
+        {
+          "tipo": "trocas",
+          "segmentos": [
+            {
+              "texto": "Os parâmetros de teste de cada peça ficam guardados no equipamento Tex.",
+              "foco": "troca:0"
+            },
+            {
+              "texto": "Coloque em BCD o número da peça. Um pulso em UploadAllFromTex traz todos os dados para o DB_Parts.",
+              "foco": "troca:upload"
+            },
+            {
+              "texto": "Altere o que precisar. Um pulso em DownloadAllToTex envia de volta para o Tex.",
+              "foco": "troca:download"
+            },
+            {
+              "texto": "Para um teste só, escolha Chamber e Test, e use UploadOne e DownloadOne.",
+              "foco": "troca:um"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "dbparts",
+          "segmentos": [
+            {
+              "texto": "Veja o upload da peça 1, no DB_Parts. Antes, ela estava toda zerada."
+            },
+            {
+              "texto": "Depois do upload, BCD mostra 1.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "NumChamber e NumTest mostram 3.",
+              "foco": "marca:2"
+            },
+            {
+              "texto": "E PressureMax mostra 1.5. Os valores vieram do equipamento.",
+              "foco": "marca:4"
+            }
+          ]
+        },
+        {
+          "tipo": "fim",
+          "segmentos": [
+            {
+              "texto": "Pronto: você comanda o teste pelo CLP e lê o resultado."
+            },
+            {
+              "texto": "Os detalhes de cada pino estão no Guia de integração."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "video-completo",
+      "titulo": "Do projeto ao teste",
+      "subtitulo": "Padrão TEX",
+      "cenas": [
+        {
+          "tipo": "titulo",
+          "segmentos": [
+            {
+              "texto": "Neste vídeo, você conhece o equipamento Tex G4, leva o Padrão TEX para o seu projeto e liga o G4 ao CLP Siemens."
+            },
+            {
+              "texto": "Por Modbus TCP ou por Profinet, e opera pelo CLP ou pela IHM."
+            }
+          ]
+        },
+        {
+          "tipo": "capitulo",
+          "parte": 1,
+          "titulo": "O equipamento Tex G4",
+          "segmentos": [
+            {
+              "texto": "Parte 1: o equipamento Tex G4."
+            }
+          ]
+        },
+        {
+          "tipo": "equip",
+          "foto": "perspectiva",
+          "kick": "Tex G4",
+          "titulo": "Teste de estanqueidade",
+          "itens": [
+            "Verifica se a peça <b>vaza</b>",
+            "Pressuriza, estabiliza e <b>mede</b> a variação",
+            "<b>Aprova ou reprova</b> a peça sozinho"
+          ],
+          "segmentos": [
+            {
+              "texto": "O Tex G4 é um equipamento de teste de estanqueidade: ele verifica se uma peça vaza.",
+              "foco": "item:1"
+            },
+            {
+              "texto": "No G4-SE, por exemplo, ele pressuriza a peça, espera a pressão estabilizar e mede a variação.",
+              "foco": "item:2"
+            },
+            {
+              "texto": "Depois, compara com os limites configurados e aprova ou reprova a peça sozinho.",
+              "foco": "item:3"
+            }
+          ]
+        },
+        {
+          "tipo": "equip",
+          "foto": "frente",
+          "kick": "Tex Equipamentos Eletrônicos",
+          "titulo": "Desde 1997",
+          "itens": [
+            "<b>1997</b> · Fundação, em São Paulo",
+            "<b>2015</b> · Lançamento da linha G4"
+          ],
+          "segmentos": [
+            {
+              "texto": "A Tex fabrica equipamentos de medição e de teste de vazamento desde 1997.",
+              "foco": "item:1"
+            },
+            {
+              "texto": "Em 2015, lançou a quarta geração dos seus equipamentos: a linha G4.",
+              "foco": "item:2"
+            }
+          ]
+        },
+        {
+          "tipo": "linha",
+          "titulo": "A linha G4: um modelo para cada tipo de teste",
+          "segmentos": [
+            {
+              "texto": "A linha G4 tem vários modelos, um para cada tipo de teste."
+            },
+            {
+              "texto": "O G4-SE mede a queda de pressão na peça.",
+              "foco": "modelo:1"
+            },
+            {
+              "texto": "O G4-DF compara a pressão da peça com a de uma referência.",
+              "foco": "modelo:2"
+            },
+            {
+              "texto": "O G4-HD é para vazamentos muito pequenos.",
+              "foco": "modelo:3"
+            },
+            {
+              "texto": "E o G4-VZ mede a vazão que passa pela peça.",
+              "foco": "modelo:4"
+            }
+          ]
+        },
+        {
+          "tipo": "equip",
+          "foto": "traseira",
+          "kick": "Comunicação",
+          "titulo": "Ligado ao CLP pela rede",
+          "itens": [
+            "Porta <b>Ethernet</b> na traseira",
+            "<b>Modbus TCP</b> ou <b>Profinet</b>",
+            "O CLP <b>comanda</b> o teste e <b>lê</b> o resultado"
+          ],
+          "segmentos": [
+            {
+              "texto": "Na traseira, a porta Ethernet liga o equipamento à rede do CLP.",
+              "foco": "item:1"
+            },
+            {
+              "texto": "A comunicação é por Modbus TCP ou por Profinet, conforme o modelo.",
+              "foco": "item:2"
+            },
+            {
+              "texto": "Com o Padrão TEX, o CLP Siemens comanda o teste e lê o resultado pela rede.",
+              "foco": "item:3"
+            }
+          ]
+        },
+        {
+          "tipo": "capitulo",
+          "parte": 2,
+          "titulo": "Conhecendo o Padrão TEX",
+          "segmentos": [
+            {
+              "texto": "Parte 2: conhecendo o Padrão TEX."
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "arvore",
+          "segmentos": [
+            {
+              "texto": "Na árvore do projeto, tudo o que comanda os equipamentos Tex fica na pasta TexG4.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Em Controle Equipamentos ficam a FB_Tex e a DB Tex. Elas chamam o bloco de cada equipamento.",
+              "foco": "marca:2"
+            },
+            {
+              "texto": "Em Banco de dados peças fica o DB_Parts, com os dados das peças.",
+              "foco": "marca:3"
+            },
+            {
+              "texto": "A pasta Library traz a biblioteca pronta. Não altere esses blocos.",
+              "foco": "marca:4"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "biblioteca",
+          "zoom_max": 3.0,
+          "segmentos": [
+            {
+              "texto": "Na pasta Library ficam os blocos que fazem a comunicação."
+            },
+            {
+              "texto": "Para Modbus TCP, o G4_ModbusTCP.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Para Profinet, o G4_Profinet.",
+              "foco": "marca:3"
+            },
+            {
+              "texto": "Mantenha esses blocos como vieram no Padrão TEX mais atual que você baixou.",
+              "foco": "tudo"
+            }
+          ]
+        },
+        {
+          "tipo": "escolha",
+          "segmentos": [
+            {
+              "texto": "Antes de montar, escolha o bloco. Existem quatro blocos de comunicação G4.",
+              "foco": "card:0"
+            },
+            {
+              "texto": "O G4_ModbusTCP é o completo: comandos, leituras e os dados das peças.",
+              "foco": "card:1"
+            },
+            {
+              "texto": "O G4_ModbusTCP_Basic faz só o básico, sem upload nem download das peças.",
+              "foco": "card:2"
+            },
+            {
+              "texto": "O G4_Profinet é completo como o Modbus, mas fala Profinet.",
+              "foco": "card:3"
+            },
+            {
+              "texto": "E o G4_Profinet_Basic é o Profinet sem os parâmetros do equipamento.",
+              "foco": "card:4"
+            },
+            {
+              "texto": "Primeiro, o Modbus TCP. Depois, o Profinet."
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "debug",
+          "segmentos": [
+            {
+              "texto": "O DB Debug simula as entradas do bloco, para testes.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "No seu projeto, troque essas variáveis pela lógica de acionamento da sua máquina.",
+              "foco": "marca:2"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "dbtex",
+          "segmentos": [
+            {
+              "texto": "O DB Tex guarda os dados de todos os equipamentos."
+            },
+            {
+              "texto": "O HMI_Link liga a IHM aos equipamentos. Não altere essa variável.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Depois vem um elemento para cada equipamento. No exemplo são quatro, um de cada bloco.",
+              "foco": "marca:2"
+            },
+            {
+              "texto": "O tipo de cada um é o bloco do equipamento.",
+              "foco": "marca:3"
+            },
+            {
+              "texto": "Por esses elementos, você acessa as entradas, as saídas e as outras propriedades.",
+              "foco": "tudo"
+            }
+          ]
+        },
+        {
+          "tipo": "capitulo",
+          "parte": 3,
+          "titulo": "Levar o padrão para o seu projeto",
+          "segmentos": [
+            {
+              "texto": "Parte 3: levar o padrão para o seu projeto."
+            }
+          ]
+        },
+        {
+          "tipo": "pastas",
+          "segmentos": [
+            {
+              "texto": "Com os dois projetos abertos no TIA Portal, copie as pastas TexG4 para o seu projeto.",
+              "foco": "pasta:0"
+            },
+            {
+              "texto": "Copie a pasta TexG4 de Program blocks.",
+              "foco": "pasta:1"
+            },
+            {
+              "texto": "Depois, a de PLC tags.",
+              "foco": "pasta:2"
+            },
+            {
+              "texto": "E a de PLC data types.",
+              "foco": "pasta:3"
+            },
+            {
+              "texto": "Na IHM, copie a pasta TexG4 de Screens.",
+              "foco": "pasta:4"
+            },
+            {
+              "texto": "E a de HMI tags.",
+              "foco": "pasta:5"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "main",
+          "segmentos": [
+            {
+              "texto": "Abra o bloco Main do seu programa.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Coloque nele a chamada da FB_Tex, com a DB Tex. É ela que chama todos os equipamentos.",
+              "foco": "marca:2"
+            }
+          ]
+        },
+        {
+          "tipo": "capitulo",
+          "parte": 4,
+          "titulo": "Comunicação por Modbus TCP",
+          "segmentos": [
+            {
+              "texto": "Parte 4: comunicação por Modbus TCP."
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "fbvazia",
+          "segmentos": [
+            {
+              "texto": "Agora abra a FB_Tex. No padrão, ela já vem com um equipamento de teste montado.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Uma FB_Tex pode ter um ou mais equipamentos.",
+              "foco": "marca:2"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "adicionando",
+          "segmentos": [
+            {
+              "texto": "Na pasta Library, escolha o G4_ModbusTCP. É o bloco com a comunicação completa por Modbus TCP.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Agora, arraste o bloco para a primeira network. Depois, preencha as entradas.",
+              "foco": "marca:2"
+            }
+          ]
+        },
+        {
+          "tipo": "bloco",
+          "segmentos": [
+            {
+              "texto": "As cinco primeiras entradas dizem com qual equipamento o bloco conversa.",
+              "foco": "grupo:comunicacao"
+            },
+            {
+              "texto": "Em Modelo, coloque as duas letras do modelo do G4.",
+              "foco": "pin:Modelo"
+            },
+            {
+              "texto": "Em Name, dê um nome ao equipamento. É o nome que aparece na IHM.",
+              "foco": "pin:Name"
+            },
+            {
+              "texto": "Em IP, coloque o endereço IP do equipamento Tex.",
+              "foco": "pin:IP"
+            },
+            {
+              "texto": "Em Port, a porta. A porta padrão do Modbus é 502.",
+              "foco": "pin:Port"
+            },
+            {
+              "texto": "E em Connect, coloque true para ligar a conexão.",
+              "foco": "pin:Connect"
+            }
+          ]
+        },
+        {
+          "tipo": "bloco",
+          "segmentos": [
+            {
+              "texto": "Em Part, ligue uma posição do banco de peças, o DB_Parts.",
+              "foco": "pin:Part"
+            },
+            {
+              "texto": "É ali que ficam os dados da peça.",
+              "foco": "pin:Part"
+            },
+            {
+              "texto": "Em HMI_Link, ligue a estrutura HMI_Link do próprio bloco.",
+              "foco": "pin:HMI_Link"
+            },
+            {
+              "texto": "Assim a IHM conversa com este e com os outros blocos Tex.",
+              "foco": "pin:HMI_Link"
+            },
+            {
+              "texto": "Com Connect em true, a saída Connected fica true quando o equipamento está conectado.",
+              "foco": "pin:Connected"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "basicmb",
+          "segmentos": [
+            {
+              "texto": "O G4_ModbusTCP_Basic é igual, sem as seis entradas de upload e download das peças.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Depois de Reset, ele vai direto para Part e HMI_Link.",
+              "foco": "marca:2"
+            }
+          ]
+        },
+        {
+          "tipo": "capitulo",
+          "parte": 5,
+          "titulo": "Comunicação por Profinet",
+          "segmentos": [
+            {
+              "texto": "Parte 5: comunicação por Profinet."
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "rede",
+          "segmentos": [
+            {
+              "texto": "Inclua o GSD do Tex no TIA Portal."
+            },
+            {
+              "texto": "Coloque o TEX-G4 na mesma rede do CLP.",
+              "foco": "marca:2"
+            },
+            {
+              "texto": "No padrão, a IHM também está nessa rede.",
+              "foco": "marca:3"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "gsd",
+          "segmentos": [
+            {
+              "texto": "No TEX-G4, o módulo tem 256 bytes de entrada e de saída.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "As entradas e as saídas começam no endereço 300.",
+              "foco": "marca:2"
+            },
+            {
+              "texto": "O gateway Profinet fica no IP final 208. Ele conversa por Modbus com o Tex, no 205.",
+              "foco": "marca:3"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "tags",
+          "segmentos": [
+            {
+              "texto": "Nas PLC tags, crie IN_TexB e OUT_TexB, do tipo UDT_TexRegisters.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "As duas começam no endereço 308.",
+              "foco": "marca:2"
+            }
+          ]
+        },
+        {
+          "tipo": "bloco",
+          "diagrama": "profinet",
+          "segmentos": [
+            {
+              "texto": "Na FB_Tex, use o G4_Profinet. Ele não tem IP, Port nem Connect: isso é só do Modbus.",
+              "foco": "grupo:comunicacao"
+            },
+            {
+              "texto": "Ligue IN_TexB em PN_IN.",
+              "foco": "pin:PN_IN"
+            },
+            {
+              "texto": "E OUT_TexB em PN_OUT. As outras entradas são iguais às do Modbus TCP.",
+              "foco": "pin:PN_OUT"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "basicpn",
+          "segmentos": [
+            {
+              "texto": "O G4_Profinet_Basic também não tem as seis entradas de upload e download.",
+              "foco": "marca:1"
+            }
+          ]
+        },
+        {
+          "tipo": "capitulo",
+          "parte": 6,
+          "titulo": "Operando pelo CLP",
+          "segmentos": [
+            {
+              "texto": "Parte 6: operando pelo CLP."
+            }
+          ]
+        },
+        {
+          "tipo": "bloco",
+          "segmentos": [
+            {
+              "texto": "As entradas de comando ficam logo abaixo da comunicação.",
+              "foco": "grupo:comando"
+            },
+            {
+              "texto": "Automatic diz se a máquina está em automático. Só assim o CLP comanda o Tex.",
+              "foco": "pin:Automatic"
+            },
+            {
+              "texto": "Em manual, quem acessa o equipamento é a IHM.",
+              "foco": "pin:Automatic"
+            },
+            {
+              "texto": "Em BCD, coloque o número da peça. Para testar a peça 3, coloque 3.",
+              "foco": "pin:BCD"
+            },
+            {
+              "texto": "Start inicia o teste.",
+              "foco": "pin:Start"
+            },
+            {
+              "texto": "Stop para o teste em andamento.",
+              "foco": "pin:Stop"
+            },
+            {
+              "texto": "BlockExhaust ativa ou não a exaustão depois do teste.",
+              "foco": "pin:BlockExhaust"
+            },
+            {
+              "texto": "E Reset reinicia o equipamento Tex, quando necessário.",
+              "foco": "pin:Reset"
+            }
+          ]
+        },
+        {
+          "tipo": "fluxo",
+          "segmentos": [
+            {
+              "texto": "Para iniciar um teste, siga esta sequência.",
+              "foco": "etapa:0"
+            },
+            {
+              "texto": "Com o bloco conectado, coloque Automatic em true.",
+              "foco": "etapa:2"
+            },
+            {
+              "texto": "Coloque em BCD o número da peça.",
+              "foco": "etapa:3"
+            },
+            {
+              "texto": "Confira se a saída ReadyToTest está true.",
+              "foco": "etapa:4"
+            },
+            {
+              "texto": "Então ative a entrada Start. Só envie Start com ReadyToTest em true.",
+              "foco": "etapa:5"
+            },
+            {
+              "texto": "Busy fica true enquanto o Tex testa.",
+              "foco": "etapa:6"
+            },
+            {
+              "texto": "No fim, ResultOK ou ResultNOK indica o resultado.",
+              "foco": "etapa:7"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "monitorado",
+          "segmentos": [
+            {
+              "texto": "Este é o bloco monitorado logo depois do Start."
+            },
+            {
+              "texto": "Automatic está em TRUE.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Start também.",
+              "foco": "marca:2"
+            },
+            {
+              "texto": "Busy em TRUE: o Tex está testando.",
+              "foco": "marca:3"
+            },
+            {
+              "texto": "E ActualBCD mostra a peça chamada: a peça 1.",
+              "foco": "marca:4"
+            }
+          ]
+        },
+        {
+          "tipo": "bloco",
+          "segmentos": [
+            {
+              "texto": "Durante e depois do teste, leia as saídas.",
+              "foco": "grupo:resultado"
+            },
+            {
+              "texto": "ResultOK indica que o último teste deu resultado OK.",
+              "foco": "pin:ResultOK"
+            },
+            {
+              "texto": "ResultNOK indica que não deu.",
+              "foco": "pin:ResultNOK"
+            },
+            {
+              "texto": "Rework fica true quando a peça está marcada como retrabalho.",
+              "foco": "pin:Rework"
+            },
+            {
+              "texto": "Pressure mostra a pressão atual.",
+              "foco": "pin:Pressure"
+            },
+            {
+              "texto": "E Leak, o vazamento calculado pelo Tex.",
+              "foco": "pin:Leak"
+            },
+            {
+              "texto": "TimeElapsed conta o tempo desde o início do teste.",
+              "foco": "pin:TimeElapsed"
+            },
+            {
+              "texto": "State mostra a etapa: esvaziando, enchendo, equalizando ou medindo.",
+              "foco": "pin:State"
+            }
+          ]
+        },
+        {
+          "tipo": "trocas",
+          "segmentos": [
+            {
+              "texto": "Os parâmetros de teste de cada peça ficam guardados no equipamento Tex.",
+              "foco": "troca:0"
+            },
+            {
+              "texto": "Coloque em BCD o número da peça. Um pulso em UploadAllFromTex traz todos os dados para o DB_Parts.",
+              "foco": "troca:upload"
+            },
+            {
+              "texto": "Altere o que precisar. Um pulso em DownloadAllToTex envia de volta para o Tex.",
+              "foco": "troca:download"
+            },
+            {
+              "texto": "Para um teste só, escolha Chamber e Test, e use UploadOne e DownloadOne.",
+              "foco": "troca:um"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "dbparts",
+          "segmentos": [
+            {
+              "texto": "Veja o upload da peça 1, no DB_Parts. Antes, ela estava toda zerada."
+            },
+            {
+              "texto": "Depois do upload, BCD mostra 1.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "NumChamber e NumTest mostram 3.",
+              "foco": "marca:2"
+            },
+            {
+              "texto": "E PressureMax mostra 1.5. Os valores vieram do equipamento.",
+              "foco": "marca:4"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "usar",
+          "segmentos": [
+            {
+              "texto": "Você pode usar qualquer entrada ou saída dos blocos na lógica da sua máquina."
+            },
+            {
+              "texto": "Chame pelo DB, pelo equipamento e pela propriedade: aqui, o ResultOK do Equipamento4.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Quando a peça é aprovada, a máquina finaliza a sequência.",
+              "foco": "marca:2"
+            },
+            {
+              "texto": "Todas as entradas e saídas podem ser usadas assim.",
+              "foco": "tudo"
+            }
+          ]
+        },
+        {
+          "tipo": "capitulo",
+          "parte": 7,
+          "titulo": "Operando pela IHM",
+          "segmentos": [
+            {
+              "texto": "Parte 7: operando pela IHM."
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "ihmtelas",
+          "segmentos": [
+            {
+              "texto": "A IHM do padrão tem quatro telas, na pasta TexG4.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Uma tela só controla vários equipamentos, pelo HMI_Link."
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "operacao",
+          "segmentos": [
+            {
+              "texto": "Para comandar pela IHM, o bloco do G4 no CLP precisa estar em modo manual."
+            },
+            {
+              "texto": "Na tela Operação, escolha o equipamento.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "Escolha o BCD com as setas.",
+              "foco": "marca:2"
+            },
+            {
+              "texto": "Toque em START para iniciar o teste. STOP para o teste.",
+              "foco": "marca:3"
+            },
+            {
+              "texto": "A tela mostra a pressão atual",
+              "foco": "marca:5"
+            },
+            {
+              "texto": "e o vazamento.",
+              "foco": "marca:6"
+            },
+            {
+              "texto": "O botão MENU abre as outras telas.",
+              "foco": "marca:7"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "ios",
+          "segmentos": [
+            {
+              "texto": "A tela de IOs mostra cada entrada do equipamento, com a sua função.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "E, à direita, cada saída.",
+              "foco": "marca:2"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "diag",
+          "segmentos": [
+            {
+              "texto": "Em diagnósticos, você vê o autoteste das válvulas e dos sensores,",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "e quais saídas estão com problema.",
+              "foco": "marca:2"
+            }
+          ]
+        },
+        {
+          "tipo": "tela",
+          "figura": "param",
+          "segmentos": [
+            {
+              "texto": "Na parametrização, escolha o BCD, a câmara e o teste.",
+              "foco": "marca:1"
+            },
+            {
+              "texto": "UPLOAD CONFIG ATUAL traz os dados da peça.",
+              "foco": "marca:5"
+            },
+            {
+              "texto": "Altere o que precisar. DOWNLOAD CONFIG ATUAL envia ao equipamento.",
+              "foco": "marca:4"
+            }
+          ]
+        },
+        {
+          "tipo": "fim",
+          "segmentos": [
+            {
+              "texto": "Pronto: você levou o padrão para o seu projeto, ligou o Tex e operou o teste."
+            },
+            {
+              "texto": "Os detalhes estão no manual e nos guias rápidos."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
