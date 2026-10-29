@@ -11,7 +11,17 @@ cada uma numa notação padrão:
 
 Frente com o cliente: o material de uma máquina entra uma vez e saem manual, guias rápidos e vídeo de treinamento, gerados de dados e auditados antes da entrega. Piloto entregue: Padrão TEX.
 
-![Fábrica de Conteúdo · manual que vira várias peças](./fabrica-de-conteudo.svg)
+### Quem usa e para quê (UML)
+
+![Casos de uso · Fábrica de Conteúdo · manual que vira várias peças](./fabrica-de-conteudo-1-casos-de-uso.svg)
+
+### Do material da máquina às peças entregues (BPMN 2.0)
+
+![Processo · Fábrica de Conteúdo · manual que vira várias peças](./fabrica-de-conteudo-2-processo.svg)
+
+### Arquitetura (C4, containers)
+
+![Arquitetura · Fábrica de Conteúdo · manual que vira várias peças](./fabrica-de-conteudo-3-arquitetura.svg)
 
 Editável: [`fabrica-de-conteudo.excalidraw`](./fabrica-de-conteudo.excalidraw), abre em [excalidraw.com](https://excalidraw.com) ou no VS Code com a extensão Excalidraw.
 
