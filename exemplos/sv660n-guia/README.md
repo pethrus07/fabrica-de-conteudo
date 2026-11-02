@@ -1,7 +1,9 @@
 # Guia Técnico SV660N — edição MVP
 
 PDF de 8 páginas sobre o servo drive **Inovance SV660N**, para engenheiros e técnicos de automação.
-Saída: `SV660N-Guia-Tecnico-MVP.pdf` (A4, 1,6 MB, texto pesquisável).
+Saída: `SV660N-Guia-Tecnico-MVP.pdf` (A4, 1,6 MB, texto pesquisável), gerado pelo `build.sh` e fora do git.
+
+Exemplo da Fábrica de Conteúdo: um guia técnico feito só de documentação pública do fabricante. Até 01/11/2026 vivia no repositório próprio `sv660n-guia`; foi trazido para cá com o histórico (`git subtree add`, histórico antigo em `git log 904f019^2`).
 
 ## Como reconstruir
 
