@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Inovance SV660N — Guia Técnico MVP</title>
+<style>
+/* ─────────────── FONTES ─────────────── */
+@font-face{font-family:'Plex';src:url('fonts/IBMPlexSans-400.ttf') format('truetype');font-weight:400;font-style:normal}
+@font-face{font-family:'Plex';src:url('fonts/IBMPlexSans-500.ttf') format('truetype');font-weight:500;font-style:normal}
+@font-face{font-family:'Plex';src:url('fonts/IBMPlexSans-600.ttf') format('truetype');font-weight:600;font-style:normal}
+@font-face{font-family:'Plex';src:url('fonts/IBMPlexSans-700.ttf') format('truetype');font-weight:700;font-style:normal}
+@font-face{font-family:'PlexCond';src:url('fonts/IBMPlexSansCondensed-SemiBold.ttf') format('truetype');font-weight:600;font-style:normal}
+@font-face{font-family:'PlexCond';src:url('fonts/IBMPlexSansCondensed-Bold.ttf') format('truetype');font-weight:700;font-style:normal}
+@font-face{font-family:'PlexMono';src:url('fonts/IBMPlexMono-Regular.ttf') format('truetype');font-weight:400;font-style:normal}
+@font-face{font-family:'PlexMono';src:url('fonts/IBMPlexMono-SemiBold.ttf') format('truetype');font-weight:600;font-style:normal}
+
+/* ─────────────── TOKENS ─────────────── */
+:root{
+  --ink:#0B1720; --ink2:#16242F; --slate:#4C5C6B; --mute:#7B8894;
+  --line:#DAE2E8; --line2:#EDF1F4; --wash:#F3F7F9; --paper:#FFFFFF;
+  --accent:#E2571F; --tech:#0E6C78; --tech-l:#E3F1F3;
+  --warn:#9A6100; --warn-l:#FFF6E5; --ok:#1F6B39; --ok-l:#E9F4ED;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+@page{size:210mm 296mm;margin:0}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:'Plex',sans-serif;color:var(--ink);background:#8C959D;font-size:9.4pt;line-height:1.46;
+     font-feature-settings:"kern" 1,"liga" 1,"tnum" 1}
+
+.page{width:210mm;height:296mm;background:var(--paper);position:relative;overflow:hidden;
+      page-break-after:always;break-after:page}
+.page:last-child{page-break-after:auto;break-after:auto}
+.pad{position:absolute;left:15mm;right:15mm;top:20mm;bottom:15mm}
+
+/* ─────── CABEÇALHO / RODAPÉ ─────── */
+.hdr{position:absolute;left:15mm;right:15mm;top:9mm;display:flex;justify-content:space-between;
+     align-items:flex-end;padding-bottom:2.4mm;border-bottom:.7pt solid var(--line)}
+.hdr .l{font-family:'PlexCond';font-weight:700;font-size:8.2pt;letter-spacing:.09em;text-transform:uppercase}
+.hdr .l b{color:var(--accent)}
+.hdr .r{font-size:7.2pt;letter-spacing:.05em;color:var(--mute);text-transform:uppercase}
+.ftr{position:absolute;left:15mm;right:15mm;bottom:8mm;display:flex;justify-content:space-between;
+     align-items:center;padding-top:2mm;border-top:.7pt solid var(--line);font-size:7pt;color:var(--mute)}
+.ftr .pg{font-family:'PlexCond';font-weight:700;font-size:10pt;color:var(--ink)}
+
+/* ─────── TIPOGRAFIA ─────── */
+h1{font-family:'PlexCond';font-weight:700;font-size:25pt;line-height:1.03;letter-spacing:-.005em}
+h2{font-family:'PlexCond';font-weight:700;font-size:17pt;line-height:1.08;margin-bottom:1.6mm}
+h3{font-family:'PlexCond';font-weight:700;font-size:11.4pt;line-height:1.15;letter-spacing:.012em;
+   text-transform:uppercase;margin-bottom:1.4mm}
+h4{font-family:'Plex';font-weight:600;font-size:9.4pt;line-height:1.25;margin-bottom:.8mm}
+p{margin-bottom:2.1mm}
+p:last-child{margin-bottom:0}
+strong{font-weight:600}
+.kicker{font-family:'PlexCond';font-weight:700;font-size:8pt;letter-spacing:.16em;text-transform:uppercase;
+        color:var(--accent);margin-bottom:1.6mm;display:block}
+.lead{font-size:10.4pt;line-height:1.44;color:var(--ink2)}
+.sm{font-size:8pt;line-height:1.4;color:var(--slate)}
+.xs{font-size:7pt;line-height:1.35;color:var(--mute)}
+.rule{height:.7pt;background:var(--line);margin:3mm 0}
+.rule.thick{height:2pt;background:var(--ink);width:16mm;margin:0 0 3mm}
+
+/* ─────── GRID ─────── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:6mm}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4.5mm}
+.g23{display:grid;grid-template-columns:1.35fr 1fr;gap:6mm}
+.g32{display:grid;grid-template-columns:1fr 1.35fr;gap:6mm}
+
+/* ─────── COMPONENTES ─────── */
+ul.tick{list-style:none}
+ul.tick li{position:relative;padding-left:4.6mm;margin-bottom:1.1mm}
+ul.tick li::before{content:"";position:absolute;left:0;top:1.35mm;width:2.1mm;height:2.1mm;
+                   background:var(--accent);border-radius:.3mm}
+ul.tick.t li::before{background:var(--tech)}
+ul.tick.s li::before{background:var(--slate)}
+ul.num{list-style:none;counter-reset:n}
+ul.num li{position:relative;padding-left:6.4mm;margin-bottom:1.3mm;counter-increment:n}
+ul.num li::before{content:counter(n,decimal-leading-zero);position:absolute;left:0;top:.2mm;
+   font-family:'PlexMono';font-weight:600;font-size:7.4pt;color:var(--accent)}
+
+.box{border:.7pt solid var(--line);border-left:2.2pt solid var(--ink);padding:2.8mm 3.2mm;background:var(--wash)}
+.box .bt{font-family:'PlexCond';font-weight:700;font-size:7.6pt;letter-spacing:.13em;text-transform:uppercase;
+         margin-bottom:1.2mm;display:block}
+.box.dica{border-left-color:var(--tech);background:var(--tech-l);border-color:#CADFE2}
+.box.dica .bt{color:var(--tech)}
+.box.aten{border-left-color:var(--warn);background:var(--warn-l);border-color:#EEDDBB}
+.box.aten .bt{color:var(--warn)}
+.box.prat{border-left-color:var(--accent);background:#FDF0E9;border-color:#F2D6C6}
+.box.prat .bt{color:var(--accent)}
+.box p{font-size:8.3pt;line-height:1.4}
+
+table{width:100%;border-collapse:collapse;font-size:8.1pt;line-height:1.3}
+th{font-family:'PlexCond';font-weight:700;font-size:7.6pt;letter-spacing:.07em;text-transform:uppercase;
+   text-align:left;padding:1.6mm 2mm;background:var(--ink);color:#fff;vertical-align:bottom}
+td{padding:1.4mm 2mm;border-bottom:.6pt solid var(--line2);vertical-align:top}
+tbody tr:nth-child(even) td{background:var(--wash)}
+table.tight td{padding:1.05mm 2mm;font-size:7.9pt;line-height:1.26}
+table.tight th{padding:1.3mm 2mm}
+td.c,th.c{text-align:center}
+td.m{font-family:'PlexMono';font-weight:600;font-size:7.6pt;white-space:nowrap}
+.yes{color:var(--ok);font-weight:700}
+.no{color:var(--mute)}
+.mono{font-family:'PlexMono';font-size:8.2pt;font-weight:600}
+
+figure{margin:0}
+figure img{width:100%;display:block;object-fit:cover}
+figcaption{font-size:6.8pt;line-height:1.32;color:var(--mute);padding-top:1.2mm}
+figcaption b{color:var(--slate);font-weight:600}
+
+.stat{border-top:1.6pt solid var(--accent);padding-top:1.6mm}
+.stat .v{font-family:'PlexCond';font-weight:700;font-size:15pt;line-height:1;color:#fff}
+.stat .v span{font-size:8.5pt;font-weight:600;color:#9FB0BC}
+.stat .k{font-size:6.9pt;line-height:1.28;color:#8FA0AC;text-transform:uppercase;letter-spacing:.05em;margin-top:.8mm}
+
+.toc{display:flex;justify-content:space-between;align-items:baseline;padding:1.5mm 0;
+     border-bottom:.6pt solid #2B3A46}
+.toc .n{font-family:'PlexMono';font-weight:600;font-size:7.2pt;color:var(--accent);width:8mm;flex:none}
+.toc .t{flex:1;font-size:8.6pt;color:#DCE5EB}
+.toc .p{font-family:'PlexCond';font-weight:700;font-size:9pt;color:#7E8E9A}
+
+.card{border:.7pt solid var(--line);overflow:hidden;display:flex;flex-direction:column}
+.card .im{height:19mm;overflow:hidden}
+.card .im img{width:100%;height:100%;object-fit:cover;display:block}
+.card .bd{padding:2.2mm 2.6mm 2.6mm;flex:1}
+.card h4{font-size:8.8pt;margin-bottom:.9mm}
+.card p{font-size:7.5pt;line-height:1.36;color:var(--slate);margin-bottom:1.2mm}
+.card .why{position:relative;padding-left:3.4mm;font-size:7.1pt;line-height:1.32;color:var(--tech);font-weight:600}
+.card .why::before{content:"";position:absolute;left:0;top:1.05mm;width:0;height:0;
+  border-left:1.7mm solid var(--tech);border-top:1.05mm solid transparent;border-bottom:1.05mm solid transparent}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════ 1 · CAPA ══════════════════════════ -->
+<section class="page">
+  <div style="position:absolute;inset:0;background:var(--ink)"></div>
+  <div style="position:absolute;left:0;right:0;top:0;height:162mm;overflow:hidden">
+    <img src="img/capa.jpg" style="width:100%;height:100%;object-fit:cover;display:block">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,23,32,.66) 0%,rgba(11,23,32,.26) 32%,rgba(11,23,32,.97) 100%)"></div>
+  </div>
+
+  <div style="position:absolute;left:15mm;right:15mm;top:14mm;display:flex;justify-content:space-between;align-items:center">
+    <div style="font-family:'PlexCond';font-weight:700;font-size:8.4pt;letter-spacing:.2em;text-transform:uppercase;color:#fff">
+      Guia técnico de engenharia</div>
+    <div style="font-family:'PlexMono';font-weight:600;font-size:7.2pt;letter-spacing:.06em;color:#9FB0BC">
+      EDIÇÃO MVP · v1.0 · AGO 2026</div>
+  </div>
+
+  <div style="position:absolute;left:15mm;right:15mm;top:100mm">
+    <div style="width:20mm;height:2.6pt;background:var(--accent);margin-bottom:5mm"></div>
+    <div style="font-family:'PlexCond';font-weight:600;font-size:11pt;letter-spacing:.24em;text-transform:uppercase;color:#B9C7D1;margin-bottom:2.5mm">Servoacionamento</div>
+    <h1 style="color:#fff;font-size:54pt;line-height:.9;letter-spacing:-.015em">INOVANCE<br>SV660N</h1>
+    <p style="color:#DCE5EB;font-size:12pt;line-height:1.34;margin-top:6mm;max-width:134mm">
+      Servo drive monoeixo com <strong style="color:#fff;font-weight:600">EtherCAT</strong>, encoder absoluto de
+      23 bits e STO SIL3 — o que ele faz, quando ele é a escolha certa e como projetar em torno dele.
+    </p>
+  </div>
+
+  <div style="position:absolute;left:15mm;right:15mm;top:186mm;display:grid;grid-template-columns:repeat(4,1fr);gap:5mm">
+    <div class="stat"><div class="v">50 W<span> – 7,5 kW</span></div><div class="k">Faixa de potência</div></div>
+    <div class="stat"><div class="v">4,5<span> kHz</span></div><div class="k">Banda da malha de corrente</div></div>
+    <div class="stat"><div class="v">23<span> bits</span></div><div class="k">Encoder absoluto · 8.388.608 p/volta</div></div>
+    <div class="stat"><div class="v">125<span> µs</span></div><div class="k">Ciclo EtherCAT (todos os modos)</div></div>
+  </div>
+
+  <div style="position:absolute;left:15mm;right:15mm;top:216mm">
+    <div style="font-family:'PlexCond';font-weight:700;font-size:8pt;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:2mm">Neste guia</div>
+    <div class="g2" style="gap:9mm">
+      <div>
+        <div class="toc"><span class="n">01</span><span class="t">Por que um servo? Inversor × servo sem torcida</span><span class="p">02</span></div>
+        <div class="toc"><span class="n">02</span><span class="t">Anatomia de uma malha fechada</span><span class="p">03</span></div>
+        <div class="toc"><span class="n">03</span><span class="t">Especificações traduzidas para decisão</span><span class="p">04</span></div>
+        <div class="toc" style="border-bottom:none"><span class="n">04</span><span class="t">EtherCAT · encoder de 23 bits · STO</span><span class="p">05</span></div>
+      </div>
+      <div>
+        <div class="toc"><span class="n">05</span><span class="t">Aplicações e casos fora do óbvio</span><span class="p">06</span></div>
+        <div class="toc"><span class="n">06</span><span class="t">Dimensionar, instalar e comissionar</span><span class="p">07</span></div>
+        <div class="toc"><span class="n">07</span><span class="t">Diagnóstico, falhas e quando <em>não</em> usar</span><span class="p">08</span></div>
+        <div class="toc" style="border-bottom:none"><span class="n">—</span><span class="t">Fontes oficiais e créditos</span><span class="p">08</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:15mm;right:15mm;top:264mm">
+    <div style="height:.7pt;background:#2B3A46;margin-bottom:3mm"></div>
+    <p style="font-size:8pt;line-height:1.4;color:#93A2AE;margin:0">
+      <strong style="color:#C3D0D9;font-weight:600">Para quem:</strong> engenheiros e técnicos de automação, projetistas
+      de máquinas, integradores, programadores de CLP, manutenção e compradores técnicos que precisam decidir — não decorar catálogo.
+    </p>
+  </div>
+
+  <div style="position:absolute;left:15mm;right:15mm;bottom:9mm;display:flex;justify-content:space-between;font-size:6.8pt;color:#788894">
+    <span>Documento independente. Dados técnicos conforme documentação oficial Inovance citada na p. 8.</span>
+    <span>Página 1 de 8</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════ 2 · POR QUE SERVO ══════════════════════════ -->
+<section class="page">
+  <div class="hdr"><div class="l">Inovance <b>SV660N</b></div><div class="r">01 · Por que um servo?</div></div>
+  <div class="pad">
+
+    <span class="kicker">Capítulo 01</span>
+    <h2>Quando controlar velocidade deixa de ser suficiente</h2>
+    <div class="rule thick"></div>
+
+    <div class="g23" style="margin-bottom:4.5mm">
+      <div>
+        <p class="lead" style="margin-bottom:3mm">Um inversor com motor de indução responde bem a uma pergunta:
+          <em>“quão rápido o eixo deve girar?”</em>. O servo responde a outra, muito mais difícil:
+          <em>“onde exatamente o eixo deve estar, agora, e daqui a 2 ms?”</em></p>
+        <p>A diferença não é de qualidade — é de pergunta. O conjunto inversor + motor de indução aciona a carga
+          em <strong>malha aberta</strong>: ele impõe uma frequência e confia que o motor vai acompanhar. Se a carga
+          aumentar, o rotor escorrega, e ninguém no sistema sabe disso.</p>
+        <p style="margin-bottom:0">O conjunto servo drive + servomotor trabalha em <strong>malha fechada</strong>: um
+          encoder no eixo informa a posição real milhares de vezes por segundo, o drive compara com a posição desejada
+          e corrige a corrente — e portanto o torque — continuamente. O erro existe, mas é medido, limitado e
+          conhecido. É isso que permite à máquina prometer repetibilidade, parada em cota e sincronismo entre eixos.</p>
+      </div>
+      <div>
+        <figure>
+          <img src="img/esteira.jpg" style="height:38mm">
+          <figcaption><b>Transporte contínuo.</b> Curvas, roletes e correias a velocidade constante: território
+            clássico do motor de indução com inversor. Trocar por servo aqui raramente se paga.</figcaption>
+        </figure>
+        <div class="box dica" style="margin-top:3mm">
+          <span class="bt">Dica de engenharia</span>
+          <p>A pergunta útil não é “servo ou inversor?”, e sim: <strong>alguém precisa saber onde o eixo está?</strong>
+            Se a resposta for não, o servo vira custo e complexidade sem retorno.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="g2" style="margin-bottom:4.5mm">
+      <div style="border:.7pt solid var(--line);padding:3.2mm 3.4mm">
+        <h3 style="color:var(--accent)">Use servo quando…</h3>
+        <ul class="tick sm">
+          <li>a máquina precisa <strong>parar em uma cota</strong>, não em um tempo</li>
+          <li>o movimento é <strong>curto, rápido e repetido</strong> milhares de vezes por turno</li>
+          <li>dois ou mais eixos precisam andar <strong>sincronizados</strong> (came ou engrenagem eletrônica)</li>
+          <li>o <strong>torque</strong> é a grandeza a controlar (prensagem, tensão de bobina, aperto)</li>
+          <li>aceleração e desaceleração dominam o ciclo — o eixo passa mais tempo mudando de velocidade do que em regime</li>
+        </ul>
+      </div>
+      <div style="border:.7pt solid var(--line);padding:3.2mm 3.4mm;background:var(--wash)">
+        <h3 style="color:var(--slate)">Um inversor provavelmente basta quando…</h3>
+        <ul class="tick s sm">
+          <li>a única grandeza que importa é a <strong>velocidade média</strong></li>
+          <li>a carga é de <strong>torque resistente contínuo</strong>: bomba, ventilador, exaustor, misturador</li>
+          <li>a dinâmica é baixa — rampas de segundos, não de milissegundos</li>
+          <li>a posição de parada tolera dezenas de milímetros de variação</li>
+          <li>o custo inicial e a simplicidade de manutenção pesam mais que a precisão</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Comparação conceitual — onde cada tecnologia entrega</h3>
+    <table style="margin-bottom:4mm">
+      <thead><tr>
+        <th style="width:31%">Característica</th>
+        <th style="width:34.5%">Motor de indução + inversor</th>
+        <th style="width:34.5%">Servomotor + servo drive</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><strong>Controle de velocidade</strong></td><td>Excelente e economicamente imbatível em regime contínuo</td><td>Excelente, com faixa de controle muito mais larga</td></tr>
+        <tr><td><strong>Posicionamento</strong></td><td>Possível com encoder externo e CLP, mas limitado e trabalhoso</td><td>Função nativa: é para isso que o produto existe</td></tr>
+        <tr><td><strong>Realimentação</strong></td><td>Opcional; a maioria opera sem</td><td>Obrigatória — o encoder é parte do produto</td></tr>
+        <tr><td><strong>Resposta dinâmica</strong></td><td>Média; limitada pela inércia do rotor e pela malha lenta</td><td>Alta; rotor de baixa inércia e malha de corrente em kHz</td></tr>
+        <tr><td><strong>Sincronismo entre eixos</strong></td><td>Depende da arquitetura e degrada com a carga</td><td>Excelente com barramento determinístico</td></tr>
+        <tr><td><strong>Custo e complexidade</strong></td><td>Menores: parametrizar e partir</td><td>Maiores por eixo — compensam via produtividade e refugo</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box aten">
+      <span class="bt">Atenção · a exceção que confunde</span>
+      <p>Um inversor vetorial com encoder faz posicionamento simples e resolve muita indexação de baixa exigência.
+        A divisa real não é “tem encoder ou não”, e sim <strong>rigidez de malha</strong>: quantas vezes por segundo o
+        acionamento consegue medir o erro e reagir a ele. É aí que o servo se separa — e é isso que a página seguinte detalha.</p>
+    </div>
+
+  </div>
+  <div class="ftr"><span>Inovance SV660N · Guia Técnico, Aplicações e Engenharia de Servoacionamentos</span><span class="pg">02</span></div>
+</section>
+
+<!-- ══════════════════════════ 3 · COMO FUNCIONA ══════════════════════════ -->
+<section class="page">
+  <div class="hdr"><div class="l">Inovance <b>SV660N</b></div><div class="r">02 · O que é e como funciona</div></div>
+  <div class="pad">
+
+    <span class="kicker">Capítulo 02</span>
+    <h2>Anatomia de uma malha fechada</h2>
+    <div class="rule thick"></div>
+
+    <p style="margin-bottom:3.2mm;max-width:168mm">O SV660N é um servo drive monoeixo da série SV660 da Inovance,
+      com interface <strong>EtherCAT</strong>, projetado para trabalhar com os servomotores da série <strong>MS1</strong>.
+      Ele não decide o movimento — quem decide é o controlador. O drive é o executor: recebe uma referência a cada
+      ciclo de rede e é responsável por fazer o eixo real coincidir com ela.</p>
+
+    <div style="border:.7pt solid var(--line);padding:3.4mm 4mm 2.4mm;margin-bottom:4mm">
+      <svg viewBox="0 0 700 132" style="width:100%;height:auto">
+        <defs>
+          <marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#0B1720"/></marker>
+          <marker id="arT" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#0E6C78"/></marker>
+        </defs>
+        <g font-family="Plex">
+          <rect x="2"   y="18" width="112" height="40" fill="#0B1720"/>
+          <text x="58"  y="35" fill="#fff" font-size="10.5" font-weight="600" text-anchor="middle">CLP / Motion</text>
+          <text x="58"  y="49" fill="#9FB0BC" font-size="9" text-anchor="middle">controller (master)</text>
+          <rect x="152" y="18" width="112" height="40" fill="#E2571F"/>
+          <text x="208" y="35" fill="#fff" font-size="10.5" font-weight="600" text-anchor="middle">SV660N</text>
+          <text x="208" y="49" fill="#FBE0D3" font-size="9" text-anchor="middle">servo drive (slave)</text>
+          <rect x="302" y="18" width="112" height="40" fill="#16242F"/>
+          <text x="358" y="35" fill="#fff" font-size="10.5" font-weight="600" text-anchor="middle">Motor MS1</text>
+          <text x="358" y="49" fill="#9FB0BC" font-size="9" text-anchor="middle">ímãs permanentes</text>
+          <rect x="452" y="18" width="112" height="40" fill="#16242F"/>
+          <text x="508" y="35" fill="#fff" font-size="10.5" font-weight="600" text-anchor="middle">Transmissão</text>
+          <text x="508" y="49" fill="#9FB0BC" font-size="9" text-anchor="middle">redutor · fuso · correia</text>
+          <rect x="602" y="18" width="96" height="40" fill="none" stroke="#0B1720" stroke-width="1.4"/>
+          <text x="650" y="35" fill="#0B1720" font-size="10.5" font-weight="600" text-anchor="middle">Carga</text>
+          <text x="650" y="49" fill="#4C5C6B" font-size="9" text-anchor="middle">a máquina</text>
+          <line x1="116" y1="38" x2="146" y2="38" stroke="#0B1720" stroke-width="1.6" marker-end="url(#ar)"/>
+          <line x1="266" y1="38" x2="296" y2="38" stroke="#0B1720" stroke-width="1.6" marker-end="url(#ar)"/>
+          <line x1="416" y1="38" x2="446" y2="38" stroke="#0B1720" stroke-width="1.6" marker-end="url(#ar)"/>
+          <line x1="566" y1="38" x2="596" y2="38" stroke="#0B1720" stroke-width="1.6" marker-end="url(#ar)"/>
+          <text x="131" y="12" fill="#4C5C6B" font-size="8" text-anchor="middle">EtherCAT</text>
+          <text x="281" y="12" fill="#4C5C6B" font-size="8" text-anchor="middle">corrente</text>
+          <text x="431" y="12" fill="#4C5C6B" font-size="8" text-anchor="middle">torque</text>
+          <text x="581" y="12" fill="#4C5C6B" font-size="8" text-anchor="middle">movimento</text>
+          <rect x="302" y="86" width="112" height="32" fill="#0E6C78"/>
+          <text x="358" y="100" fill="#fff" font-size="10" font-weight="600" text-anchor="middle">Encoder 23 bits</text>
+          <text x="358" y="112" fill="#BEE0E4" font-size="8.5" text-anchor="middle">posição real do eixo</text>
+          <line x1="358" y1="58" x2="358" y2="82" stroke="#0E6C78" stroke-width="1.6" marker-end="url(#arT)"/>
+          <path d="M302,102 L208,102 L208,62" fill="none" stroke="#0E6C78" stroke-width="1.6" marker-end="url(#arT)"/>
+          <text x="255" y="97" fill="#0E6C78" font-size="8" text-anchor="middle" font-weight="600">realimentação</text>
+        </g>
+      </svg>
+      <p class="xs" style="text-align:center;margin-top:.6mm">A referência desce da esquerda para a direita; a verdade sobe pela realimentação.
+        Sem o caminho de baixo, o conjunto é apenas um acionamento — não um servo.</p>
+    </div>
+
+    <div class="g23" style="margin-bottom:4mm">
+      <div>
+        <h3>Três malhas, uma dentro da outra</h3>
+        <p class="sm" style="margin-bottom:2mm">O controle é organizado em cascata. A malha externa é lenta e decide
+          o “onde”; a interna é rápida e decide o “com quanta força”. Cada uma só consegue ser tão boa quanto a malha
+          que está dentro dela — por isso a malha de corrente é a fundação de todo o desempenho.</p>
+        <table class="tight">
+          <thead><tr><th style="width:28%">Malha</th><th style="width:22%">Ciclo</th><th style="width:50%">Do que ela cuida</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Posição</strong></td><td class="m">62,5 µs</td><td>Erro entre a cota comandada e a cota lida no encoder</td></tr>
+            <tr><td><strong>Velocidade</strong></td><td class="m">62,5 µs</td><td>Perfil de rampa; banda de até <strong>3 kHz</strong></td></tr>
+            <tr><td><strong>Corrente</strong></td><td class="m">1,6 µs</td><td>Torque instantâneo; banda de <strong>4,5 kHz</strong></td></tr>
+          </tbody>
+        </table>
+        <p class="xs" style="margin-top:1.2mm">Frequência de chaveamento (portadora): 12 kHz. Valores oficiais Inovance.</p>
+      </div>
+      <div>
+        <div class="box prat" style="margin-bottom:2.6mm">
+          <span class="bt">Na prática</span>
+          <p>Banda de malha alta significa <strong>tempo de acomodação curto</strong>: o eixo chega à cota e para de
+            oscilar mais cedo. Numa máquina de ciclo rápido, 10 ms economizados por movimento em um ciclo de 1 s
+            equivalem a cerca de 1 % de produtividade — repetido em cada peça, todo dia.</p>
+        </div>
+        <div class="box">
+          <span class="bt">Onde isso não faz diferença</span>
+          <p>Se o eixo faz um movimento longo e suave a cada 30 s, a banda da malha é irrelevante: o ciclo é dominado
+            pelo tempo de percurso. Especificação alta só vira benefício quando o gargalo está onde ela atua.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="g3" style="margin-bottom:4mm">
+      <div>
+        <h4 style="color:var(--accent)">Erro de posição</h4>
+        <p class="sm">A diferença instantânea entre onde o eixo deveria estar e onde ele está. O drive nunca o zera —
+          ele o mantém pequeno e previsível. Em CSP, cresce com a velocidade e cai a zero na parada.</p>
+      </div>
+      <div>
+        <h4 style="color:var(--accent)">Inércia refletida</h4>
+        <p class="sm">A inércia da carga vista pelo eixo do motor, após redutor e transmissão. É o que mais influencia
+          a estabilidade: relação alta demais exige ganho baixo, e ganho baixo derruba a dinâmica.</p>
+      </div>
+      <div>
+        <h4 style="color:var(--accent)">Torque de pico × contínuo</h4>
+        <p class="sm">O contínuo sustenta o regime; o de pico existe para acelerar. Ciclos curtos são dimensionados
+          pelo pico e verificados pelo RMS térmico — nunca só pela potência em kW.</p>
+      </div>
+    </div>
+
+    <div class="rule"></div>
+
+    <h3>Como o controlador comanda — os sete modos CiA 402</h3>
+    <p class="sm" style="margin-bottom:2mm">O SV660N implementa o perfil <strong>CiA 402</strong> sobre CoE. A escolha do
+      modo define <em>quem</em> gera o perfil de movimento — o controlador ou o drive — e é uma decisão de arquitetura,
+      não de conveniência.</p>
+    <table class="tight">
+      <thead><tr><th style="width:11%">Modo</th><th style="width:33%">O que o master envia</th><th style="width:56%">Quando faz sentido</th></tr></thead>
+      <tbody>
+        <tr><td class="m">CSP</td><td>Posição alvo a cada ciclo</td><td>Padrão para interpolação e sincronismo multieixo — o controlador domina a trajetória</td></tr>
+        <tr><td class="m">CSV</td><td>Velocidade alvo a cada ciclo</td><td>Quando o controlador fecha a própria malha de posição com lei de controle proprietária</td></tr>
+        <tr><td class="m">CST</td><td>Torque alvo a cada ciclo</td><td>Controle de tensão de material, prensagem e ensaio de carga</td></tr>
+        <tr><td class="m">PP</td><td>Cota-destino e parâmetros do perfil</td><td>Movimento ponto a ponto: o drive gera a rampa e alivia a carga cíclica da rede</td></tr>
+        <tr><td class="m">PV / PT</td><td>Velocidade ou torque com rampa no drive</td><td>Eixos auxiliares que não precisam de coordenação fina</td></tr>
+        <tr><td class="m">HM</td><td>Método de referenciamento</td><td>Homing padronizado — dispensável em eixo com encoder absoluto multi-turn</td></tr>
+      </tbody>
+    </table>
+
+  </div>
+  <div class="ftr"><span>Inovance SV660N · Guia Técnico, Aplicações e Engenharia de Servoacionamentos</span><span class="pg">03</span></div>
+</section>
+
+<!-- ══════════════════════════ 4 · ESPECIFICAÇÕES ══════════════════════════ -->
+<section class="page">
+  <div class="hdr"><div class="l">Inovance <b>SV660N</b></div><div class="r">03 · Especificações que importam</div></div>
+  <div class="pad">
+
+    <span class="kicker">Capítulo 03</span>
+    <h2>A tabela traduzida para decisão de projeto</h2>
+    <div class="rule thick"></div>
+
+    <p style="margin-bottom:2.8mm;max-width:168mm">Toda especificação abaixo vem da documentação oficial. A coluna da
+      direita é a parte que catálogo nenhum entrega: <strong>o que aquele número muda na sua máquina</strong>.</p>
+
+    <table class="tight" style="margin-bottom:4mm">
+      <thead><tr>
+        <th style="width:23%">Item</th><th style="width:30%">Especificação oficial</th><th style="width:47%">O que isso significa para o projeto</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><strong>Faixa de potência</strong></td><td>50 W a 7,5 kW</td><td>Cobre desde eixo auxiliar de dosagem até eixo principal de máquina média. Acima disso, outra família.</td></tr>
+        <tr><td><strong>Alimentação</strong></td><td>Mono 200–240 V; tri 220 V; tri 380–440 V (±10 %, 50/60 Hz)</td><td>Modelos <span class="mono">S7R6</span> e <span class="mono">S012</span> aceitam monofásico 220 V <em>sem derating</em> — útil em máquina compacta sem trifásico disponível.</td></tr>
+        <tr><td><strong>Corrente contínua / máx.</strong></td><td>1,6 / 5,8 A até 25,7 / 64,2 A conforme o modelo</td><td>A relação pico/contínua fica entre ≈2,5× e ≈3,6× dependendo da carcaça. É essa margem que paga a aceleração — verifique-a, não só os kW.</td></tr>
+        <tr><td><strong>Malha de corrente</strong></td><td>Banda 4,5 kHz · ciclo 1,6 µs</td><td>Fundação do desempenho. Permite torque limpo em alta rotação e acomodação curta.</td></tr>
+        <tr><td><strong>Malha de velocidade</strong></td><td>Banda até 3 kHz · ciclo 62,5 µs</td><td>Rejeita perturbação de carga rapidamente — relevante em corte, prensagem e desbobinamento.</td></tr>
+        <tr><td><strong>Realimentação</strong></td><td>Encoder absoluto serial 23 bits, single ou multi-turn</td><td>8.388.608 contagens por volta. Multi-turn dispensa referenciamento a cada energização.</td></tr>
+        <tr><td><strong>Faixa de controle de velocidade</strong></td><td>1:6000</td><td>O mesmo motor atende avanço lento de ajuste e regime de produção sem trocar transmissão.</td></tr>
+        <tr><td><strong>Precisão de torque</strong></td><td>±2 % (repetibilidade)</td><td>Viabiliza controle de tensão de material e aperto controlado — dentro dessa tolerância.</td></tr>
+        <tr><td><strong>Tempo de posicionamento</strong></td><td>1 ms a 10 ms</td><td>Define o piso do tempo morto entre movimentos encadeados.</td></tr>
+        <tr><td><strong>Comunicação</strong></td><td>EtherCAT · CoE (PDO/SDO) · Distributed Clock</td><td>Integra a arquiteturas multieixo determinísticas. Sete modos CiA 402 — ver p. 3 e p. 5.</td></tr>
+        <tr><td><strong>E/S locais</strong></td><td>5 DI e 3 DO realocáveis (50 mA, 5–30 V)</td><td>Fim de curso, home switch e dois <em>touch probes</em> ficam no drive — capturas de posição não dependem da varredura do CLP.</td></tr>
+        <tr><td><strong>Supressão de vibração</strong></td><td>4 notch filters (2 adaptativos), 50–5000 Hz</td><td>Permite subir ganho em estrutura com ressonância sem cair em oscilação audível.</td></tr>
+        <tr><td><strong>Segurança</strong></td><td>STO SIL3 (EN/IEC 61800-5-2), dois canais</td><td>Parada segura sem contator de potência no circuito do motor. Ver p. 5.</td></tr>
+        <tr><td><strong>Frenagem</strong></td><td>Resistor regenerativo interno de série</td><td>Reduz componentes no painel; carga inercial alta ou ciclo severo ainda pode exigir resistor externo.</td></tr>
+        <tr><td><strong>Ambiente</strong></td><td>IP20 (bornes IP00) · 0 a 55 °C · PD2 · &lt; 90 % UR</td><td>Produto de painel. Acima de 45 °C há <em>derating</em> de 10 % a cada 5 °C — dimensione a climatização pela temperatura <em>interna</em>.</td></tr>
+        <tr><td><strong>Altitude</strong></td><td>Até 1000 m sem derating</td><td>Entre 1000 e 2000 m há redução de capacidade. Relevante em boa parte do Sudeste e do Sul do Brasil.</td></tr>
+        <tr><td><strong>Robustez</strong></td><td>PCB com <em>conformal coating</em> (3S2/3C2, IEC 60721-3-3); canal de refrigeração isolado</td><td>Argumento real em ambiente com pó, fibra ou névoa — não é só marketing.</td></tr>
+        <tr><td><strong>Certificações</strong></td><td>CE, UL, KC, EAC, UKCA</td><td>Verifique a exigência do mercado de destino da máquina antes de fechar a lista técnica.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Seleção rápida — drive por carcaça</h3>
+    <div class="g2" style="gap:5mm;margin-bottom:2.5mm">
+      <table class="tight">
+        <thead><tr><th>Modelo 220 V</th><th class="c">A cont.</th><th class="c">A máx.</th><th class="c">Tam.</th><th>A×L×P (mm)</th></tr></thead>
+        <tbody>
+          <tr><td class="m">SV660NS1R6I</td><td class="c">1,6</td><td class="c">5,8</td><td class="c">A</td><td>170×40×150</td></tr>
+          <tr><td class="m">SV660NS2R8I</td><td class="c">2,8</td><td class="c">10,1</td><td class="c">A</td><td>170×40×150</td></tr>
+          <tr><td class="m">SV660NS5R5I</td><td class="c">5,5</td><td class="c">16,9</td><td class="c">B</td><td>170×50×173</td></tr>
+          <tr><td class="m">SV660NS7R6I</td><td class="c">7,6</td><td class="c">23,0</td><td class="c">C</td><td>170×55×173</td></tr>
+          <tr><td class="m">SV660NS012I</td><td class="c">11,6</td><td class="c">32,0</td><td class="c">D</td><td>170×80×183</td></tr>
+        </tbody>
+      </table>
+      <table class="tight">
+        <thead><tr><th>Modelo 380 V</th><th class="c">A cont.</th><th class="c">A máx.</th><th class="c">Tam.</th><th>A×L×P (mm)</th></tr></thead>
+        <tbody>
+          <tr><td class="m">SV660NT3R5I</td><td class="c">3,5</td><td class="c">11,0</td><td class="c">C</td><td>170×55×173</td></tr>
+          <tr><td class="m">SV660NT5R4I</td><td class="c">5,4</td><td class="c">14,0</td><td class="c">C</td><td>170×55×173</td></tr>
+          <tr><td class="m">SV660NT8R4I</td><td class="c">8,4</td><td class="c">20,0</td><td class="c">D</td><td>170×80×183</td></tr>
+          <tr><td class="m">SV660NT017I</td><td class="c">16,5</td><td class="c">41,2</td><td class="c">E</td><td>250×90×230</td></tr>
+          <tr><td class="m">SV660NT026I</td><td class="c">25,7</td><td class="c">64,2</td><td class="c">E</td><td>250×90×230</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="xs">Extrato da tabela oficial de seleção — a lista completa traz modelos intermediários e os pares
+      motor–drive homologados. Prefixo <span class="mono">S</span> = 220 V, <span class="mono">T</span> = 380/400 V.</p>
+
+  </div>
+  <div class="ftr"><span>Inovance SV660N · Guia Técnico, Aplicações e Engenharia de Servoacionamentos</span><span class="pg">04</span></div>
+</section>
+
+<!-- ══════════════════════════ 5 · ETHERCAT / ENCODER / STO ══════════════════════════ -->
+<section class="page">
+  <div class="hdr"><div class="l">Inovance <b>SV660N</b></div><div class="r">04 · EtherCAT · Encoder · STO</div></div>
+  <div class="pad">
+
+    <span class="kicker">Capítulo 04</span>
+    <h2>Os três diferenciais que definem o produto</h2>
+    <div class="rule thick"></div>
+
+    <div class="g23" style="margin-bottom:3.5mm">
+      <div>
+        <h3 style="color:var(--tech)">1 · EtherCAT — determinismo, não velocidade</h3>
+        <p class="sm" style="margin-bottom:2mm">O ganho do EtherCAT não é “ser rápido”: é ser <strong>previsível</strong>.
+          O master emite um telegrama que percorre a linha e cada escravo lê e escreve sua fatia <em>em trânsito</em>.
+          Todos os eixos recebem referência no mesmo instante e devolvem posição no mesmo instante. O mecanismo que
+          garante isso é o <strong>Distributed Clock</strong> — um relógio comum a toda a rede. É ele que permite dizer
+          que dois eixos estão sincronizados, e não apenas que ambos são rápidos.</p>
+        <table class="tight">
+          <tbody>
+            <tr><td style="width:44%"><strong>Ciclo</strong></td><td class="m">125 µs (todos os modos)</td></tr>
+            <tr><td><strong>Sincronização</strong></td><td class="m">DC · erro 15 ns · jitter ±20 ns</td></tr>
+            <tr><td><strong>Camada física</strong></td><td class="m">100BASE-TX · full duplex</td></tr>
+            <tr><td><strong>Topologia · meio</strong></td><td class="m">Linear ou anel · Cat 5e blind.</td></tr>
+            <tr><td><strong>Distância</strong></td><td class="m">&lt; 100 m entre nós</td></tr>
+            <tr><td><strong>Serviços · endereço</strong></td><td class="m">CoE (PDO/SDO) · 0…255</td></tr>
+          </tbody>
+        </table>
+        <p class="xs" style="margin-top:1.2mm">O jitter de ±20 ns é referenciado pela Inovance para 300 nós e até 120 m.</p>
+      </div>
+      <div>
+        <div style="border:.7pt solid var(--line);padding:2.8mm 3mm;margin-bottom:2.6mm">
+          <svg viewBox="0 0 300 168" style="width:100%;height:auto" font-family="Plex">
+            <defs><marker id="a2" markerWidth="7" markerHeight="7" refX="6" refY="2.6" orient="auto"><path d="M0,0 L6,2.6 L0,5.2 z" fill="#0E6C78"/></marker></defs>
+            <rect x="6" y="6" width="288" height="30" fill="#0B1720"/>
+            <text x="150" y="19" fill="#fff" font-size="11" font-weight="600" text-anchor="middle">CLP / Motion Controller</text>
+            <text x="150" y="30" fill="#9FB0BC" font-size="8.5" text-anchor="middle">EtherCAT master</text>
+            <line x1="150" y1="36" x2="150" y2="52" stroke="#0E6C78" stroke-width="1.5"/>
+            <line x1="30" y1="52" x2="270" y2="52" stroke="#0E6C78" stroke-width="1.5"/>
+            <line x1="30"  y1="52" x2="30"  y2="70" stroke="#0E6C78" stroke-width="1.5" marker-end="url(#a2)"/>
+            <line x1="110" y1="52" x2="110" y2="70" stroke="#0E6C78" stroke-width="1.5" marker-end="url(#a2)"/>
+            <line x1="190" y1="52" x2="190" y2="70" stroke="#0E6C78" stroke-width="1.5" marker-end="url(#a2)"/>
+            <line x1="270" y1="52" x2="270" y2="70" stroke="#0E6C78" stroke-width="1.5" marker-end="url(#a2)"/>
+            <g font-size="8.5" text-anchor="middle">
+              <rect x="6"   y="74" width="48" height="26" fill="#E2571F"/><text x="30"  y="90" fill="#fff" font-weight="600">SV660N</text>
+              <rect x="86"  y="74" width="48" height="26" fill="#E2571F"/><text x="110" y="90" fill="#fff" font-weight="600">SV660N</text>
+              <rect x="166" y="74" width="48" height="26" fill="#E2571F"/><text x="190" y="90" fill="#fff" font-weight="600">SV660N</text>
+              <rect x="246" y="74" width="48" height="26" fill="#E2571F"/><text x="270" y="90" fill="#fff" font-weight="600">SV660N</text>
+              <text x="30"  y="112" fill="#4C5C6B">Eixo 1</text><text x="110" y="112" fill="#4C5C6B">Eixo 2</text>
+              <text x="190" y="112" fill="#4C5C6B">Eixo 3</text><text x="270" y="112" fill="#4C5C6B">Eixo 4</text>
+              <text x="30"  y="122" fill="#7B8894" font-size="7.5">alimentação</text>
+              <text x="110" y="122" fill="#7B8894" font-size="7.5">tração</text>
+              <text x="190" y="122" fill="#7B8894" font-size="7.5">corte</text>
+              <text x="270" y="122" fill="#7B8894" font-size="7.5">descarga</text>
+            </g>
+            <rect x="6" y="132" width="288" height="30" fill="#E3F1F3" stroke="#CADFE2" stroke-width=".8"/>
+            <text x="150" y="145" fill="#0E6C78" font-size="8.6" font-weight="600" text-anchor="middle">Um telegrama · um relógio · quatro eixos</text>
+            <text x="150" y="156" fill="#0E6C78" font-size="7.8" text-anchor="middle">sincronismo garantido pela rede, não pelo programa</text>
+          </svg>
+        </div>
+        <div class="box aten">
+          <span class="bt">Atenção</span>
+          <p>Em EtherCAT a <strong>ordem física dos cabos define o endereçamento</strong> quando se usa endereço por
+            posição. Trocar dois cabos no painel troca dois eixos na máquina — sem nenhum alarme. Documente a
+            sequência e use <em>station alias</em> em máquinas que passam por manutenção de campo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule"></div>
+
+    <div class="g32" style="margin-bottom:3.5mm">
+      <div>
+        <figure>
+          <img src="img/encoder.jpg" style="height:33mm">
+          <figcaption><b>Encoder óptico no eixo traseiro do motor.</b> O disco graduado é a única fonte de verdade
+            do sistema — tudo o que o drive sabe sobre a máquina passa por aqui.</figcaption>
+        </figure>
+      </div>
+      <div>
+        <h3 style="color:var(--tech)">2 · Encoder de 23 bits — por que absoluto muda o projeto</h3>
+        <p class="sm" style="margin-bottom:2mm">23 bits significam <strong>8.388.608 contagens por volta</strong>
+          — cerca de 0,000043° por contagem. Esse número quase nunca é o limite da máquina: fuso, folga e rigidez
+          estrutural limitam antes. A resolução alta serve para outra coisa — dar ao drive um sinal fino o bastante
+          para calcular velocidade com pouco ruído e fechar a malha com ganho alto sem tremer.</p>
+        <p class="sm" style="margin-bottom:2mm"><strong>Absoluto</strong> é a característica que muda o projeto de
+          verdade. Um encoder incremental perde a referência a cada desenergização e obriga a máquina a fazer
+          <em>homing</em> toda vez que liga. Com absoluto multi-turn, o eixo acorda sabendo onde está — inclusive
+          depois de uma falta de energia no meio do ciclo.</p>
+        <ul class="tick t sm">
+          <li><strong>Single-turn</strong> guarda a posição dentro de uma volta; <strong>multi-turn</strong> guarda também a contagem de voltas — necessário em eixo linear com fuso</li>
+          <li><strong>Versão sem bateria</strong> disponível: elimina o item de manutenção que gera o alarme
+            <span class="mono">E731.0</span> e a parada não programada que vem com ele</li>
+          <li>Na ausência de bateria, o encoder pode operar como incremental — a máquina continua, mas volta a exigir referenciamento</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rule"></div>
+
+    <div class="g23">
+      <div>
+        <h3 style="color:var(--tech)">3 · STO — o que é e o que não é</h3>
+        <p class="sm" style="margin-bottom:2mm">O <strong>Safe Torque Off</strong> é uma função de segurança que
+          impede, por dois canais independentes, que o drive gere torque no motor. O SV660N implementa STO conforme
+          <strong>EN/IEC 61800-5-2, nível SIL3</strong>, com entradas isoladas STO1 e STO2 e saída de diagnóstico EDM.</p>
+        <div class="g2" style="gap:4mm">
+          <div style="border:.7pt solid var(--ok);border-left-width:2.2pt;padding:2.4mm 2.8mm;background:var(--ok-l)">
+            <div style="font-family:'PlexCond';font-weight:700;font-size:7.6pt;letter-spacing:.1em;text-transform:uppercase;color:var(--ok);margin-bottom:1mm">O que ele faz</div>
+            <p class="sm" style="font-size:7.8pt">Remove com segurança a capacidade de produzir torque, dispensando
+              contator de potência dedicado no circuito do motor — menos peças, menos desgaste, resposta imediata.</p>
+          </div>
+          <div style="border:.7pt solid var(--warn);border-left-width:2.2pt;padding:2.4mm 2.8mm;background:var(--warn-l)">
+            <div style="font-family:'PlexCond';font-weight:700;font-size:7.6pt;letter-spacing:.1em;text-transform:uppercase;color:var(--warn);margin-bottom:1mm">O que ele NÃO faz</div>
+            <p class="sm" style="font-size:7.8pt">Não freia, não segura carga suspensa e não isola tensão para
+              manutenção elétrica. Sem torque, um eixo vertical <strong>desce</strong> e um eixo em movimento
+              <strong>segue por inércia</strong>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="box" style="border-left-color:var(--accent)">
+        <span class="bt" style="color:var(--accent)">Decisão de projeto</span>
+        <p>Eixo vertical com STO exige <strong>freio mecânico</strong> comandado junto — o STO tira o torque que
+          estava segurando a carga. Onde é preciso parar rápido <em>antes</em> de remover torque, a categoria adequada
+          é outra (SS1, por exemplo), obtida com STO temporizado por relé de segurança.</p>
+        <p style="margin-top:1.6mm">A arquitetura completa de segurança — categoria, PL/SIL alcançado e validação —
+          é responsabilidade do projeto da máquina, não do componente. A versão sem STO também existe no catálogo:
+          confirme o código antes de comprar.</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="ftr"><span>Inovance SV660N · Guia Técnico, Aplicações e Engenharia de Servoacionamentos</span><span class="pg">05</span></div>
+</section>
+
+<!-- ══════════════════════════ 6 · APLICAÇÕES ══════════════════════════ -->
+<section class="page">
+  <div class="hdr"><div class="l">Inovance <b>SV660N</b></div><div class="r">05 · Aplicações</div></div>
+  <div class="pad">
+
+    <span class="kicker">Capítulo 05</span>
+    <h2>Onde ele resolve — e por que servo e não outra coisa</h2>
+    <div class="rule thick"></div>
+
+    <p style="margin-bottom:3.2mm;max-width:172mm">A própria Inovance posiciona a série para equipamento de
+      semicondutores, <em>chip mounters</em>, puncionadeiras de PCB, máquinas de transporte, processamento de
+      alimentos, máquinas-ferramenta e máquinas de transmissão. Abaixo, seis recortes com o raciocínio de escolha explícito.</p>
+
+    <div class="g3" style="margin-bottom:3.5mm">
+      <div class="card">
+        <div class="im"><img src="img/paletizacao.jpg"></div>
+        <div class="bd"><h4>Pick and place / paletização</h4>
+          <p>Pegar na esteira em movimento e depositar em padrão de camada, milhares de vezes por turno.</p>
+          <div class="why">Servo: cota exata + ciclo curto. O tempo de acomodação é o gargalo da célula.</div></div>
+      </div>
+      <div class="card">
+        <div class="im"><img src="img/termoformadora.jpg"></div>
+        <div class="bd"><h4>Embalagem e termoformagem</h4>
+          <p>Avanço de filme, conformação, selagem e corte encadeados no mesmo passo de máquina.</p>
+          <div class="why">Servo: quatro eixos travados em um relógio comum; passo constante mesmo com filme variando.</div></div>
+      </div>
+      <div class="card">
+        <div class="im"><img src="img/rotulagem.jpg"></div>
+        <div class="bd"><h4>Rotulagem e impressão</h4>
+          <p>Rolo aplicador acompanhando produto em movimento, com registro repetível peça a peça.</p>
+          <div class="why">Servo: engrenagem eletrônica entre eixo de produto e eixo de rótulo, sem transmissão mecânica.</div></div>
+      </div>
+    </div>
+
+    <div class="g3" style="margin-bottom:3.5mm">
+      <div class="card">
+        <div class="im"><img src="img/cnc.jpg" style="object-position:left center"></div>
+        <div class="bd"><h4>Máquina-ferramenta</h4>
+          <p>Eixos interpolados gerando trajetória contínua, com torque variando a cada mudança de material.</p>
+          <div class="why">Servo: interpolação exige erro de seguimento pequeno e previsível em todos os eixos.</div></div>
+      </div>
+      <div class="card">
+        <div class="im"><img src="img/solda.jpg"></div>
+        <div class="bd"><h4>Montagem e conformação</h4>
+          <p>Prensagem, rebitagem e inserção com perfil de força controlado e verificação por ciclo.</p>
+          <div class="why">Servo: controle de torque (±2 %) transforma a prensa em processo medido, não em batente.</div></div>
+      </div>
+      <div class="card">
+        <div class="im"><img src="img/robo.jpg"></div>
+        <div class="bd"><h4>Manipulação e cartesianos</h4>
+          <p>Pórticos e manipuladores de 2 a 4 eixos construídos pelo próprio integrador.</p>
+          <div class="why">Servo: multieixo coordenado sem comprar robô fechado; a arquitetura fica sob seu controle.</div></div>
+      </div>
+    </div>
+
+    <div class="g23" style="margin-bottom:3.5mm">
+      <div style="background:var(--ink);color:#fff;padding:3.4mm 3.8mm">
+        <div style="font-family:'PlexCond';font-weight:700;font-size:8pt;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:1.6mm">Fora da caixa</div>
+        <h3 style="color:#fff;font-size:11pt;margin-bottom:1.8mm">Onde talvez você nunca tenha pensado em usar servo</h3>
+        <div class="g2" style="gap:5mm">
+          <ul class="tick sm" style="color:#C3D0D9">
+            <li><strong style="color:#fff">Controle de tensão de bobina</strong> — em vez de dançarina mecânica, o
+              drive controla torque e mantém tensão constante enquanto o diâmetro muda</li>
+            <li><strong style="color:#fff">Troca automática de formato</strong> — guias e batentes posicionados por
+              receita, eliminando o ajuste manual entre lotes</li>
+          </ul>
+          <ul class="tick sm" style="color:#C3D0D9">
+            <li><strong style="color:#fff">Indexadores rotativos</strong> — substituem came mecânica e permitem mudar
+              o número de estações por parâmetro</li>
+            <li><strong style="color:#fff">Dosagem volumétrica</strong> — o volume vira ângulo comandado; mudar a dose
+              é mudar um número, não trocar came</li>
+          </ul>
+        </div>
+      </div>
+      <div class="box prat">
+        <span class="bt">Exemplo</span>
+        <p>Uma máquina de corte transversal ilustra o padrão que aparece em quase todos os casos acima:
+          <strong>Problema</strong> — o produto não para para ser cortado, e parar custaria metade da produção.
+          <strong>Solução</strong> — o eixo da lâmina acompanha o eixo de alimentação via came eletrônica; a lâmina
+          entra na velocidade do material, corta e retorna.</p>
+        <p style="margin-top:1.6mm"><strong>Por que servo</strong> — o sincronismo precisa valer durante o corte,
+          quando a carga muda bruscamente. É a rejeição de perturbação da malha de velocidade que segura o
+          comprimento da peça dentro da tolerância.</p>
+      </div>
+    </div>
+
+    <div class="box dica">
+      <span class="bt">Dica de engenharia</span>
+      <p>Ao avaliar uma aplicação, procure a <strong>grandeza que hoje é ajustada à mão</strong> — batente, came,
+        volante graduado, chave de fim de curso reposicionada a cada lote. Cada um desses ajustes é um candidato
+        natural a virar parâmetro de receita, e é aí que o servo costuma se pagar mais rápido do que na promessa
+        genérica de “mais precisão”.</p>
+    </div>
+
+  </div>
+  <div class="ftr"><span>Inovance SV660N · Guia Técnico, Aplicações e Engenharia de Servoacionamentos</span><span class="pg">06</span></div>
+</section>
+
+<!-- ══════════════════════════ 7 · DIMENSIONAMENTO / PAINEL / COMISSIONAMENTO ══════════════════════════ -->
+<section class="page">
+  <div class="hdr"><div class="l">Inovance <b>SV660N</b></div><div class="r">06 · Dimensionar, instalar, comissionar</div></div>
+  <div class="pad">
+
+    <span class="kicker">Capítulo 06</span>
+    <h2>Do cálculo ao primeiro movimento</h2>
+    <div class="rule thick"></div>
+
+    <div class="g23" style="margin-bottom:4mm">
+      <div>
+        <h3>Dimensionar não é escolher kW</h3>
+        <p class="sm" style="margin-bottom:2mm">Potência é resultado, não entrada. O caminho correto parte da
+          mecânica e chega ao motor — nunca o contrário. Quatro verificações decidem o conjunto:</p>
+        <ul class="num sm" style="margin-bottom:2.4mm">
+          <li><strong>Torque de regime</strong> — atrito, gravidade e processo. Define o torque contínuo mínimo.</li>
+          <li><strong>Torque de aceleração</strong> — inércia total × aceleração angular. Define o torque de pico e
+            costuma ser o número dominante em ciclo curto.</li>
+          <li><strong>Relação de inércia</strong> — inércia refletida da carga ÷ inércia do rotor. É o que determina
+            se a malha vai aceitar ganho alto ou oscilar.</li>
+          <li><strong>Torque RMS do ciclo</strong> — média quadrática ao longo do ciclo completo, incluindo as pausas.
+            É a verificação térmica que evita o alarme <span class="mono">E620.0</span> depois de instalado.</li>
+        </ul>
+        <div class="box" style="background:#fff">
+          <span class="bt">Exemplo didático · eixo linear com fuso</span>
+          <p class="sm" style="font-size:7.9pt">Carga de <strong>40 kg</strong> em fuso de <strong>10 mm/volta</strong>,
+            curso útil <strong>400 mm</strong>, ciclo alvo de <strong>0,9 s</strong> com aceleração em <strong>0,15 s</strong>.</p>
+          <p class="sm" style="font-size:7.9pt;margin-top:1.2mm">A massa refletida no eixo vira inércia por
+            <em>J</em><sub>carga</sub> = <em>m</em> · (<em>p</em>/2π)², com <em>p</em> em metros por volta — aqui,
+            40 · (0,01/6,283)² ≈ <strong>1,01 × 10<sup>−4</sup> kg·m²</strong>, à qual se somam fuso, acoplamento e
+            polias. Compare esse total com a inércia do rotor do motor candidato (a tabela oficial MS1 traz esse dado
+            em 10<sup>−4</sup> kg·m²): é essa razão, e não a massa em kg, que decide se o conjunto é estável. Só então
+            some o torque de aceleração (<em>J</em><sub>total</sub> · Δω/Δt) ao torque de regime, confronte com a curva
+            torque × rotação do motor e verifique o RMS do ciclo. <strong>Exemplo ilustrativo</strong> — não é
+            especificação de produto.</p>
+        </div>
+        <h3 style="margin-top:3.4mm">Motores MS1 — escolha pela inércia, não pelo kW</h3>
+        <table class="tight">
+          <thead><tr><th style="width:20%">Série</th><th style="width:80%">Perfil e uso típico</th></tr></thead>
+          <tbody>
+            <tr><td class="m">MS1H1</td><td>Baixa inércia, baixa capacidade — movimento curto e muito rápido</td></tr>
+            <tr><td class="m">MS1H4</td><td>Inércia média, baixa capacidade — carga com alguma massa</td></tr>
+            <tr><td class="m">MS1H2</td><td>Baixa inércia, capacidade média — eixo principal dinâmico</td></tr>
+            <tr><td class="m">MS1H3</td><td>Inércia média, capacidade média — 1500 rpm, torque alto</td></tr>
+          </tbody>
+        </table>
+        <p class="xs" style="margin-top:1.2mm">Dois motores de mesma potência podem se comportar de forma oposta na
+          mesma máquina: quem decide é a inércia.</p>
+        <h3 style="margin-top:3.4mm">Comissionamento — a sequência que evita retrabalho</h3>
+        <div class="g2" style="gap:5mm">
+          <ul class="num sm" style="font-size:7.8pt">
+            <li>Conferir código do drive e do motor — par e tensão corretos</li>
+            <li>Inspecionar cabos: potência, encoder, EtherCAT e STO</li>
+            <li>Energizar só o controle; verificar display e indicador CHARGE</li>
+            <li>Restaurar padrão de fábrica antes de parametrizar</li>
+            <li>Estabelecer a comunicação e conferir o endereço de cada eixo</li>
+            <li>Validar rotação e fins de curso <em>antes</em> de acoplar a carga</li>
+          </ul>
+          <ul class="num sm" style="counter-reset:n 6;font-size:7.8pt">
+            <li>Testar JOG com o eixo livre — ruído aqui é problema mecânico</li>
+            <li>Acoplar a carga e rodar identificação de inércia</li>
+            <li>Aplicar autotuning e ajustar rigidez</li>
+            <li>Testar posicionamento e repetibilidade em cota conhecida</li>
+            <li>Rodar o ciclo real e monitorar corrente e temperatura</li>
+            <li>Validar STO, freio e emergência com a máquina completa</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <figure style="margin-bottom:3mm">
+          <img src="img/painel.jpg" style="height:56mm;object-position:center 30%">
+          <figcaption><b>Painel de comando montado.</b> Disjuntores, CLP, réguas de bornes e ventilação forçada.
+            O servo drive entra nesse ambiente — e é o ambiente que define se ele vai durar.</figcaption>
+        </figure>
+        <h3>No painel — o que erra com mais frequência</h3>
+        <ul class="tick sm" style="margin-bottom:3mm">
+          <li><strong>Aterramento</strong> — malha única, de baixa impedância; blindagem do cabo de motor aterrada
+            conforme o manual</li>
+          <li><strong>Separação</strong> — potência e sinal em canaletas distintas; cruzamentos em 90°, nunca paralelos</li>
+          <li><strong>Cabos originais</strong> — encoder e potência são cabos especificados, não cabo genérico de mesma bitola</li>
+          <li><strong>Térmica</strong> — o limite de 0 a 55 °C vale <em>dentro</em> do painel, com derating acima de 45 °C</li>
+          <li><strong>Espaçamento</strong> — respeite as folgas do manual; drives encostados aquecem o vizinho</li>
+        </ul>
+        <h3>Autotuning e rigidez</h3>
+        <p class="sm" style="margin-bottom:1.8mm">O SV660N oferece <strong>STune</strong>, que calcula os ganhos a
+          partir de um nível de rigidez escolhido, e <strong>ETune</strong>, que ajusta automaticamente os parâmetros
+          para o melhor desempenho. Ambos assumem <em>pouca variação de inércia da carga</em> — em máquina cuja carga
+          muda muito ao longo do ciclo, o ajuste fino manual ainda é necessário.</p>
+        <svg viewBox="0 0 260 84" style="width:100%;height:auto;margin-bottom:1.4mm" font-family="Plex">
+          <line x1="8" y1="58" x2="252" y2="58" stroke="#DAE2E8" stroke-width="1"/>
+          <line x1="8" y1="18" x2="252" y2="18" stroke="#DAE2E8" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="252" y="15" fill="#7B8894" font-size="7" text-anchor="end">alvo</text>
+          <path d="M8,58 L34,58 C48,58 52,2 66,2 C78,2 80,34 92,34 C102,34 104,8 114,8 C122,8 124,24 132,24"
+                fill="none" stroke="#E2571F" stroke-width="1.8" stroke-linecap="round"/>
+          <text x="70" y="70" fill="#E2571F" font-size="7.2" font-weight="600" text-anchor="middle">ganho alto demais</text>
+          <text x="70" y="79" fill="#E2571F" font-size="7.2" text-anchor="middle">overshoot e oscilação</text>
+          <path d="M134,58 L160,58 C172,58 176,18 196,18 L250,18" fill="none" stroke="#0E6C78" stroke-width="1.8" stroke-linecap="round"/>
+          <text x="196" y="70" fill="#0E6C78" font-size="7.2" font-weight="600" text-anchor="middle">ajuste adequado</text>
+          <text x="196" y="79" fill="#0E6C78" font-size="7.2" text-anchor="middle">rápido e estável</text>
+        </svg>
+        <div class="box aten">
+          <span class="bt">Atenção</span>
+          <p>Vibração que aparece <em>só com a carga acoplada</em> raramente é ganho: é ressonância mecânica. Baixar
+            o ganho esconde o sintoma e derruba a dinâmica. O caminho correto é identificar a frequência e aplicar
+            um dos quatro <em>notch filters</em> (50–5000 Hz), preservando a rigidez da malha.</p>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="ftr"><span>Inovance SV660N · Guia Técnico, Aplicações e Engenharia de Servoacionamentos</span><span class="pg">07</span></div>
+</section>
+
+<!-- ══════════════════════════ 8 · DIAGNÓSTICO / FECHAMENTO ══════════════════════════ -->
+<section class="page">
+  <div class="hdr"><div class="l">Inovance <b>SV660N</b></div><div class="r">07 · Diagnóstico e conclusão</div></div>
+  <div class="pad">
+
+    <span class="kicker">Capítulo 07</span>
+    <h2>Quando a máquina não anda — e quando não usar servo</h2>
+    <div class="rule thick"></div>
+
+    <div class="g23" style="margin-bottom:3.5mm">
+      <div>
+        <h3>Códigos de falha oficiais — os mais frequentes em campo</h3>
+        <table class="tight">
+          <thead><tr><th style="width:15%">Código</th><th style="width:30%">Significado</th><th style="width:43%">Onde olhar primeiro</th><th class="c" style="width:12%">Reset</th></tr></thead>
+          <tbody>
+            <tr><td class="m">E121.0</td><td>Comando S-ON inválido</td><td>Sequência de habilitação do CLP; DI mal alocada</td><td class="c yes">sim</td></tr>
+            <tr><td class="m">E150.0</td><td>Proteção STO acionada</td><td>Circuito de segurança, STO1/STO2, jumper ausente</td><td class="c no">não</td></tr>
+            <tr><td class="m">E400.0</td><td>Sobretensão no circuito principal</td><td>Desaceleração agressiva; frenagem insuficiente. Subtensão (<span class="mono">E410.0</span>): queda de rede ou fase aberta</td><td class="c yes">sim</td></tr>
+            <tr><td class="m">E500.0</td><td>Sobrevelocidade do motor</td><td>Escala de engrenagem eletrônica; sentido invertido</td><td class="c yes">sim</td></tr>
+            <tr><td class="m">E620.0</td><td>Sobrecarga do motor</td><td>Dimensionamento; RMS do ciclo; atrito crescente</td><td class="c yes">sim</td></tr>
+            <tr><td class="m">E630.0</td><td>Motor travado</td><td>Freio não liberado; obstrução mecânica; carga agarrada</td><td class="c yes">sim</td></tr>
+            <tr><td class="m">E650.0</td><td>Sobretemperatura do dissipador</td><td>Ventilação do painel; espaçamento; filtro obstruído</td><td class="c yes">sim</td></tr>
+            <tr><td class="m">E740.2</td><td>Erro do encoder absoluto</td><td>Cabo de encoder, blindagem, conector, interferência</td><td class="c no">não</td></tr>
+            <tr><td class="m">E210.0</td><td>Saída em curto para o terra</td><td>Cabo de motor, isolação do enrolamento — não religue</td><td class="c no">não</td></tr>
+          </tbody>
+        </table>
+        <p class="xs" style="margin-top:1.2mm">Extrato da lista oficial de falhas do <em>Advanced User Guide</em> do SV660N.
+          Falhas não resetáveis exigem eliminar a causa e reenergizar. Consulte sempre o manual da sua versão de firmware.</p>
+      </div>
+      <div>
+        <h3>Árvore de partida</h3>
+        <div style="border:.7pt solid var(--line);padding:2.8mm 3mm;background:var(--wash);margin-bottom:2.6mm">
+          <div style="font-family:'PlexCond';font-weight:700;font-size:9pt;text-transform:uppercase;color:var(--accent);margin-bottom:1.6mm">“O motor não gira”</div>
+          <ul class="num sm" style="font-size:7.8pt">
+            <li>Há alarme no display? <em>Sim</em> → resolva a falha antes de qualquer outra coisa</li>
+            <li>O drive está em estado operacional na rede? Escravo fora de OP não recebe referência</li>
+            <li>O S-ON chegou? <span class="mono">E121.0</span> aponta exatamente para isso</li>
+            <li>O STO está liberado? <span class="mono">E150.0</span> confirma</li>
+            <li>Algum fim de curso atuado? <span class="mono">E950.0</span> / <span class="mono">E952.0</span></li>
+            <li>O freio do motor foi comandado a abrir?</li>
+            <li>O eixo gira livre com a máquina desenergizada?</li>
+            <li>A referência está realmente variando? Monitore a posição comandada, não o programa</li>
+          </ul>
+        </div>
+        <div class="box aten">
+          <span class="bt">Atenção</span>
+          <p>Boa parte dos “problemas de servo” que chegam ao suporte são mecânicos ou de cabeamento. Antes de mexer
+            em ganho, gire o eixo com a mão: se ele já está duro, nenhum parâmetro vai consertar isso.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="g3" style="margin-bottom:3.5mm">
+      <div style="border:.7pt solid var(--line);border-top:2.2pt solid var(--slate);padding:2.8mm 3mm">
+        <h4 style="color:var(--slate)">Quando NÃO usar o SV660N</h4>
+        <p class="sm" style="font-size:7.7pt">Bombas, ventiladores, exaustores e transportadores de velocidade
+          constante. Qualquer carga onde ninguém precisa saber a posição. Aplicações de baixa dinâmica com rampas de
+          segundos. Nesses casos o servo entrega precisão que a máquina não usa — e cobra por ela em custo,
+          complexidade e peça de reposição.</p>
+      </div>
+      <div style="border:.7pt solid var(--line);border-top:2.2pt solid var(--accent);padding:2.8mm 3mm">
+        <h4 style="color:var(--accent)">Checklist antes de comprar</h4>
+        <p class="sm" style="font-size:7.7pt">Torque contínuo e de pico · rotação máxima · relação de inércia ·
+          RMS térmico do ciclo · tensão disponível no painel · série MS1 adequada · encoder single ou multi-turn ·
+          necessidade de freio · STO exigido pela análise de risco · energia de frenagem · espaço e temperatura no
+          painel · master EtherCAT compatível com CiA 402.</p>
+      </div>
+      <div style="border:.7pt solid var(--line);border-top:2.2pt solid var(--tech);padding:2.8mm 3mm">
+        <h4 style="color:var(--tech)">Perguntas rápidas</h4>
+        <p class="sm" style="font-size:7.7pt"><strong>Preciso de CLP?</strong> De um master EtherCAT, sim — é ele quem
+          gera o movimento. <strong>Serve com qualquer master?</strong> Com o que suporte CoE/CiA 402 e aceite o
+          arquivo ESI do drive. <strong>Posso misturar eixos?</strong> Sim, vários SV660N na mesma linha.
+          <strong>Precisa de resistor externo?</strong> Só se a energia devolvida exceder o interno — calcule pelo ciclo.</p>
+      </div>
+    </div>
+
+    <div style="background:var(--ink);color:#fff;padding:3.2mm 4mm;margin-bottom:3mm">
+      <div style="font-family:'PlexCond';font-weight:700;font-size:8pt;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:1.6mm">O SV660N em uma frase</div>
+      <p style="font-size:10.2pt;line-height:1.32;color:#fff;max-width:172mm;margin:0">
+        O SV660N faz sentido quando a máquina precisa transformar potência elétrica em <strong>movimento controlado</strong>
+        — com posição conhecida, resposta dinâmica alta e vários eixos amarrados a um relógio comum — e deixa de fazer
+        sentido no instante em que ninguém, no processo, precisa saber onde o eixo está.
+      </p>
+    </div>
+
+    <div class="g2" style="gap:7mm">
+      <div>
+        <h3 style="font-size:9.6pt">Fontes e referências</h3>
+        <ul class="tick xs" style="font-size:6.6pt">
+          <li><strong>Inovance — SV660N Series Servo Drive Advanced User Guide.</strong> Especificações elétricas e gerais,
+            configurações do sistema servo, lista oficial de falhas. inovance.eu · acesso em 18/08/2026</li>
+          <li><strong>Inovance Technology Europe — SV660N Single-Axis EtherCAT Servo</strong> (flyer, cód. L6210209 V0.6).
+            Bandas de malha, tempos de ciclo, sincronização DC, STune/ETune e tabela de seleção. inovance.eu · 18/08/2026</li>
+          <li><strong>Inovance Global — SV660 Series</strong> (página de produto). Faixa de potência, certificações e
+            recursos de comissionamento. inovance.com · 18/08/2026</li>
+          <li><strong>EtherCAT Technology Group — SV660N Series Servo Drive</strong> (registro de produto e
+            conformidade). ethercat.org · 18/08/2026</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size:9.6pt">Créditos de imagem e nota editorial</h3>
+        <p class="xs" style="font-size:6.6pt;margin-bottom:1.2mm">Fotografias de bancos de imagens livres (Wikimedia
+          Commons), ilustrativas de aplicações e ambientes típicos — <strong>não</strong> representam instalações com
+          equipamento Inovance. Capa: Gzen92 · Esteira: falco · Encoder: Charly Whisky · Painel: Elmschrat ·
+          Paletização: KUKA Roboter GmbH/Bachmann · Termoformadora: Jwallingford1 · Rotulagem: Tomas er · CNC: Prbocchi ·
+          Conformação: Nestor Jarque · Manipuladores: S211897polito. Licenças CC BY, CC BY-SA, CC0, FAL e domínio
+          público — ver a página de cada arquivo no Commons.</p>
+        <p class="xs" style="font-size:6.6pt">Documento independente, sem vínculo comercial com a Inovance; marcas
+          citadas pertencem aos titulares. Especificações variam conforme modelo, firmware e revisão de documentação —
+          confirme no manual do equipamento antes de especificar, instalar ou operar. <strong>Edição MVP</strong>:
+          esquemas de ligação, mapa de parâmetros e lista integral de falhas estão nos manuais oficiais.</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="ftr"><span>Inovance SV660N · Guia Técnico, Aplicações e Engenharia de Servoacionamentos · Edição MVP v1.0</span><span class="pg">08</span></div>
+</section>
+
+</body>
+</html>

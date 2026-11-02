@@ -1,0 +1,81 @@
+{
+ "capa": {
+  "file": "img/capa.jpg",
+  "title": "Bras robotisés.jpg",
+  "author": "Gzen92",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Bras_robotis%C3%A9s.jpg",
+  "size": 639676
+ },
+ "robo": {
+  "file": "img/robo.jpg",
+  "title": "Comau robotics.jpg",
+  "author": "S211897polito",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Comau_robotics.jpg",
+  "size": 342593
+ },
+ "encoder": {
+  "file": "img/encoder.jpg",
+  "title": "Optical encoder.jpg",
+  "author": "Charly Whisky",
+  "license": "FWL",
+  "page": "https://commons.wikimedia.org/wiki/File:Optical_encoder.jpg",
+  "size": 565418
+ },
+ "esteira": {
+  "file": "img/esteira.jpg",
+  "title": "Conveyor system in a factory.jpg",
+  "author": "falco",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Conveyor_system_in_a_factory.jpg",
+  "size": 642109
+ },
+ "paletizacao": {
+  "file": "img/paletizacao.jpg",
+  "title": "Factory Automation Robotics Palettizing Bread.jpg",
+  "author": "KUKA Roboter GmbH, Bachmann",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Factory_Automation_Robotics_Palettizing_Bread.jpg",
+  "size": 1244641
+ },
+ "cnc": {
+  "file": "img/cnc.jpg",
+  "title": "ANCA MX7 CNC Tool Grinder.jpg",
+  "author": "Prbocchi",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:ANCA_MX7_CNC_Tool_Grinder.jpg",
+  "size": 519178
+ },
+ "painel": {
+  "file": "img/painel.jpg",
+  "title": "BMA Automation Allen Bradley PLC 4.JPG",
+  "author": "Elmschrat",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:BMA_Automation_Allen_Bradley_PLC_4.JPG"
+ },
+ "rotulagem": {
+  "file": "img/rotulagem.jpg",
+  "title": "Pol Roger labelling line 2.jpg",
+  "author": "Tomas er",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Pol_Roger_labelling_line_2.jpg",
+  "size": 600169
+ },
+ "termoformadora": {
+  "file": "img/termoformadora.jpg",
+  "title": "VC999 i-Series Thermoform Packaging Machine.png",
+  "author": "Jwallingford1",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:VC999_i-Series_Thermoform_Packaging_Machine.png",
+  "size": 1256119
+ },
+ "solda": {
+  "file": "img/solda.jpg",
+  "title": "Clinchen audi.jpg",
+  "author": "Nestor Jarque",
+  "license": "CC BY 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Clinchen_audi.jpg",
+  "size": 839856
+ }
+}
