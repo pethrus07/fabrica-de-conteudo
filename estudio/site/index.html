@@ -1,0 +1,860 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#144667">
+<title>Estúdio de Máquinas · Celiware</title>
+<link rel="icon" href="logo.png">
+<link rel="apple-touch-icon" href="icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#144667;--navy2:#0E3350;--navy-fog:#E8EFF5;
+  --orange:#F28A2D;--orange2:#D9731A;--orange-fog:#FEF1E5;
+  --bg:#F3F5F8;--card:#FFFFFF;--well:#F7F9FB;--line:#DDE3EA;--line2:#C3CDD8;
+  --ink:#0F1B26;--txt:#2B3A48;--mut:#566676;--dim:#8592A0;
+  --ok:#1F8A4C;--err:#B42318;--err-fog:#FDECEA;
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;
+  --r1:8px;--r2:12px;--r3:16px;
+  --tit:"IBM Plex Sans Condensed","IBM Plex Sans","Segoe UI",Roboto,Arial,sans-serif;
+  --corpo:"IBM Plex Sans","Segoe UI",Roboto,Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--txt);font-family:var(--corpo);font-size:15px;line-height:1.5;padding-bottom:140px;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--orange);outline-offset:2px;border-radius:6px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.wrap{max-width:760px;margin:0 auto;padding:0 var(--s4)}
+.hide{display:none!important}
+
+/* cabeçalho */
+header{background:var(--navy);color:#fff;padding:var(--s5) 0 var(--s6)}
+.htop{display:flex;align-items:center;justify-content:space-between;gap:var(--s3)}
+.brand{display:flex;align-items:center;gap:var(--s3)}
+.brand .lg{background:#fff;border-radius:10px;padding:6px 8px;display:grid;place-items:center}
+.brand .lg img{height:26px;display:block}
+.brand b{font-family:var(--tit);font-size:13px;letter-spacing:1.6px;text-transform:uppercase;font-weight:600;opacity:.8}
+.hbtn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#fff;border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+.hbtn:hover{background:rgba(255,255,255,.18)}
+h1{font-family:var(--tit);font-weight:700;font-size:clamp(28px,6vw,40px);line-height:1.05;margin-top:var(--s5);letter-spacing:-.3px}
+.sub{color:rgba(255,255,255,.78);margin-top:var(--s2);font-size:14.5px;max-width:560px}
+.namebox{margin-top:var(--s5)}
+.namebox label{display:block;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:var(--s2);font-weight:600}
+.namebox input{font-size:19px;font-weight:600;background:#fff;border-color:#fff}
+
+/* campos */
+input,textarea{width:100%;background:#fff;border:1px solid var(--line2);color:var(--ink);border-radius:var(--r1);padding:12px 14px;font-family:inherit;font-size:15px}
+input:focus,textarea:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px var(--navy-fog)}
+::placeholder{color:#9AA6B2}
+textarea{min-height:92px;resize:vertical;line-height:1.5}
+.field{margin-top:var(--s4)}
+.field>label,.flabel{display:block;font-size:13.5px;color:var(--ink);margin-bottom:6px;font-weight:600}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3)}
+.multi{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.multi label{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line2);background:#fff;border-radius:999px;padding:9px 14px;font-size:14px;cursor:pointer;user-select:none}
+.multi input{width:17px;height:17px;accent-color:var(--navy);margin:0}
+.multi label:has(input:checked){border-color:var(--navy);background:var(--navy-fog);color:var(--navy2);font-weight:600}
+
+/* narração geral */
+.narr{background:var(--card);border:1px solid var(--line);border-radius:var(--r3);padding:var(--s5);margin-top:calc(-1 * var(--s5));position:relative}
+.narr h2{font-family:var(--tit);font-size:20px;color:var(--ink);font-weight:700}
+.narr p{color:var(--mut);font-size:14px;margin-top:6px;max-width:540px}
+
+/* painel */
+.panel{margin-top:var(--s6)}
+.ptop{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);flex-wrap:wrap}
+.vtog{display:inline-flex;border:1px solid var(--line2);border-radius:999px;padding:3px;background:#fff}
+.vtog button{background:none;border:none;color:var(--mut);border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:600;cursor:pointer}
+.vtog button.on{background:var(--navy);color:#fff}
+.lnk{background:none;border:none;color:var(--navy);font-size:13.5px;font-weight:600;cursor:pointer;padding:8px 4px;text-decoration:underline;text-underline-offset:3px}
+.ptrack{margin-top:var(--s4);height:4px;background:var(--line);border-radius:99px;overflow:hidden}
+.pfill{height:100%;background:var(--orange);width:0;border-radius:99px;transition:width .3s ease}
+.ptxt{margin-top:var(--s2);font-size:12.5px;color:var(--mut)}
+.chips{display:flex;gap:var(--s2);margin-top:var(--s3);overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.chip{flex:none;display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);color:var(--mut);border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+.chip.cur{border-color:var(--navy);color:var(--navy2);box-shadow:0 0 0 1px var(--navy) inset}
+.chip .st{width:8px;height:8px;border-radius:99px;background:var(--line2)}
+.chip .st.ok{background:var(--ok)}
+
+/* bloco */
+section.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r3);padding:var(--s5);margin-top:var(--s4)}
+.shead{display:flex;align-items:flex-start;gap:var(--s3)}
+.snum{font-family:var(--tit);font-weight:700;font-size:15px;color:#fff;background:var(--navy);border-radius:8px;min-width:32px;height:32px;display:grid;place-items:center;flex:none;margin-top:4px}
+.stitle{flex:1;min-width:0}
+.stitle input{font-family:var(--tit);font-size:22px;font-weight:700;color:var(--ink);border:none;border-bottom:2px solid transparent;border-radius:0;padding:2px 0 4px;background:transparent}
+.stitle input:hover{border-bottom-color:var(--line)}
+.stitle input:focus{box-shadow:none;border-bottom-color:var(--navy)}
+.sdesc{color:var(--mut);font-size:13.5px;margin-top:2px}
+.more{flex:none;background:#fff;border:1px solid var(--line);border-radius:var(--r1);width:40px;height:40px;cursor:pointer;font-size:18px;line-height:1;color:var(--mut)}
+.more:hover{border-color:var(--navy);color:var(--navy)}
+.row{border:1px solid var(--line);background:var(--well);border-radius:var(--r2);padding:var(--s4);margin-top:var(--s3)}
+.rowhead{display:flex;align-items:center;justify-content:space-between;gap:var(--s2)}
+.rowhead .rl{font-size:12px;letter-spacing:1.3px;text-transform:uppercase;color:var(--navy2);font-weight:700}
+.rowctl{display:flex;gap:6px}
+.mini{background:#fff;border:1px solid var(--line);color:var(--mut);border-radius:999px;height:32px;min-width:32px;padding:0 10px;font-size:12.5px;cursor:pointer}
+.mini:hover{border-color:var(--navy);color:var(--navy)}
+.mini:disabled{opacity:.35;cursor:default}
+.row .field:first-of-type{margin-top:var(--s2)}
+.addrow{margin-top:var(--s3);background:none;border:1.5px dashed var(--line2);color:var(--navy);border-radius:var(--r2);padding:13px;width:100%;cursor:pointer;font-size:14px;font-weight:600}
+.addrow:hover{border-color:var(--navy)}
+
+/* mídia */
+.media{margin-top:var(--s5);padding-top:var(--s4);border-top:1px solid var(--line)}
+.row .media{margin-top:var(--s4);padding-top:var(--s3)}
+.mbar{display:flex;gap:var(--s2);flex-wrap:wrap}
+.mbtn{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line2);color:var(--ink);border-radius:999px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;position:relative}
+.mbtn:hover{border-color:var(--navy)}
+.mbtn.rec{color:var(--mut)}
+.qty{display:flex;flex-direction:column;gap:var(--s2)}
+.qi{border:1px solid var(--line);border-radius:var(--r2);background:#fff;padding:8px 8px 8px 14px}
+.qi.on{border-color:var(--navy);background:var(--navy-fog);padding-bottom:12px}
+.qh{display:flex;align-items:center;gap:var(--s3)}
+.qh .qn{flex:1;font-weight:600;color:var(--ink);font-size:14.5px}
+.qh .qn small{display:block;font-weight:400;color:var(--mut);font-size:12.5px}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:999px;background:#fff;flex:none}
+.step button{width:42px;height:42px;border:none;background:none;font-size:20px;line-height:1;cursor:pointer;color:var(--navy);border-radius:999px}
+.step button:disabled{opacity:.3;cursor:default}
+.step b{min-width:26px;text-align:center;font-variant-numeric:tabular-nums;color:var(--ink);font-size:16px}
+.qitens{display:flex;flex-direction:column;gap:var(--s2);margin-top:var(--s3);padding-right:6px}
+.qitens label{display:flex;align-items:center;gap:var(--s2)}
+.qitens label span{flex:none;min-width:22px;font-weight:700;color:var(--navy2);font-size:13px}
+.qitens input{padding:10px 12px;font-size:14.5px}
+.narr textarea{margin-top:var(--s4);min-height:140px}
+.ou{font-size:13px;color:var(--mut);margin-top:var(--s4)}
+.ou+.media{margin-top:var(--s2);padding-top:0;border-top:none}
+.mbtn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.mbtn svg{width:17px;height:17px;flex:none}
+/* câmera direta só em celular/tablet (classe .touch, decidida no início do script); no computador a galeria cobre tudo */
+.mbtn.cam,.t-touch{display:none}
+.touch .mbtn.cam{display:inline-flex}
+.touch .t-touch{display:inline}
+.touch .t-desk{display:none}
+.touch .mbar{display:grid;grid-template-columns:1fr 1fr}
+.touch .mbar .mbtn{justify-content:center;padding:12px 10px}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s3);margin-top:var(--s3)}
+.mgrid:empty{display:none}
+.mi{background:var(--well);border:1px solid var(--line);border-radius:var(--r2);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.mi .pv{aspect-ratio:4/3;background:#E6EBF0;display:grid;place-items:center;overflow:hidden}
+.mi .pv img,.mi .pv video{width:100%;height:100%;object-fit:cover;display:block}
+.mi .pv .ic{font-size:12px;color:var(--mut);font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.mi .mf{padding:8px 10px 10px}
+.mi .mn{font-size:11.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mi .cap{margin-top:6px;font-size:13px;padding:7px 9px}
+.mi .x{position:absolute;top:6px;right:6px;background:rgba(15,27,38,.72);color:#fff;border:none;width:30px;height:30px;border-radius:99px;cursor:pointer;font-size:13px}
+.mi.au{grid-column:1/-1;flex-direction:row;align-items:center;gap:var(--s3);padding:10px 48px 10px 12px}
+.mi.au audio{flex:1;min-width:0;height:40px}
+.mi.au .mn{flex:none;max-width:40%}
+.mi .busy{position:absolute;inset:0;background:rgba(255,255,255,.75);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--navy)}
+
+/* adicionar / vazio */
+.addsec{margin-top:var(--s5);width:100%;border:1.5px dashed var(--line2);background:none;color:var(--navy);border-radius:var(--r3);padding:20px;font-size:15px;font-weight:600;cursor:pointer}
+.addsec:hover{border-color:var(--navy);background:#fff}
+.start{margin-top:var(--s6)}
+.start h2{font-family:var(--tit);font-size:22px;color:var(--ink)}
+.start p{color:var(--mut);margin-top:6px;font-size:14px}
+.types{display:grid;gap:var(--s3);margin-top:var(--s4)}
+.type{text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r2);padding:var(--s4);cursor:pointer}
+.type:hover{border-color:var(--navy)}
+.type .tn{font-weight:700;color:var(--ink);font-size:15px}
+.type .td{color:var(--mut);font-size:13px;margin-top:3px}
+
+/* navegação passo a passo */
+.gnav{display:flex;align-items:center;gap:var(--s3);margin-top:var(--s4)}
+.gnav .gpos{flex:1;text-align:center;font-size:13px;color:var(--mut)}
+.gbtn{background:#fff;border:1px solid var(--line2);color:var(--ink);border-radius:999px;padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer}
+.gbtn.next{background:var(--navy);border-color:var(--navy);color:#fff}
+.gbtn:disabled{opacity:.35;cursor:default}
+
+/* barra inferior */
+.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);border-top:1px solid var(--line);backdrop-filter:blur(8px);padding:var(--s3) 0 calc(var(--s3) + env(safe-area-inset-bottom));z-index:50}
+.bar .wrap{display:flex;align-items:center;gap:var(--s3);justify-content:space-between}
+.count{color:var(--mut);font-size:12.5px;line-height:1.4}
+.count b{color:var(--ink)}
+.btn{background:var(--orange);color:var(--ink);border:none;border-radius:999px;padding:14px 26px;font-size:15px;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn:hover{background:#F59A45}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.navy{background:var(--navy);color:#fff}
+.btn.navy:hover{background:var(--navy2)}
+.btn2{background:#fff;color:var(--ink);border:1px solid var(--line2);border-radius:999px;padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer}
+.btn2:hover{border-color:var(--navy)}
+.btn2.danger{color:var(--err)}
+.btn2.danger:hover{border-color:var(--err)}
+
+/* gravação */
+.recbar{position:fixed;left:0;right:0;bottom:0;z-index:150;background:var(--ink);color:#fff;padding:var(--s4) 0 calc(var(--s4) + env(safe-area-inset-bottom))}
+.recbar .wrap{display:flex;align-items:center;gap:var(--s4)}
+.recdot{width:14px;height:14px;border-radius:99px;background:#FF4D3D;flex:none;animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+.rectx{flex:1;min-width:0}
+.rectx b{font-size:20px;font-variant-numeric:tabular-nums;font-family:var(--tit)}
+.rectx small{display:block;color:rgba(255,255,255,.7);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recmeter{height:4px;background:rgba(255,255,255,.15);border-radius:99px;margin-top:6px;overflow:hidden}
+.recmeter i{display:block;height:100%;width:0;background:var(--orange);transition:width .1s}
+.recstop{background:#fff;color:var(--ink);border:none;border-radius:999px;padding:13px 22px;font-weight:700;font-size:15px;cursor:pointer;display:flex;gap:8px;align-items:center}
+.recstop i{width:12px;height:12px;background:#FF4D3D;border-radius:2px}
+
+/* modais */
+.ov{position:fixed;inset:0;background:rgba(15,27,38,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:var(--s4)}
+.ov.show{display:flex}
+.box{background:#fff;border-radius:18px;padding:var(--s6);max-width:560px;width:100%;max-height:88vh;overflow:auto;box-shadow:0 20px 60px rgba(15,27,38,.25)}
+.box h3{font-family:var(--tit);font-size:24px;color:var(--ink);margin-bottom:6px}
+.box .bp{color:var(--mut);font-size:14px}
+.mbtns{display:flex;gap:var(--s2);flex-wrap:wrap;margin-top:var(--s5)}
+.list{margin-top:var(--s4);display:flex;flex-direction:column;gap:var(--s2)}
+.li{display:flex;align-items:center;gap:var(--s3);border:1px solid var(--line);border-radius:var(--r2);padding:10px 12px;background:var(--well)}
+.li .lt{flex:1;min-width:0}
+.li .lt b{display:block;color:var(--ink);font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .lt small{color:var(--mut);font-size:12.5px}
+.li.cur{border-color:var(--navy);background:var(--navy-fog)}
+.lib{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-top:var(--s4)}
+.lib button{text-align:left;background:var(--well);border:1px solid var(--line);border-radius:var(--r2);padding:12px 14px;cursor:pointer}
+.lib button:hover{border-color:var(--navy);background:#fff}
+.lib .ln{font-weight:700;font-size:14px;color:var(--ink)}
+.lib .ld{font-size:12.5px;color:var(--mut);margin-top:2px;line-height:1.35}
+.acts{display:flex;flex-direction:column;gap:var(--s2);margin-top:var(--s4)}
+.acts button{text-align:left;background:var(--well);border:1px solid var(--line);border-radius:var(--r2);padding:14px 16px;font-size:15px;font-weight:600;cursor:pointer;color:var(--ink)}
+.acts button:hover{border-color:var(--navy)}
+.acts button.danger{color:var(--err)}
+.acts button:disabled{opacity:.4;cursor:default}
+.prog{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:var(--s4)}
+.prog i{display:block;height:100%;width:0;background:var(--orange);transition:width .2s}
+.progtx{font-size:13px;color:var(--mut);margin-top:var(--s2);font-variant-numeric:tabular-nums}
+.note{font-size:13px;color:var(--mut);background:var(--well);border:1px solid var(--line);border-radius:var(--r2);padding:12px 14px;margin-top:var(--s4)}
+.note.warn{background:var(--orange-fog);border-color:#F6C79B;color:#7A3E06}
+
+#toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:110px;z-index:200;display:flex;flex-direction:column;gap:var(--s2);align-items:center;width:min(92vw,520px);pointer-events:none}
+.toast{pointer-events:auto;background:var(--ink);color:#fff;border-radius:var(--r2);padding:12px 16px;font-size:13.5px;box-shadow:0 10px 30px rgba(15,27,38,.3);animation:tin .2s ease both}
+.toast.err{background:var(--err)}
+@keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+@media(max-width:640px){
+  input,textarea{font-size:16px}
+  header{padding:var(--s4) 0 var(--s6)}
+  h1{margin-top:var(--s4)}
+  .narr,section.card{padding:var(--s4)}
+  .box{padding:var(--s5) var(--s4);border-radius:18px 18px 0 0;max-height:92vh}
+  .ov{align-items:flex-end;padding:0}
+  .lib{grid-template-columns:1fr}
+  .stitle input{font-size:20px}
+  .pair{grid-template-columns:1fr}
+  .pair.keep{grid-template-columns:1fr 1fr}
+  .mgrid{grid-template-columns:1fr 1fr}
+  .bar .wrap{flex-direction:column;align-items:stretch;gap:var(--s2)}
+  .count{text-align:center}
+  .btn{width:100%}
+  .gbtn{flex:1;padding:13px 10px}
+  .gnav{flex-wrap:wrap}
+  .gnav .gpos{order:-1;flex-basis:100%}
+  body{padding-bottom:170px}
+  #toasts{bottom:150px}
+}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="htop">
+    <div class="brand"><span class="lg"><img src="logo.png" alt="Celiware"></span><b>Celiware</b></div>
+    <button class="hbtn" id="bmaq" type="button">Máquinas</button>
+  </div>
+  <h1>Estúdio de Máquinas</h1>
+  <p class="sub">Escreva o que você sabe da máquina e anexe fotos, vídeos e documentos. Se for mais rápido, grave um áudio. No final, gere o pacote e mande para o Pedro: os arquivos vão do jeito que foram feitos, sem perder qualidade.</p>
+  <div class="namebox">
+    <label for="nome">Nome da máquina</label>
+    <input id="nome" placeholder="Ex.: Envasadora EV-20" autocomplete="off">
+  </div>
+</div></header>
+
+<div class="wrap">
+  <div class="narr" id="narr"></div>
+  <div id="main"></div>
+</div>
+
+<div class="bar" id="bar"><div class="wrap">
+  <div class="count" id="count"></div>
+  <button class="btn" id="gen" type="button">Gerar pacote (.zip)</button>
+</div></div>
+
+<div class="recbar hide" id="recbar"><div class="wrap">
+  <span class="recdot"></span>
+  <div class="rectx"><b id="rect">00:00</b><small id="recw"></small><div class="recmeter"><i id="recm"></i></div></div>
+  <button class="recstop" id="recstop" type="button"><i></i>Parar</button>
+</div></div>
+
+<div class="ov" id="ov"><div class="box" role="dialog" aria-modal="true" id="box"></div></div>
+<div id="toasts"></div>
+
+<script>
+"use strict";
+/* celular ou tablet: toque como ponteiro principal, navegador de celular, ou iPad (que se apresenta como Mac) */
+if(matchMedia("(pointer:coarse)").matches||/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1))document.documentElement.classList.add("touch");
+/* ================= blocos ================= */
+const ENTREGAS=[
+  {nome:"Vídeo",desc:"curto, para assistir no celular",ph:"Sobre o quê? Ex.: operação do dia a dia"},
+  {nome:"Manual",desc:"documento completo, em PDF",ph:"Qual? Ex.: operação, manutenção"},
+  {nome:"Guia rápido",desc:"1 ou 2 páginas para imprimir",ph:"Sobre o quê? Ex.: partida e parada"},
+  {nome:"Cartaz de parede",desc:"A3, fica do lado da máquina",ph:"Sobre o quê? Ex.: segurança da faca"},
+  {nome:"Treinamento",desc:"roteiro da visita / aula",ph:"Para quem? Ex.: 3 operadores do turno da noite"},
+  {nome:"Outro",desc:"",ph:"O que é?"}];
+const QMAX=20;
+const LIB={
+  pedido:{nome:"O pedido",desc:"O que você quer que a gente produza e para quem.",campos:[
+    {k:"entregas",t:"qty",l:"O que produzir, e quantos",op:ENTREGAS},
+    {k:"publico",t:"multi",l:"Para quem",op:["Operador","Manutenção","Cliente / gestor","Comercial"]},
+    {k:"cliente",t:"text",l:"Cliente que vai receber",ph:"Ex.: Laticínio Serra Verde"},
+    {k:"prazo",t:"text",l:"Para quando",ph:"Ex.: entrega da máquina em 15/10"},
+    {k:"obs",t:"area",l:"O que mais a gente precisa saber",ph:"Ex.: o operador é novo e nunca usou IHM."}]},
+  identificacao:{nome:"Identificação",desc:"Que máquina é essa.",midia:"visual",campos:[
+    {k:"funcao",t:"area",l:"O que ela faz",ph:"Em uma ou duas frases. Ex.: envasa e lacra potes de 500 g, até 20 por minuto."},
+    {k:"produto",t:"text",l:"Produto que ela processa"},
+    {k:"modelo",t:"text",l:"Modelo / versão",half:1},
+    {k:"serie",t:"text",l:"Número de série",half:1}]},
+  ficha:{nome:"Ficha técnica",desc:"Os números da máquina. Valor e unidade separados: vão exatamente assim para o manual.",
+    rep:{k:"itens",rotulo:"Item",chave:"valor",campos:[
+      {k:"grandeza",t:"text",l:"O quê",ph:"Ex.: Tensão de alimentação"},
+      {k:"valor",t:"text",l:"Valor",ph:"220",half:1,keep:1},
+      {k:"unidade",t:"text",l:"Unidade",ph:"V",half:1,keep:1}],
+    inicio:[{grandeza:"Tensão de alimentação",unidade:"V"},{grandeza:"Potência instalada",unidade:"kW"},{grandeza:"Pressão de ar comprimido",unidade:"bar"},{grandeza:"Capacidade de produção",unidade:""},{grandeza:"Dimensões (C × L × A)",unidade:"mm"},{grandeza:"Peso",unidade:"kg"}]}},
+  componentes:{nome:"Componentes",desc:"As peças principais: CLP, IHM, motores, sensores, válvulas.",
+    rep:{k:"itens",rotulo:"Componente",midia:"visual",campos:[
+      {k:"nome",t:"text",l:"Nome",ph:"Ex.: CLP"},
+      {k:"funcao",t:"text",l:"Para que serve",ph:"Ex.: controla a sequência da máquina"},
+      {k:"fabricante",t:"text",l:"Fabricante / modelo",ph:"Ex.: Easy521"}]}},
+  seguranca:{nome:"Segurança",desc:"O que protege quem opera.",midia:"visual",campos:[
+    {k:"riscos",t:"area",l:"Riscos da máquina",ph:"Ex.: faca de corte, partes quentes, esmagamento na prensa."},
+    {k:"epi",t:"multi",l:"EPI obrigatório",op:["Óculos","Luva","Protetor auricular","Calçado de segurança","Avental","Touca"]},
+    {k:"emergencia",t:"area",l:"Emergência",ph:"Onde ficam os botões de emergência e o que acontece quando aperta."},
+    {k:"protecoes",t:"area",l:"Proteções e intertravamentos",ph:"Ex.: porta com sensor, a máquina para se abrir."},
+    {k:"nunca",t:"area",l:"O que nunca fazer"}]},
+  instalacao:{nome:"Instalação",desc:"O que precisa estar pronto antes de ligar pela primeira vez.",midia:"visual",campos:[
+    {k:"local",t:"area",l:"Local",ph:"Espaço, piso, nivelamento, distância de parede."},
+    {k:"ligacoes",t:"area",l:"Ligações",ph:"Elétrica, ar comprimido, água."},
+    {k:"partida",t:"area",l:"Primeira partida",ph:"O que conferir e fazer na primeira vez."}]},
+  operacao:{nome:"Operação",desc:"Um passo por item, na ordem em que o operador faz. Se for mais fácil, grave falando.",campos:[
+    {k:"antes",t:"area",l:"Antes de ligar",ph:"O que conferir antes de começar."}],
+    rep:{k:"passos",rotulo:"Passo",midia:"visual",campos:[
+      {k:"acao",t:"text",l:"O que fazer",ph:"Ex.: Ligar a chave geral"},
+      {k:"ve",t:"area",l:"O que aparece na máquina ou na IHM"},
+      {k:"cuidado",t:"area",l:"Cuidado / erro comum"}]},
+    depois:[{k:"desligar",t:"area",l:"Como desligar"}]},
+  ajustes:{nome:"Ajustes e parâmetros",desc:"Os valores que se mexem: velocidade, temperatura, tempo, receita.",
+    rep:{k:"itens",rotulo:"Parâmetro",chave:"parametro",midia:"visual",campos:[
+      {k:"parametro",t:"text",l:"Parâmetro",ph:"Ex.: Temperatura da seladora"},
+      {k:"valor",t:"text",l:"Valor",ph:"180",half:1,keep:1},
+      {k:"unidade",t:"text",l:"Unidade",ph:"°C",half:1,keep:1},
+      {k:"onde",t:"text",l:"Onde se ajusta",ph:"Ex.: IHM › Receitas › Selagem"},
+      {k:"quando",t:"area",l:"Quando mudar"}]}},
+  manutencao:{nome:"Manutenção",desc:"O que fazer, de quanto em quanto tempo.",
+    rep:{k:"itens",rotulo:"Item",midia:"visual",campos:[
+      {k:"item",t:"text",l:"O quê",ph:"Ex.: Lubrificar a corrente"},
+      {k:"periodo",t:"text",l:"A cada quanto tempo",ph:"Ex.: semanal / 500 h"},
+      {k:"como",t:"area",l:"Como fazer"},
+      {k:"material",t:"text",l:"Peça ou material",ph:"Ex.: graxa grau alimentício"}]}},
+  problemas:{nome:"Problemas e soluções",desc:"O que costuma dar errado e como resolver. Inclui os alarmes da IHM.",
+    rep:{k:"itens",rotulo:"Problema",midia:"visual",campos:[
+      {k:"sintoma",t:"text",l:"Sintoma ou alarme",ph:"Ex.: Alarme 12 – falta de ar"},
+      {k:"causa",t:"area",l:"Causa provável"},
+      {k:"solucao",t:"area",l:"O que fazer"}]}},
+  documentos:{nome:"Documentos",desc:"Diagrama elétrico e pneumático, desenho, programa do CLP, manual de componente. Qualquer arquivo.",midia:"tudo",campos:[
+    {k:"obs",t:"area",l:"O que é cada arquivo",ph:"Se não for óbvio pelo nome."}]},
+  regras:{nome:"Regras do material",desc:"O que precisa aparecer, o que não pode, e como chamar as coisas.",campos:[
+    {k:"intocaveis",t:"area",l:"Tem que aparecer exatamente assim",ph:"Ex.: aviso de segurança da faca; torque de 18 N·m."},
+    {k:"proibido",t:"area",l:"Não pode aparecer",ph:"Ex.: preço, prazo de garantia, nome de fornecedor."},
+    {k:"termos",t:"area",l:"Como vocês chamam × como o cliente chama",ph:"Ex.: \"dosador volumétrico\" = \"copo de medida\"."},
+    {k:"erro",t:"area",l:"O ponto que todo mundo erra"}]},
+  livre:{nome:"Bloco livre",desc:"Qualquer outro assunto. Dê um título e preencha.",midia:"tudo",campos:[
+    {k:"texto",t:"area",l:"Conteúdo"}]}
+};
+const ORDEM_LIB=["pedido","identificacao","ficha","componentes","seguranca","instalacao","operacao","ajustes","manutencao","problemas","documentos","regras","livre"];
+const TYPES={
+  completa:{nome:"Máquina completa",desc:"Todos os blocos, para manual e vídeo.",blocos:["pedido","identificacao","ficha","componentes","seguranca","instalacao","operacao","ajustes","manutencao","problemas","documentos","regras"]},
+  video:{nome:"Só vídeo de operação",desc:"O essencial para um vídeo curto do operador.",blocos:["pedido","identificacao","seguranca","operacao","problemas","regras"],entregas:{"Vídeo":{n:1,itens:["Operação"]}}},
+  branco:{nome:"Em branco",desc:"Só o pedido. Você adiciona o resto.",blocos:["pedido"]}
+};
+
+/* ================= utilidades ================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const fmtB=b=>b>=1e9?(b/1e9).toFixed(2).replace(".",",")+" GB":b>=1e6?(b/1e6).toFixed(1).replace(".",",")+" MB":Math.max(1,Math.round(b/1e3))+" KB";
+const fmtT=s=>{s=Math.round(s);return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")};
+const slug=s=>(String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"sem-nome").slice(0,60);
+function toast(msg,err){const t=document.createElement("div");t.className="toast"+(err?" err":"");t.textContent=msg;$("#toasts").appendChild(t);setTimeout(()=>t.remove(),err?6000:3200)}
+const ICON={
+  vid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>',
+  img:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>',
+  cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+  clip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11l-8.5 8.5a5 5 0 0 1-7-7L14 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L15 7"/></svg>'
+};
+
+/* ================= armazenamento (IndexedDB) ================= */
+let DB;
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open("celiware-estudio",1);r.onupgradeneeded=()=>{const d=r.result;d.createObjectStore("proj",{keyPath:"id"});d.createObjectStore("blobs");d.createObjectStore("thumbs")};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function tx(store,mode,fn){return new Promise((res,rej)=>{const t=DB.transaction(store,mode);const s=t.objectStore(store);let out;const r=fn(s);if(r)r.onsuccess=()=>{out=r.result};t.oncomplete=()=>res(out);t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error||new Error("abortado"))})}
+const dbGet=(st,k)=>tx(st,"readonly",s=>s.get(k));
+const dbPut=(st,v,k)=>tx(st,"readwrite",s=>k===undefined?s.put(v):s.put(v,k));
+const dbDel=(st,k)=>tx(st,"readwrite",s=>s.delete(k));
+const dbAll=st=>tx(st,"readonly",s=>s.getAll());
+
+/* ================= estado ================= */
+let P=null;           // projeto atual
+let saveT=null,saveFail=false;
+function novoProjeto(){return{app:"celiware-estudio",v:1,id:uid("m"),nome:"",criado:new Date().toISOString(),salvo:null,view:"guiada",cur:0,secs:[],narr:[],narrTxt:"",meta:{}}}
+/* projetos salvos antes das quantidades: lista de marcações vira quantidade 1 */
+const LEGADO={"Vídeo de operação":["Vídeo","Operação"],"Manual de operação":["Manual","Operação"],"Manual de manutenção":["Manual","Manutenção"],"Guia rápido (1–2 páginas)":["Guia rápido",""],"Treinamento":["Treinamento",""],"Outro":["Outro",""]};
+function migrar(p){
+  if(!p)return p;if(typeof p.narrTxt!=="string")p.narrTxt="";
+  (p.secs||[]).forEach(s=>{const v=s.vals&&s.vals.entregas;if(s.tipo!=="pedido"||!Array.isArray(v))return;const o={};v.forEach(x=>{const[n,it]=LEGADO[x]||["Outro",x];o[n]=o[n]||{n:0,itens:[]};o[n].itens[o[n].n]=it;o[n].n++});s.vals.entregas=o});
+  return p}
+const qtyAtivos=v=>v&&typeof v==="object"&&!Array.isArray(v)?ENTREGAS.map(e=>e.nome).filter(n=>v[n]&&v[n].n>0).map(n=>({tipo:n,quantidade:v[n].n,itens:Array.from({length:v[n].n},(_,i)=>String((v[n].itens||[])[i]||"").trim())})):[];
+function newSec(tipo,titulo){const L=LIB[tipo];const s={id:uid("s"),tipo,titulo:titulo||L.nome,vals:{},rows:[],mid:[]};if(L.rep){(L.rep.inicio||[{}]).forEach(v=>s.rows.push({id:uid("r"),vals:{...v},mid:[]}))}return s}
+function loadPreset(id){const T=TYPES[id];P.secs=T.blocos.map(b=>newSec(b));if(T.entregas)P.secs[0].vals.entregas=JSON.parse(JSON.stringify(T.entregas));P.cur=0;P.view=P.view||"guiada";save();render()}
+function save(){P.salvo=new Date().toISOString();clearTimeout(saveT);saveT=setTimeout(async()=>{try{await dbPut("proj",JSON.parse(JSON.stringify(P)));saveFail=false;try{localStorage.setItem("ce-cur",P.id)}catch(e){}}catch(e){if(!saveFail)toast("Não consegui salvar neste aparelho: "+e.message,1);saveFail=true}},350)}
+async function flush(){if(saveT){clearTimeout(saveT);saveT=null;await dbPut("proj",JSON.parse(JSON.stringify(P)))}}
+const secById=id=>P.secs.find(s=>s.id===id);
+function holder(sid,rid){if(sid==="narr")return P;const s=secById(sid);if(!s)return null;return rid?s.rows.find(r=>r.id===rid):s}
+function midsOf(sid,rid){if(sid==="narr")return P.narr;const h=holder(sid,rid);return h?h.mid:null}
+function rowFilled(L,r){const ks=L.rep.chave?[L.rep.chave]:L.rep.campos.map(c=>c.k);return ks.some(k=>String(r.vals[k]||"").trim())||r.mid.length>0}
+function hasContent(s){const L=LIB[s.tipo];if(s.mid.length)return true;const fs=[...(L.campos||[]),...(L.depois||[])];if(fs.some(c=>{const v=s.vals[c.k];return c.t==="qty"?qtyAtivos(v).length:Array.isArray(v)?v.length:String(v||"").trim()}))return true;return L.rep?s.rows.some(r=>rowFilled(L,r)):false}
+function allMids(){const o=[...P.narr];P.secs.forEach(s=>{o.push(...s.mid);s.rows.forEach(r=>o.push(...r.mid))});return o}
+function stats(){const m=allMids().map(id=>P.meta[id]).filter(Boolean);const c={foto:0,video:0,audio:0,arquivo:0};let b=0;m.forEach(x=>{c[x.kind]++;b+=x.size});return{...c,bytes:b,n:m.length}}
+
+/* ================= render ================= */
+function fieldHTML(c,vals,attrs){
+  const v=vals[c.k];const id="f"+Math.random().toString(36).slice(2,9);
+  if(c.t==="qty"){const o=v&&typeof v==="object"&&!Array.isArray(v)?v:{};const sid=(attrs.match(/data-sid="([^"]+)"/)||[])[1];
+    return`<div class="field" data-qf="${sid}:${c.k}"><span class="flabel">${esc(c.l)}</span><div class="qty">${c.op.map(e=>{const q=o[e.nome]||{n:0,itens:[]};const a=`data-sid="${sid}" data-k="${c.k}" data-opt="${esc(e.nome)}"`;
+      return`<div class="qi ${q.n?"on":""}"><div class="qh"><span class="qn">${esc(e.nome)}${e.desc?`<small>${esc(e.desc)}</small>`:""}</span><span class="step"><button type="button" data-qd="-1" ${a} ${q.n?"":"disabled"} aria-label="Menos ${esc(e.nome)}">−</button><b>${q.n}</b><button type="button" data-qd="1" ${a} ${q.n<QMAX?"":"disabled"} aria-label="Mais ${esc(e.nome)}">+</button></span></div>${q.n?`<div class="qitens">${Array.from({length:q.n},(_,i)=>`<label><span>${i+1}.</span><input ${a} data-qi="${i}" placeholder="${esc(e.ph)}" value="${esc((q.itens||[])[i]||"")}" aria-label="${esc(e.nome)} ${i+1}"></label>`).join("")}</div>`:""}</div>`}).join("")}</div></div>`}
+  if(c.t==="multi"){const arr=Array.isArray(v)?v:[];return`<div class="field"><span class="flabel">${esc(c.l)}</span><div class="multi">${c.op.map(o=>`<label><input type="checkbox" ${attrs} data-k="${c.k}" data-multi value="${esc(o)}" ${arr.includes(o)?"checked":""}>${esc(o)}</label>`).join("")}</div></div>`}
+  const inp=c.t==="area"?`<textarea id="${id}" ${attrs} data-k="${c.k}" placeholder="${esc(c.ph||"")}">${esc(v||"")}</textarea>`:`<input id="${id}" ${attrs} data-k="${c.k}" placeholder="${esc(c.ph||"")}" value="${esc(v||"")}">`;
+  return`<div class="field"><label for="${id}">${esc(c.l)}</label>${inp}</div>`
+}
+function fieldsHTML(list,vals,attrs){let h="",i=0;while(i<list.length){const c=list[i];if(c.half&&list[i+1]&&list[i+1].half){h+=`<div class="pair${c.keep?" keep":""}">${fieldHTML(c,vals,attrs)}${fieldHTML(list[i+1],vals,attrs)}</div>`;i+=2}else{h+=fieldHTML(c,vals,attrs);i++}}return h}
+function mediaHTML(kind,sid,rid,mids){
+  const tgt=`data-sid="${sid}" data-rid="${rid||""}"`;
+  const accept=kind==="tudo"?"":kind==="audio"?"audio/*":"image/*,video/*";
+  const lbl=kind==="tudo"?"Anexar arquivos":kind==="audio"?"Anexar áudio":`<span class="t-desk">Fotos e vídeos</span><span class="t-touch">Da galeria</span>`;
+  const ic=kind==="tudo"||kind==="audio"?ICON.clip:ICON.img;
+  /* capture="environment" abre a câmera traseira pelo app nativo: a foto/vídeo chega na resolução cheia do aparelho */
+  const cam=kind==="audio"?"":`<label class="mbtn cam">${ICON.cam}Tirar foto<input type="file" accept="image/*" capture="environment" data-add data-cam="foto" ${tgt}></label><label class="mbtn cam">${ICON.vid}Gravar vídeo<input type="file" accept="video/*" capture="environment" data-add data-cam="video" ${tgt}></label>`;
+  return`<div class="media"><div class="mbar">${cam}
+    <label class="mbtn">${ic}${lbl}<input type="file" multiple ${accept?`accept="${accept}"`:""} data-add data-gal ${tgt}></label>
+    <button class="mbtn rec" type="button" data-rec ${tgt}>${ICON.mic}Gravar áudio</button>
+  </div><div class="mgrid">${mids.map(miHTML).join("")}</div></div>`
+}
+function miHTML(id){
+  const m=P.meta[id];if(!m)return"";
+  const busy=PENDING.has(id)?`<div class="busy">guardando…</div>`:"";
+  if(m.kind==="audio")return`<div class="mi au" data-mi="${id}"><span class="mn">${esc(m.dur?fmtT(m.dur):"áudio")} · ${fmtB(m.size)}</span><audio controls preload="none" data-src="${id}"></audio><button class="x" type="button" data-rm="${id}" aria-label="Remover">✕</button>${busy}</div>`;
+  const pv=m.kind==="foto"?`<img alt="" data-src="${id}" data-thumb>`:m.kind==="video"?`<video muted playsinline preload="metadata" data-src="${id}"></video>`:`<span class="ic">${esc((m.name.split(".").pop()||"arquivo").slice(0,6))}</span>`;
+  return`<div class="mi" data-mi="${id}"><div class="pv">${pv}</div><div class="mf"><div class="mn" title="${esc(m.name)}">${m.kind==="video"?"▶ ":""}${esc(m.name)} · ${fmtB(m.size)}</div><input class="cap" data-cap="${id}" placeholder="O que é isso?" value="${esc(m.legenda||"")}"></div><button class="x" type="button" data-rm="${id}" aria-label="Remover">✕</button>${busy}</div>`
+}
+function cardHTML(s,i){
+  const L=LIB[s.tipo];const a=`data-sid="${s.id}"`;
+  let h=`<section class="card" id="c-${s.id}"><div class="shead"><span class="snum">${i+1}</span><div class="stitle"><input data-title="${s.id}" value="${esc(s.titulo)}" aria-label="Título do bloco"><p class="sdesc">${esc(L.desc)}</p></div><button class="more" type="button" data-more="${s.id}" aria-label="Opções do bloco">⋯</button></div>`;
+  h+=fieldsHTML(L.campos||[],s.vals,a);
+  if(L.rep){
+    s.rows.forEach((r,j)=>{h+=`<div class="row" data-row="${r.id}"><div class="rowhead"><span class="rl">${esc(L.rep.rotulo)} ${j+1}</span><span class="rowctl"><button class="mini" type="button" data-rup="${r.id}" ${a} ${j?"":"disabled"} aria-label="Subir">↑</button><button class="mini" type="button" data-rdn="${r.id}" ${a} ${j<s.rows.length-1?"":"disabled"} aria-label="Descer">↓</button><button class="mini" type="button" data-rrm="${r.id}" ${a}>Remover</button></span></div>${fieldsHTML(L.rep.campos,r.vals,`${a} data-rid="${r.id}"`)}${L.rep.midia?mediaHTML(L.rep.midia,s.id,r.id,r.mid):""}</div>`});
+    h+=`<button class="addrow" type="button" data-radd="${s.id}">+ ${esc(L.rep.rotulo)}</button>`
+  }
+  if(L.depois)h+=fieldsHTML(L.depois,s.vals,a);
+  h+=mediaHTML(L.midia||"visual",s.id,"",s.mid);
+  return h+`</section>`
+}
+function renderNarr(){
+  $("#narr").innerHTML=`<h2>O que você precisa</h2><p>Escreva à vontade: que máquina é, o que você quer que a gente produza, o que não pode faltar.</p><textarea data-narr aria-label="O que você precisa" placeholder="Ex.: Envasadora nova do Laticínio Serra Verde. Preciso de 2 vídeos curtos para o operador e do manual de operação até dia 15. O mais importante é a limpeza do bico.">${esc(P.narrTxt||"")}</textarea><p class="ou">Se for mais rápido, grave um áudio. Vai no pacote do jeito que foi gravado.</p>${mediaHTML("audio","narr","",P.narr)}`;
+}
+function render(){
+  $("#nome").value=P.nome;renderNarr();
+  const M=$("#main");
+  if(!P.secs.length){M.innerHTML=`<div class="start"><h2>Por onde começar</h2><p>Escolha um modelo. Depois dá para remover, reorganizar e adicionar blocos à vontade.</p><div class="types">${Object.entries(TYPES).map(([k,t])=>`<button class="type" type="button" data-type="${k}"><div class="tn">${esc(t.nome)}</div><div class="td">${esc(t.desc)}</div></button>`).join("")}</div></div>`;renderCount();hydrate();return}
+  P.cur=Math.max(0,Math.min(P.cur,P.secs.length-1));
+  const g=P.view==="guiada";
+  let h=`<div class="panel"><div class="ptop"><div class="vtog" role="tablist"><button type="button" data-view="guiada" class="${g?"on":""}">Passo a passo</button><button type="button" data-view="tudo" class="${g?"":"on"}">Ver tudo</button></div><button class="lnk" type="button" data-org>Organizar blocos</button></div><div class="ptrack"><div class="pfill" id="pfill"></div></div><div class="ptxt" id="ptxt"></div><div class="chips" id="chips"></div></div>`;
+  h+=`<div id="form">${g?cardHTML(P.secs[P.cur],P.cur):P.secs.map(cardHTML).join("")}</div>`;
+  if(g)h+=`<div class="gnav"><button class="gbtn" type="button" data-go="-1" ${P.cur?"":"disabled"}>‹ Anterior</button><span class="gpos">Bloco <b>${P.cur+1}</b> de ${P.secs.length}</span><button class="gbtn next" type="button" data-go="1" ${P.cur<P.secs.length-1?"":"disabled"}>Próximo ›</button></div>`;
+  h+=`<button class="addsec" type="button" data-addsec>+ Adicionar bloco</button>`;
+  M.innerHTML=h;renderProgress();renderCount();hydrate();
+}
+function renderProgress(){
+  if(!$("#chips"))return;const n=P.secs.filter(hasContent).length;
+  $("#pfill").style.width=(P.secs.length?n/P.secs.length*100:0)+"%";
+  $("#ptxt").innerHTML=`<b>${n}</b> de ${P.secs.length} blocos com conteúdo`;
+  $("#chips").innerHTML=P.secs.map((s,i)=>`<button class="chip ${P.view==="guiada"&&i===P.cur?"cur":""}" type="button" data-chip="${i}"><span class="st ${hasContent(s)?"ok":""}"></span>${i+1}. ${esc(s.titulo)}</button>`).join("");
+}
+function renderCount(){const s=stats();$("#count").innerHTML=`<b>${P.secs.length}</b> blocos · <b>${s.foto}</b> fotos · <b>${s.video}</b> vídeos · <b>${s.audio}</b> áudios${s.arquivo?` · <b>${s.arquivo}</b> arquivos`:""} · <b>${fmtB(s.bytes)}</b>`}
+
+/* miniaturas e players carregam sob demanda */
+const URLS=new Map();
+async function urlOf(id,thumb){const key=(thumb?"t:":"")+id;if(URLS.has(key))return URLS.get(key);let b=thumb?await dbGet("thumbs",id):null;if(!b)b=await dbGet("blobs",id);if(!b)return null;const u=URL.createObjectURL(b);URLS.set(key,u);return u}
+function hydrate(){document.querySelectorAll("[data-src]:not([data-ok])").forEach(async el=>{el.dataset.ok=1;const id=el.dataset.src;const u=await urlOf(id,el.hasAttribute("data-thumb"));if(u)el.src=u+(el.tagName==="VIDEO"?"#t=0.1":"")})}
+function dropUrls(id){["","t:"].forEach(p=>{const u=URLS.get(p+id);if(u){URL.revokeObjectURL(u);URLS.delete(p+id)}})}
+
+/* ================= mídia ================= */
+const PENDING=new Set();
+function kindOf(type,name){if(/^image\//.test(type))return"foto";if(/^video\//.test(type))return"video";if(/^audio\//.test(type))return"audio";const e=(name||"").split(".").pop().toLowerCase();if(["jpg","jpeg","png","heic","heif","webp"].includes(e))return"foto";if(["mp4","mov","m4v","3gp","webm","mkv"].includes(e))return"video";if(["m4a","mp3","ogg","opus","wav","aac","amr"].includes(e))return"audio";return"arquivo"}
+async function makeThumb(blob){try{let bmp;try{bmp=await createImageBitmap(blob,{resizeWidth:360,resizeQuality:"medium"})}catch(e){bmp=await createImageBitmap(blob)}const r=Math.min(1,360/bmp.width);const c=document.createElement("canvas");c.width=Math.round(bmp.width*r);c.height=Math.round(bmp.height*r);c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);bmp.close&&bmp.close();return await new Promise(res=>c.toBlob(res,"image/jpeg",.75))}catch(e){return null}}
+async function addMedia(sid,rid,blob,name,extra){
+  const arr=midsOf(sid,rid);if(!arr)return;
+  const id=uid("a");const kind=(extra&&extra.kind)||kindOf(blob.type,name);
+  P.meta[id]={name:name||("arquivo-"+id),type:blob.type||"",size:blob.size,kind,legenda:"",criado:new Date().toISOString(),...(extra||{})};
+  arr.push(id);PENDING.add(id);save();rerenderMedia(sid,rid);
+  try{await dbPut("blobs",blob,id);if(kind==="foto"){const t=await makeThumb(blob);if(t)await dbPut("thumbs",t,id)}persistOnce()}
+  catch(e){const i=arr.indexOf(id);if(i>=0)arr.splice(i,1);delete P.meta[id];toast("Não coube no aparelho: "+name+" ("+e.message+")",1)}
+  PENDING.delete(id);save();rerenderMedia(sid,rid);
+}
+function rerenderMedia(sid,rid){
+  renderCount();renderProgress();
+  const host=sid==="narr"?$("#narr"):rid?document.querySelector(`[data-row="${rid}"]`):document.querySelector(`#c-${sid}`);
+  if(!host)return;const grid=[...host.querySelectorAll(".mgrid")].find(g=>(g.closest("[data-row]")?.dataset.row||"")===(rid||"")&&(sid==="narr"||g.closest("section.card")));
+  const arr=midsOf(sid,rid);if(grid&&arr){grid.innerHTML=arr.map(miHTML).join("");hydrate()}
+}
+async function removeMedia(id){
+  for(const h of [P,...P.secs,...P.secs.flatMap(s=>s.rows)]){const k=h===P?"narr":"mid";const i=h[k].indexOf(id);if(i>=0){h[k].splice(i,1);break}}
+  delete P.meta[id];dropUrls(id);save();await dbDel("blobs",id);await dbDel("thumbs",id);
+}
+async function removeMany(ids){for(const id of ids){delete P.meta[id];dropUrls(id);await dbDel("blobs",id);await dbDel("thumbs",id)}}
+let persisted=false;async function persistOnce(){if(persisted)return;persisted=true;try{navigator.storage&&navigator.storage.persist&&await navigator.storage.persist()}catch(e){}}
+
+/* ================= gravação de áudio ================= */
+let REC=null;
+async function startRec(sid,rid){
+  if(REC)return;
+  if(!navigator.mediaDevices||!window.MediaRecorder){toast("Este navegador não grava áudio. Grave no app do celular e use \"Anexar áudio\".",1);return}
+  let stream;
+  try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false,channelCount:1}})}
+  catch(e){toast("Sem acesso ao microfone. Libere a permissão no navegador e tente de novo.",1);return}
+  const mt=["audio/webm;codecs=opus","audio/mp4","audio/ogg;codecs=opus","audio/webm"].find(t=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t))||"";
+  const mr=new MediaRecorder(stream,mt?{mimeType:mt,audioBitsPerSecond:128000}:{audioBitsPerSecond:128000});
+  REC={mr,stream,sid,rid,chunks:[],t0:Date.now(),type:mr.mimeType||mt||"audio/webm"};
+  mr.ondataavailable=e=>{if(e.data&&e.data.size)REC.chunks.push(e.data)};
+  mr.start(1000);
+  REC.tick=setInterval(()=>{$("#rect").textContent=fmtT((Date.now()-REC.t0)/1000)},250);
+  REC.bak=setInterval(()=>{if(REC&&REC.chunks.length)dbPut("blobs",{pid:P.id,sid,rid,type:REC.type,t0:REC.t0,blob:new Blob(REC.chunks,{type:REC.type})},"__rec").catch(()=>{})},5000);
+  try{REC.wake=await navigator.wakeLock.request("screen")}catch(e){}
+  try{const ac=new (window.AudioContext||window.webkitAudioContext)();const an=ac.createAnalyser();an.fftSize=512;ac.createMediaStreamSource(stream).connect(an);const buf=new Uint8Array(an.fftSize);REC.ac=ac;REC.meter=setInterval(()=>{an.getByteTimeDomainData(buf);let m=0;for(const v of buf)m=Math.max(m,Math.abs(v-128));$("#recm").style.width=Math.min(100,m/128*160)+"%"},100)}catch(e){}
+  const h=sid==="narr"?"pedido geral":(()=>{const s=secById(sid);return s?s.titulo+(rid?" · "+LIB[s.tipo].rep.rotulo+" "+(s.rows.findIndex(r=>r.id===rid)+1):""):""})();
+  $("#recw").textContent="Gravando: "+h;$("#rect").textContent="00:00";
+  $("#recbar").classList.remove("hide");$("#bar").classList.add("hide");
+}
+function stopRec(){
+  if(!REC)return;const R=REC;
+  R.mr.onstop=async()=>{
+    clearInterval(R.tick);clearInterval(R.bak);clearInterval(R.meter);try{R.ac&&R.ac.close()}catch(e){}
+    R.stream.getTracks().forEach(t=>t.stop());try{R.wake&&R.wake.release()}catch(e){}
+    const dur=(Date.now()-R.t0)/1000;const blob=new Blob(R.chunks,{type:R.type});
+    REC=null;$("#recbar").classList.add("hide");$("#bar").classList.remove("hide");
+    const ext=/mp4/.test(R.type)?"m4a":/ogg/.test(R.type)?"ogg":"webm";
+    const d=new Date(R.t0);const nm=`gravacao-${d.toISOString().slice(0,10)}_${String(d.getHours()).padStart(2,"0")}${String(d.getMinutes()).padStart(2,"0")}${String(d.getSeconds()).padStart(2,"0")}.${ext}`;
+    await addMedia(R.sid,R.rid,blob,nm,{kind:"audio",dur,gravado:true});
+    dbDel("blobs","__rec").catch(()=>{});
+    toast("Áudio guardado ("+fmtT(dur)+")");
+  };
+  R.mr.stop();
+}
+async function recoverRec(){
+  const r=await dbGet("blobs","__rec").catch(()=>null);if(!r||!r.blob)return;
+  if(r.pid!==P.id)return;
+  const ok=holder(r.sid,r.rid)?r:{...r,sid:"narr",rid:""};
+  const ext=/mp4/.test(r.type)?"m4a":/ogg/.test(r.type)?"ogg":"webm";
+  await addMedia(ok.sid,ok.rid,r.blob,"gravacao-recuperada-"+new Date(r.t0).toISOString().slice(0,16).replace(/[:T]/g,"")+"."+ext,{kind:"audio",recuperado:true});
+  await dbDel("blobs","__rec");toast("Recuperei uma gravação que tinha sido interrompida.");
+}
+
+/* ================= eventos ================= */
+$("#nome").addEventListener("input",e=>{P.nome=e.target.value;save()});
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.hasAttribute("data-narr")){P.narrTxt=t.value;save();return}
+  if(t.dataset.qi!==undefined){const s=secById(t.dataset.sid);const o=s&&s.vals[t.dataset.k];const q=o&&o[t.dataset.opt];if(q){q.itens=q.itens||[];q.itens[+t.dataset.qi]=t.value;save()}return}
+  if(t.dataset.title){const s=secById(t.dataset.title);if(s){s.titulo=t.value;save();renderProgress()}return}
+  if(t.dataset.cap){const m=P.meta[t.dataset.cap];if(m){m.legenda=t.value;save()}return}
+  if(t.dataset.k&&t.dataset.sid&&!t.hasAttribute("data-multi")){const h=holder(t.dataset.sid,t.dataset.rid);if(h){h.vals[t.dataset.k]=t.value;save();renderProgress()}}
+});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.hasAttribute("data-multi")){const h=holder(t.dataset.sid,t.dataset.rid);const box=t.closest(".multi");h.vals[t.dataset.k]=[...box.querySelectorAll("input:checked")].map(x=>x.value);save();renderProgress();return}
+  if(t.hasAttribute("data-add")){const fs=[...t.files];t.value="";(async()=>{for(const f of fs)await addMedia(t.dataset.sid,t.dataset.rid,f,f.name)})();return}
+  if(t.id==="zipin"){const f=t.files[0];t.value="";if(f)importZip(f)}
+});
+document.addEventListener("click",async e=>{
+  const b=e.target.closest("button,[data-type]");if(!b)return;const d=b.dataset;
+  if(d.type){loadPreset(d.type);return}
+  if(d.qd){const s=secById(d.sid);let o=s.vals[d.k];if(!o||typeof o!=="object"||Array.isArray(o))o=s.vals[d.k]={};const q=o[d.opt]=o[d.opt]||{n:0,itens:[]};q.n=Math.max(0,Math.min(QMAX,q.n+(+d.qd)));save();
+    const el=document.querySelector(`[data-qf="${d.sid}:${d.k}"]`);const c=LIB[s.tipo].campos.find(x=>x.k===d.k);
+    if(el&&c){el.outerHTML=fieldHTML(c,s.vals,`data-sid="${d.sid}"`);if(+d.qd>0){const ins=document.querySelectorAll(`[data-qf="${d.sid}:${d.k}"] input[data-opt="${CSS.escape(d.opt)}"]`);const last=ins[ins.length-1];last&&last.focus({preventScroll:true})}}
+    renderProgress();return}
+  if(d.view){P.view=d.view;save();render();return}
+  if(d.go){P.cur+=+d.go;save();render();scrollTo({top:$("#main").offsetTop-8,behavior:"smooth"});return}
+  if(d.chip!==undefined){const i=+d.chip;if(P.view==="guiada"){P.cur=i;save();render()}else{const el=$("#c-"+P.secs[i].id);el&&el.scrollIntoView({behavior:"smooth",block:"start"})}return}
+  if(d.rec!==undefined){startRec(d.sid,d.rid||"");return}
+  if(d.rm){const m=P.meta[d.rm];if(await confirma("Remover este arquivo?",esc(m?m.name:""),"Remover")){const host=b.closest("[data-mi]");await removeMedia(d.rm);host&&host.remove();renderCount();renderProgress()}return}
+  if(d.radd){const s=secById(d.radd);s.rows.push({id:uid("r"),vals:{},mid:[]});save();render();return}
+  if(d.rrm){const s=secById(d.sid);const r=s.rows.find(x=>x.id===d.rrm);if(r.mid.length||Object.values(r.vals).some(v=>String(v||"").trim())){if(!await confirma("Remover este item?",r.mid.length?`Os ${r.mid.length} arquivo(s) dele também saem.`:"","Remover"))return}await removeMany(r.mid);s.rows=s.rows.filter(x=>x!==r);save();render();return}
+  if(d.rup||d.rdn){const s=secById(d.sid);const id=d.rup||d.rdn;const i=s.rows.findIndex(x=>x.id===id);const j=i+(d.rup?-1:1);[s.rows[i],s.rows[j]]=[s.rows[j],s.rows[i]];save();render();return}
+  if(d.more){openActions(d.more);return}
+  if(d.addsec!==undefined){openLib();return}
+  if(d.org!==undefined){openOrg();return}
+  if(b.id==="recstop"){stopRec();return}
+  if(b.id==="bmaq"){openMaq();return}
+  if(b.id==="gen"){gerar();return}
+});
+window.addEventListener("beforeunload",e=>{if(REC||GERANDO){e.preventDefault();e.returnValue=""}});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"&&saveT)flush().catch(()=>{})});
+
+/* ================= modais ================= */
+let ovRes=null;
+function modal(html){$("#box").innerHTML=html;$("#ov").classList.add("show");return new Promise(r=>{ovRes=r})}
+function closeModal(v){$("#ov").classList.remove("show");const r=ovRes;ovRes=null;r&&r(v)}
+$("#ov").addEventListener("click",e=>{if(e.target.id==="ov"&&!GERANDO)closeModal(null);const c=e.target.closest("[data-close]");if(c)closeModal(c.dataset.close||null)});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#ov").classList.contains("show")&&!GERANDO)closeModal(null)});
+async function confirma(t,msg,ok){return await modal(`<h3>${esc(t)}</h3>${msg?`<p class="bp">${msg}</p>`:""}<div class="mbtns"><button class="btn navy" type="button" data-close="ok">${esc(ok||"OK")}</button><button class="btn2" type="button" data-close>Cancelar</button></div>`)==="ok"}
+function openLib(){
+  modal(`<h3>Adicionar bloco</h3><p class="bp">Pode repetir um bloco que já existe. Depois dá para renomear e mover.</p><div class="lib">${ORDEM_LIB.map(k=>`<button type="button" data-close="${k}"><div class="ln">${esc(LIB[k].nome)}</div><div class="ld">${esc(LIB[k].desc)}</div></button>`).join("")}</div><div class="mbtns"><button class="btn2" type="button" data-close>Cancelar</button></div>`).then(k=>{
+    if(!k||!LIB[k])return;const s=newSec(k);const at=P.view==="guiada"?P.cur+1:P.secs.length;P.secs.splice(at,0,s);P.cur=at;save();render();
+    if(P.view!=="guiada"){const el=$("#c-"+s.id);el&&el.scrollIntoView({behavior:"smooth",block:"start"})}
+  })
+}
+function moveSec(i,j){if(j<0||j>=P.secs.length)return;const[s]=P.secs.splice(i,1);P.secs.splice(j,0,s);if(P.cur===i)P.cur=j;save()}
+async function removeSec(id){
+  const s=secById(id);const ids=[...s.mid,...s.rows.flatMap(r=>r.mid)];
+  if(hasContent(s)&&!await confirma("Remover o bloco \""+s.titulo+"\"?",ids.length?`O texto e os ${ids.length} arquivo(s) dele saem deste aparelho.`:"O texto preenchido sai junto.","Remover"))return false;
+  await removeMany(ids);const i=P.secs.indexOf(s);P.secs.splice(i,1);if(P.cur>=P.secs.length)P.cur=Math.max(0,P.secs.length-1);save();return true
+}
+async function openActions(id){
+  const i=P.secs.findIndex(s=>s.id===id);
+  const a=await modal(`<h3>${esc(P.secs[i].titulo)}</h3><div class="acts"><button type="button" data-close="up" ${i?"":"disabled"}>↑ Mover para cima</button><button type="button" data-close="dn" ${i<P.secs.length-1?"":"disabled"}>↓ Mover para baixo</button><button type="button" data-close="dup">Duplicar (só o texto)</button><button type="button" data-close="rm" class="danger">Remover bloco</button></div><div class="mbtns"><button class="btn2" type="button" data-close>Fechar</button></div>`);
+  if(a==="up"){moveSec(i,i-1);render()}else if(a==="dn"){moveSec(i,i+1);render()}
+  else if(a==="dup"){const s=P.secs[i];const c=JSON.parse(JSON.stringify({...s,mid:[]}));c.id=uid("s");c.titulo=s.titulo+" (cópia)";c.rows=c.rows.map(r=>({...r,id:uid("r"),mid:[]}));P.secs.splice(i+1,0,c);P.cur=i+1;save();render()}
+  else if(a==="rm"){if(await removeSec(id))render()}
+}
+async function openOrg(){
+  const html=()=>`<h3>Organizar blocos</h3><p class="bp">A ordem aqui é a ordem do pacote.</p><div class="list">${P.secs.map((s,i)=>`<div class="li"><div class="lt"><b>${i+1}. ${esc(s.titulo)}</b><small>${[s.titulo!==LIB[s.tipo].nome?LIB[s.tipo].nome:"",hasContent(s)?"com conteúdo":"vazio"].filter(Boolean).map(esc).join(" · ")}</small></div><button class="mini" type="button" data-o="up" data-i="${i}" ${i?"":"disabled"} aria-label="Subir">↑</button><button class="mini" type="button" data-o="dn" data-i="${i}" ${i<P.secs.length-1?"":"disabled"} aria-label="Descer">↓</button><button class="mini" type="button" data-o="rm" data-i="${i}" aria-label="Remover">✕</button></div>`).join("")}</div><div class="mbtns"><button class="btn navy" type="button" data-close>Pronto</button><button class="btn2" type="button" data-o="add">+ Adicionar bloco</button></div>`;
+  const p=modal(html());
+  const box=$("#box");
+  const h=async e=>{const b=e.target.closest("[data-o]");if(!b)return;e.stopPropagation();const i=+b.dataset.i;
+    if(b.dataset.o==="up")moveSec(i,i-1);else if(b.dataset.o==="dn")moveSec(i,i+1);
+    else if(b.dataset.o==="rm"){const id=P.secs[i].id;box.removeEventListener("click",h);closeModal(null);await removeSec(id);render();openOrg();return}
+    else if(b.dataset.o==="add"){box.removeEventListener("click",h);closeModal(null);render();openLib();return}
+    box.innerHTML=html()};
+  box.addEventListener("click",h);
+  await p;box.removeEventListener("click",h);render();
+}
+async function openMaq(){
+  await flush().catch(()=>{});
+  const all=(await dbAll("proj")).sort((a,b)=>(b.salvo||"").localeCompare(a.salvo||""));
+  const est=navigator.storage&&navigator.storage.estimate?await navigator.storage.estimate().catch(()=>null):null;
+  const a=await modal(`<h3>Máquinas</h3><p class="bp">Tudo fica guardado neste aparelho até você remover.</p><div class="list">${all.map(p=>{const n=Object.keys(p.meta||{}).length;return`<div class="li ${p.id===P.id?"cur":""}"><div class="lt"><b>${esc(p.nome||"Sem nome")}</b><small>${n} arquivo(s)${p.salvo?" · "+new Date(p.salvo).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}):""}</small></div>${p.id===P.id?`<span class="mini" style="display:grid;place-items:center">aberta</span>`:`<button class="mini" type="button" data-close="open:${p.id}">Abrir</button>`}<button class="mini" type="button" data-close="del:${p.id}" aria-label="Excluir">✕</button></div>`}).join("")}</div>
+  <div class="mbtns"><button class="btn navy" type="button" data-close="new">+ Nova máquina</button><label class="btn2" style="position:relative;cursor:pointer">Continuar de um .zip<input type="file" id="zipin" accept=".zip,application/zip" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%"></label></div>
+  <p class="note">Começou no celular e quer terminar no computador (ou o contrário)? Gere o pacote num aparelho e abra o .zip no outro, em <b>Continuar de um .zip</b>.${est&&est.quota?`<br>Espaço usado neste aparelho: <b>${fmtB(est.usage||0)}</b> de ${fmtB(est.quota)}.`:""}</p>
+  <div class="mbtns"><button class="btn2" type="button" data-close>Fechar</button></div>`);
+  if(!a)return;
+  if(a==="new"){await flush().catch(()=>{});P=novoProjeto();save();render();scrollTo({top:0});setTimeout(()=>$("#nome").focus(),50);return}
+  const[op,id]=a.split(":");
+  if(op==="open"){const p=await dbGet("proj",id);if(p){URLS.forEach(u=>URL.revokeObjectURL(u));URLS.clear();P=migrar(p);try{localStorage.setItem("ce-cur",p.id)}catch(e){}render();scrollTo({top:0})}}
+  if(op==="del"){const p=await dbGet("proj",id);if(!p)return;if(!await confirma("Excluir \""+(p.nome||"Sem nome")+"\"?","Apaga o texto e os "+Object.keys(p.meta||{}).length+" arquivo(s) deste aparelho. Se você já gerou o pacote, ele continua no .zip.","Excluir"))return openMaq();await removeMany(Object.keys(p.meta||{}));await dbDel("proj",id);if(id===P.id){P=novoProjeto();save();render()}openMaq()}
+}
+
+/* ================= ZIP (sem compressão, ZIP64, montado por referência) ================= */
+/*ZIP-BEGIN*/
+const CRC_T=(()=>{const t=new Int32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c}return t})();
+async function crc32Blob(blob,onp){let c=-1;const CH=4<<20;for(let o=0;o<blob.size;o+=CH){const b=new Uint8Array(await blob.slice(o,Math.min(blob.size,o+CH)).arrayBuffer());for(let i=0;i<b.length;i++)c=CRC_T[(c^b[i])&255]^(c>>>8);onp&&onp(b.length)}return(c^-1)>>>0}
+function dosDT(d){return{time:(d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1),date:((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate()}}
+/* entries: [{name, blob}] → Blob do .zip. Os dados entram como referência ao Blob original (não são copiados para a memória). */
+async function buildZip(entries,onp,force64){
+  const enc=new TextEncoder();const parts=[];const cd=[];let off=0;const now=dosDT(new Date());const MAX=0xFFFFFFFF;
+  for(const e of entries){
+    const name=enc.encode(e.name);const size=e.blob.size;const crc=await crc32Blob(e.blob,onp);
+    const z64=force64||size>=MAX||off>=MAX;
+    const lx=z64?20:0;const lh=new DataView(new ArrayBuffer(30+name.length+lx));
+    lh.setUint32(0,0x04034b50,true);lh.setUint16(4,z64?45:20,true);lh.setUint16(6,0x0800,true);lh.setUint16(8,0,true);
+    lh.setUint16(10,now.time,true);lh.setUint16(12,now.date,true);lh.setUint32(14,crc,true);
+    lh.setUint32(18,z64?MAX:size,true);lh.setUint32(22,z64?MAX:size,true);lh.setUint16(26,name.length,true);lh.setUint16(28,lx,true);
+    new Uint8Array(lh.buffer).set(name,30);
+    if(z64){const b=30+name.length;lh.setUint16(b,1,true);lh.setUint16(b+2,16,true);lh.setBigUint64(b+4,BigInt(size),true);lh.setBigUint64(b+12,BigInt(size),true)}
+    parts.push(lh.buffer,e.blob);
+    cd.push({name,size,crc,off,z64});off+=lh.byteLength+size;
+  }
+  const cdStart=off;let cdSize=0;
+  for(const c of cd){
+    const cx=c.z64?28:0;const h=new DataView(new ArrayBuffer(46+c.name.length+cx));
+    h.setUint32(0,0x02014b50,true);h.setUint16(4,(3<<8)|45,true);h.setUint16(6,c.z64?45:20,true);h.setUint16(8,0x0800,true);h.setUint16(10,0,true);
+    h.setUint16(12,now.time,true);h.setUint16(14,now.date,true);h.setUint32(16,c.crc,true);
+    h.setUint32(20,c.z64?MAX:c.size,true);h.setUint32(24,c.z64?MAX:c.size,true);h.setUint16(28,c.name.length,true);h.setUint16(30,cx,true);
+    h.setUint32(38,(0o100644<<16)>>>0,true);h.setUint32(42,c.z64?MAX:c.off,true);
+    new Uint8Array(h.buffer).set(c.name,46);
+    if(c.z64){const b=46+c.name.length;h.setUint16(b,1,true);h.setUint16(b+2,24,true);h.setBigUint64(b+4,BigInt(c.size),true);h.setBigUint64(b+12,BigInt(c.size),true);h.setBigUint64(b+20,BigInt(c.off),true)}
+    parts.push(h.buffer);cdSize+=h.byteLength;
+  }
+  const n=cd.length;const e64=force64||n>=0xFFFF||cdStart>=MAX||cdSize>=MAX||cd.some(c=>c.z64);
+  if(e64){
+    const z=new DataView(new ArrayBuffer(56+20));
+    z.setUint32(0,0x06064b50,true);z.setBigUint64(4,44n,true);z.setUint16(12,(3<<8)|45,true);z.setUint16(14,45,true);z.setUint32(16,0,true);z.setUint32(20,0,true);
+    z.setBigUint64(24,BigInt(n),true);z.setBigUint64(32,BigInt(n),true);z.setBigUint64(40,BigInt(cdSize),true);z.setBigUint64(48,BigInt(cdStart),true);
+    z.setUint32(56,0x07064b50,true);z.setUint32(60,0,true);z.setBigUint64(64,BigInt(cdStart+cdSize),true);z.setUint32(72,1,true);
+    parts.push(z.buffer);
+  }
+  const eo=new DataView(new ArrayBuffer(22));
+  eo.setUint32(0,0x06054b50,true);eo.setUint16(8,e64?0xFFFF:n,true);eo.setUint16(10,e64?0xFFFF:n,true);
+  eo.setUint32(12,e64?MAX:cdSize,true);eo.setUint32(16,e64?MAX:cdStart,true);
+  parts.push(eo.buffer);
+  return new Blob(parts,{type:"application/zip"});
+}
+/* lê um .zip sem compressão (o que este app gera) → [{name, blob}] por fatia do arquivo, sem carregar tudo */
+async function readZip(file){
+  const tail=Math.min(file.size,65557);const tb=new DataView(await file.slice(file.size-tail).arrayBuffer());
+  let p=-1;for(let i=tail-22;i>=0;i--)if(tb.getUint32(i,true)===0x06054b50){p=i;break}
+  if(p<0)throw new Error("não é um .zip válido");
+  let n=tb.getUint16(p+10,true),cdSize=tb.getUint32(p+12,true),cdOff=tb.getUint32(p+16,true);
+  if(n===0xFFFF||cdOff===0xFFFFFFFF||cdSize===0xFFFFFFFF){
+    const lp=p-20;if(lp<0||tb.getUint32(lp,true)!==0x07064b50)throw new Error("ZIP64 sem localizador");
+    const zo=Number(tb.getBigUint64(lp+8,true));const z=new DataView(await file.slice(zo,zo+56).arrayBuffer());
+    n=Number(z.getBigUint64(32,true));cdSize=Number(z.getBigUint64(40,true));cdOff=Number(z.getBigUint64(48,true));
+  }
+  const cdv=new DataView(await file.slice(cdOff,cdOff+cdSize).arrayBuffer());const dec=new TextDecoder();const out=[];let q=0;
+  for(let k=0;k<n;k++){
+    if(cdv.getUint32(q,true)!==0x02014b50)throw new Error("diretório do .zip corrompido");
+    const method=cdv.getUint16(q+10,true);let size=cdv.getUint32(q+24,true);let usize=cdv.getUint32(q+20,true);let lo=cdv.getUint32(q+42,true);
+    const nl=cdv.getUint16(q+28,true),xl=cdv.getUint16(q+30,true),cl=cdv.getUint16(q+32,true);
+    const name=dec.decode(new Uint8Array(cdv.buffer,q+46,nl));
+    let x=q+46+nl;const xe=x+xl;
+    while(x+4<=xe){const id=cdv.getUint16(x,true),sz=cdv.getUint16(x+2,true);if(id===1){let y=x+4;if(usize===0xFFFFFFFF){usize=Number(cdv.getBigUint64(y,true));y+=8}if(size===0xFFFFFFFF){size=Number(cdv.getBigUint64(y,true));y+=8}if(lo===0xFFFFFFFF){lo=Number(cdv.getBigUint64(y,true))}}x+=4+sz}
+    if(method!==0&&size>0)throw new Error("o .zip foi recompactado por outro programa — use o .zip original gerado pelo Estúdio");
+    const lh=new DataView(await file.slice(lo,lo+30).arrayBuffer());const ds=lo+30+lh.getUint16(26,true)+lh.getUint16(28,true);
+    out.push({name,blob:file.slice(ds,ds+size)});q=xe+cl;
+  }
+  return out;
+}
+/*ZIP-END*/
+
+/* ================= pacote ================= */
+let GERANDO=false;
+function extOf(m){const e=(m.name.match(/\.([a-z0-9]{1,5})$/i)||[])[1];if(e)return e.toLowerCase();const t=m.type||"";return/jpeg/.test(t)?"jpg":/png/.test(t)?"png":/quicktime/.test(t)?"mov":/mp4/.test(t)?(m.kind==="audio"?"m4a":"mp4"):/webm/.test(t)?"webm":/ogg/.test(t)?"ogg":"bin"}
+function nomeArq(m,i){const base=m.gravado||m.recuperado?"":"_"+slug(m.name.replace(/\.[^.]+$/,"")).slice(0,40);const pre={foto:"foto",video:"video",audio:"audio",arquivo:"arquivo"}[m.kind];return`${pre}-${String(i).padStart(2,"0")}${base}.${extOf(m)}`}
+function txt(v){if(v&&typeof v==="object"&&!Array.isArray(v))return qtyAtivos(v).map(e=>`${e.tipo} × ${e.quantidade}`+(e.itens.some(Boolean)?` (${e.itens.map((x,i)=>`${i+1}. ${x||"sem descrição"}`).join("; ")})`:"")).join(" · ");return Array.isArray(v)?v.join(", "):String(v||"").trim()}
+function montarPacote(){
+  const raiz=`${slug(P.nome)}_${new Date().toISOString().slice(0,10)}/`;
+  const files=[];const paths={};
+  const addSet=(mids,dir)=>{const cnt={};return mids.filter(id=>P.meta[id]).map(id=>{const m=P.meta[id];cnt[m.kind]=(cnt[m.kind]||0)+1;const path=dir+nomeArq(m,cnt[m.kind]);paths[id]=path;files.push({id,path});return{arquivo:path,tipo:m.kind,nome_original:m.name,legenda:m.legenda||"",tamanho_bytes:m.size,mime:m.type,...(m.dur?{duracao_s:Math.round(m.dur)}:{}),...(m.gravado?{gravado_no_estudio:true}:{})}})};
+  const narr=addSet(P.narr,"00-narracao/");
+  const usados=P.secs.filter(hasContent);
+  const blocos=usados.map((s,i)=>{
+    const L=LIB[s.tipo];const dir=`${String(i+1).padStart(2,"0")}-${slug(s.titulo)}/`;
+    const campos={};[...(L.campos||[]),...(L.depois||[])].forEach(c=>{const v=txt(s.vals[c.k]);if(v)campos[c.k]={rotulo:c.l,valor:v}});
+    const o={ordem:i+1,bloco:s.tipo,bloco_nome:L.nome,titulo:s.titulo,pasta:dir,campos};
+    if(L.rep){o.itens=s.rows.filter(r=>rowFilled(L,r)).map((r,j)=>{const cc={};L.rep.campos.forEach(c=>{const v=txt(r.vals[c.k]);if(v)cc[c.k]={rotulo:c.l,valor:v}});const rd=`${dir}${slug(L.rep.rotulo)}-${String(j+1).padStart(2,"0")}/`;return{ordem:j+1,rotulo:`${L.rep.rotulo} ${j+1}`,campos:cc,midia:addSet(r.mid,rd)}})}
+    o.midia=addSet(s.mid,dir);return o});
+  const vazios=P.secs.filter(s=>!hasContent(s)).map(s=>s.titulo);
+  const st=stats();
+  const pe=P.secs.filter(s=>s.tipo==="pedido").flatMap(s=>qtyAtivos(s.vals.entregas));
+  const pedido={app:"celiware-estudio",versao:1,maquina:P.nome,gerado_em:new Date().toISOString(),pedido_escrito:String(P.narrTxt||"").trim(),entregas:pe.map(e=>({tipo:e.tipo,quantidade:e.quantidade,itens:e.itens.map((x,i)=>({numero:i+1,sobre:x}))})),resumo:{blocos:usados.length,blocos_vazios:vazios,fotos:st.foto,videos:st.video,audios:st.audio,arquivos:st.arquivo,bytes:st.bytes},narracao:narr,blocos,_estado:P,_arquivos:paths};
+  return{raiz,files,pedido,vazios};
+}
+function resumoMD(pk){
+  const p=pk.pedido;const L=[];
+  L.push(`# ${p.maquina}`,"",`Gerado em ${new Date(p.gerado_em).toLocaleString("pt-BR")} pelo Estúdio de Máquinas · Celiware.`,"");
+  L.push(`**${p.resumo.blocos}** blocos · **${p.resumo.fotos}** fotos · **${p.resumo.videos}** vídeos · **${p.resumo.audios}** áudios · **${p.resumo.arquivos}** arquivos · ${fmtB(p.resumo.bytes)}`,"");
+  if(p.pedido_escrito)L.push("## O que o cliente pediu","",p.pedido_escrito,"");
+  if(p.entregas.length){L.push("## Entregas","");p.entregas.forEach(e=>{L.push(`- **${e.tipo} × ${e.quantidade}**`);e.itens.forEach(x=>L.push(`  ${x.numero}. ${x.sobre||"(sem descrição)"}`))});L.push("")}
+  if(p.narracao.length){L.push("## Narração geral","");p.narracao.forEach(m=>L.push(`- \`${m.arquivo}\`${m.duracao_s?` (${fmtT(m.duracao_s)})`:""}`));L.push("")}
+  const mlist=ms=>ms.forEach(m=>L.push(`- ${m.tipo}: \`${m.arquivo}\`${m.legenda?` — ${m.legenda}`:""}${m.duracao_s?` (${fmtT(m.duracao_s)})`:""}`));
+  p.blocos.forEach(b=>{
+    L.push(`## ${b.ordem}. ${b.titulo}`,"");
+    Object.values(b.campos).forEach(c=>L.push(`**${c.rotulo}:** ${c.valor}`,""));
+    (b.itens||[]).forEach(it=>{L.push(`### ${it.rotulo}`,"");Object.values(it.campos).forEach(c=>L.push(`- **${c.rotulo}:** ${c.valor}`));mlist(it.midia);L.push("")});
+    if(b.midia.length){L.push("**Arquivos do bloco:**","");mlist(b.midia);L.push("")}
+  });
+  if(p.resumo.blocos_vazios.length)L.push("## Blocos deixados em branco","",...p.resumo.blocos_vazios.map(t=>`- ${t}`),"");
+  return L.join("\n");
+}
+const LEIA=`# Leia primeiro
+
+Pacote gerado pelo **Estúdio de Máquinas · Celiware**. É a entrada da produção de vídeos e manuais.
+
+## O que tem aqui
+
+- \`RESUMO.md\` — tudo o que foi escrito, bloco por bloco, com a lista de arquivos de cada um.
+- \`pedido.json\` — o mesmo conteúdo em formato estruturado. A chave \`_estado\` permite reabrir o pacote no Estúdio ("Máquinas › Continuar de um .zip").
+- \`00-narracao/\` — áudios gerais: o que o cliente quer, dito por ele.
+- \`NN-bloco/\` — uma pasta por bloco, na ordem do formulário. Itens (passos, componentes, problemas) têm subpasta própria.
+
+## Regras de leitura
+
+1. **Os arquivos são os originais.** Foto, vídeo e áudio entram byte a byte, sem compressão nem conversão. O .zip também não comprime (modo STORE).
+2. **Áudio é conteúdo, não anexo.** Transcrever antes de produzir; muito do que importa foi dito, não escrito.
+3. **Valor e unidade vêm separados** na ficha técnica e nos parâmetros: copiar exatamente, nunca arredondar.
+4. **"Tem que aparecer exatamente assim"** e **"Não pode aparecer"** (bloco Regras) valem para todas as peças.
+5. O que não estiver aqui não é inventado: vira pergunta para o cliente.
+`;
+async function gerar(){
+  if(GERANDO)return;
+  if(!P.nome.trim()){toast("Dê um nome para a máquina antes de gerar o pacote.",1);$("#nome").focus();scrollTo({top:0,behavior:"smooth"});return}
+  await flush().catch(()=>{});
+  if(PENDING.size){toast("Espere terminar de guardar os arquivos.",1);return}
+  const pk=montarPacote();
+  if(!pk.pedido.blocos.length&&!pk.pedido.narracao.length&&!pk.pedido.pedido_escrito){toast("Ainda não há nada preenchido.",1);return}
+  if(pk.vazios.length&&!await confirma("Gerar o pacote?",`${pk.vazios.length} bloco(s) em branco ficam de fora: ${esc(pk.vazios.join(", "))}.`,"Gerar mesmo assim"))return;
+  GERANDO=true;
+  modal(`<h3>Montando o pacote</h3><p class="bp">Conferindo cada arquivo. Não feche esta tela.</p><div class="prog"><i id="pgb"></i></div><div class="progtx" id="pgt"></div>`);
+  try{
+    const enc=new TextEncoder();
+    const ent=[];const falt=[];
+    for(const f of pk.files){const b=await dbGet("blobs",f.id);if(!b){falt.push(f.path);continue}if(b.size!==P.meta[f.id].size){falt.push(f.path+" (tamanho diferente)");continue}ent.push({name:pk.raiz+f.path,blob:b})}
+    if(falt.length)throw new Error("arquivo(s) sumiram deste aparelho: "+falt.join(", "));
+    ent.unshift({name:pk.raiz+"LEIA-PRIMEIRO.md",blob:new Blob([enc.encode(LEIA)])},{name:pk.raiz+"RESUMO.md",blob:new Blob([enc.encode(resumoMD(pk))])},{name:pk.raiz+"pedido.json",blob:new Blob([enc.encode(JSON.stringify(pk.pedido,null,2))])});
+    const total=ent.reduce((a,e)=>a+e.blob.size,0);let done=0;
+    const zip=await buildZip(ent,n=>{done+=n;$("#pgb").style.width=(done/total*100)+"%";$("#pgt").textContent=`${fmtB(done)} de ${fmtB(total)}`});
+    const nome=`${slug(P.nome)}_${new Date().toISOString().slice(0,10)}.zip`;
+    GERANDO=false;
+    const share=navigator.canShare&&(()=>{try{return navigator.canShare({files:[new File([zip],nome,{type:"application/zip"})]})}catch(e){return false}})();
+    const u=URL.createObjectURL(zip);
+    const a=await modal(`<h3>Pacote pronto</h3><p class="bp"><b>${esc(nome)}</b> · ${fmtB(zip.size)}<br>${ent.length-3} arquivo(s) de mídia, todos na qualidade original.</p>
+      <div class="mbtns"><a class="btn navy" href="${u}" download="${esc(nome)}" style="text-decoration:none" id="dl">Baixar o .zip</a>${share?`<button class="btn2" type="button" data-close="share">Compartilhar</button>`:""}</div>
+      ${zip.size>2e9?`<p class="note warn">Passa de 2 GB: o WhatsApp não aceita. Mande pelo Google Drive ou por cabo.</p>`:""}
+      <p class="note">O pacote continua guardado aqui. Se mudar alguma coisa, é só gerar de novo.</p>
+      <div class="mbtns"><button class="btn2" type="button" data-close>Fechar</button></div>`);
+    if(a==="share"){try{await navigator.share({files:[new File([zip],nome,{type:"application/zip"})],title:nome})}catch(e){if(e.name!=="AbortError")toast("Não deu para compartilhar: "+e.message,1)}}
+    setTimeout(()=>URL.revokeObjectURL(u),120000);
+  }catch(e){GERANDO=false;closeModal(null);toast("Não consegui gerar o pacote: "+e.message,1)}
+}
+
+/* ================= continuar de um .zip ================= */
+async function importZip(file){
+  closeModal(null);
+  let ents;try{ents=await readZip(file)}catch(e){toast("Não consegui abrir o .zip: "+e.message,1);return}
+  const pj=ents.find(e=>/(^|\/)pedido\.json$/.test(e.name));
+  if(!pj){toast("Esse .zip não foi gerado pelo Estúdio (falta o pedido.json).",1);return}
+  let ped;try{ped=JSON.parse(await pj.blob.text())}catch(e){toast("pedido.json ilegível.",1);return}
+  if(ped.app!=="celiware-estudio"||!ped._estado){toast("Esse .zip não foi gerado pelo Estúdio.",1);return}
+  const raiz=pj.name.replace(/pedido\.json$/,"");const map=new Map(ents.map(e=>[e.name,e.blob]));
+  const np=ped._estado;const exist=await dbGet("proj",np.id);
+  if(exist&&!await confirma("Substituir \""+(exist.nome||"Sem nome")+"\"?","Essa máquina já está neste aparelho. A versão do .zip substitui a daqui.","Substituir"))return;
+  modal(`<h3>Abrindo o pacote</h3><p class="bp">Guardando os arquivos neste aparelho.</p><div class="prog"><i id="pgb"></i></div><div class="progtx" id="pgt"></div>`);
+  try{
+    if(exist)await removeMany(Object.keys(exist.meta||{}));
+    const ids=Object.keys(ped._arquivos||{});let k=0;const falt=[];
+    for(const id of ids){const b=map.get(raiz+ped._arquivos[id]);if(!b){falt.push(id);continue}const m=np.meta[id];const blob=new Blob([b],{type:m.type||""});await dbPut("blobs",blob,id);if(m.kind==="foto"){const t=await makeThumb(blob);if(t)await dbPut("thumbs",t,id)}k++;$("#pgb").style.width=(k/ids.length*100)+"%";$("#pgt").textContent=`${k} de ${ids.length} arquivos`}
+    const tira=h=>{h.mid=h.mid.filter(id=>!falt.includes(id)&&np.meta[id]&&ped._arquivos[id])};
+    np.narr=np.narr.filter(id=>ped._arquivos[id]&&!falt.includes(id));np.secs.forEach(s=>{tira(s);s.rows.forEach(tira)});
+    Object.keys(np.meta).forEach(id=>{if(!ped._arquivos[id]||falt.includes(id))delete np.meta[id]});
+    URLS.forEach(u=>URL.revokeObjectURL(u));URLS.clear();
+    P=migrar(np);await dbPut("proj",JSON.parse(JSON.stringify(P)));try{localStorage.setItem("ce-cur",P.id)}catch(e){}
+    closeModal(null);render();scrollTo({top:0});toast(`"${P.nome}" aberta com ${k} arquivo(s).`);
+  }catch(e){closeModal(null);toast("Falhou ao abrir: "+e.message,1)}
+}
+
+/* ================= início ================= */
+(async()=>{
+  try{DB=await idb()}catch(e){document.body.innerHTML=`<div class="wrap" style="padding:48px 16px"><h2>Este navegador bloqueou o armazenamento.</h2><p>Abra em uma aba normal do Chrome (não anônima).</p></div>`;return}
+  let id=null;try{id=localStorage.getItem("ce-cur")}catch(e){}
+  if(id)P=await dbGet("proj",id).catch(()=>null);
+  if(!P){const all=await dbAll("proj");P=all.sort((a,b)=>(b.salvo||"").localeCompare(a.salvo||""))[0]||novoProjeto()}
+  migrar(P);render();recoverRec();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "celiware-estudio",
+  "private": true,
+  "scripts": {
+    "test": "node test/e2e.mjs",
+    "deploy": "npx wrangler pages deploy site --project-name=celiware-estudio --branch=main"
+  },
+  "devDependencies": {
+    "playwright": "1.62.0"
+  }
+}
