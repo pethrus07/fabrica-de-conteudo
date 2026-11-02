@@ -35,6 +35,21 @@ const shot = async (p, n, full = true) => p.screenshot({ path: path.join(OUT, n 
 const semBusy = p => p.waitForFunction(() => !document.querySelector(".busy"), null, { timeout: 30000 });
 
 const browser = await chromium.launch({ args: ["--use-fake-ui-for-media-stream", "--use-fake-device-for-media-stream"] });
+
+// Fixtures sintéticas: test/out/ é ignorado pelo git, então o teste cria o que precisa num clone limpo.
+// Arquivos que já existirem (ex.: fotos reais de uma rodada local) são mantidos.
+fs.mkdirSync(OUT, { recursive: true });
+{
+  const p = await browser.newPage({ viewport: { width: 1600, height: 1200 } });
+  for (const [f, cor] of [[FX.foto, "#2a6"], [FX.clp, "#36c"]]) {
+    if (fs.existsSync(f)) continue;
+    await p.setContent(`<body style="margin:0;background:linear-gradient(45deg,${cor},#fff)"></body>`);
+    await p.screenshot({ path: f, type: "jpeg", quality: 90 });
+  }
+  await p.close();
+  if (!fs.existsSync(FX.video)) fs.writeFileSync(FX.video, crypto.randomBytes(3 * 1024 * 1024));
+  if (!fs.existsSync(FX.pdf)) fs.writeFileSync(FX.pdf, "%PDF-1.4\n%%EOF\n");
+}
 const ctx = await browser.newContext({ ...devices["Pixel 7"], acceptDownloads: true, permissions: ["microphone"] });
 const page = await ctx.newPage();
 const erros = [];
@@ -135,7 +150,9 @@ await shot(page, "08-pronto", false);
 const [dl] = await Promise.all([page.waitForEvent("download"), page.click("#dl")]);
 const ZIP = path.join(OUT, dl.suggestedFilename());
 await dl.saveAs(ZIP);
-ok(fs.statSync(ZIP).size > 13_000_000, "zip baixado: " + path.basename(ZIP) + " " + fs.statSync(ZIP).size + " bytes");
+// O .zip guarda a mídia byte a byte (modo STORE): tem que ser maior que a soma das fixtures.
+const somaFixtures = Object.values(FX).reduce((s, f) => s + fs.statSync(f).size, 0);
+ok(fs.statSync(ZIP).size > somaFixtures,"zip baixado: " + path.basename(ZIP) + " " + fs.statSync(ZIP).size + " bytes");
 {
   const code = fs.readFileSync(path.join(SITE, "index.html"), "utf8").split("/*ZIP-BEGIN*/")[1].split("/*ZIP-END*/")[0];
   const { readZip } = new Function(code + ";return{readZip}")();
