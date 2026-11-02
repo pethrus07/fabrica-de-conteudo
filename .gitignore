@@ -7,3 +7,15 @@ __pycache__/
 *.webm
 fontes/
 .env*
+
+# Saídas geradas (o build recria; não versionar binário gerado)
+**/_tmp/
+pilotos/*/entrega/
+teste-qa-plc/saida/
+*.docx
+*.pptx
+
+# Capturas do site do cliente (o coletor recria); só o texto extraído fica versionado
+pilotos/*/marca/*/site/**
+!pilotos/*/marca/*/site/*.txt
+!pilotos/*/marca/*/site/*.json
