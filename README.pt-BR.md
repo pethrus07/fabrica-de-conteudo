@@ -59,4 +59,4 @@ O build do piloto precisa de Typst, Python 3, ffmpeg, Node e um LanguageTool loc
 
 ## Licença
 
-Todos os direitos reservados.
+Todos os direitos reservados. Publicado como portfólio; sem licença de reuso. Veja [LICENSE](LICENSE).

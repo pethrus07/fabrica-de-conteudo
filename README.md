@@ -59,4 +59,4 @@ The pilot build needs Typst, Python 3, ffmpeg, Node and a local LanguageTool. Th
 
 ## License
 
-All rights reserved.
+All rights reserved. Published as portfolio; not licensed for reuse. See [LICENSE](LICENSE).

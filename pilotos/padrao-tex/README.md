@@ -5,6 +5,9 @@ pacote final de 02/10/2026, 30 blocos). Saída: **1 manual, 3 guias rápidos e 1
 pedido final mandou. **Este piloto é o modelo dos próximos:** a próxima máquina troca os dados e as capturas, e
 reaproveita o tema, o motor de vídeo e as auditorias.
 
+**Fora do repositório:** o pacote do cliente (`fonte*/`), a marca e as fotos da Tex (`marca/`) e as entregas
+(`entrega/`) ficam guardados fora do git. Sem eles o build não roda a partir de um clone.
+
 **Identidade:** o material sai na identidade da **Tex**, não da Celiware (pedido do cliente no WhatsApp, 02/10 16:06:
 "Não usar nada da Celiware"). Logo, cores (#003895 e #D32E12, medidas no logo) e fotos vêm de tex.com.br, coletados por
 `video/coletar_tex.mjs` e `video/baixar_tex.mjs` em `marca/tex/` (o site recusa curl com 406; vai pelo Chromium).

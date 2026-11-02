@@ -4,7 +4,7 @@ Experimento pausado desde 10/2026. Só volta se entrar na parceria (decisão do 
 
 ## Agora
 1. Nada em produção além do Estúdio de Máquinas no ar (`celiware-estudio.pages.dev`, publicado a partir de `estudio/`).
-2. Antes de abrir o repositório: tirar do histórico o material do cliente e as saídas geradas (lista no relatório da revisão de 11/2026) e separar `pilotos/` e `comercial/` (material de cliente e negociação).
+2. Feito em 01/11/2026: o material do cliente (pacote, marca, fotos), a negociação (`comercial/`) e as saídas geradas saíram do repositório e do histórico; ficam guardados fora dele.
 
 ## Depois
 - Estúdio: colar imagem com Ctrl+V (pedido do cliente, sem data).
